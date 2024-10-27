@@ -9,6 +9,7 @@ using ThienAnFuni.Models;
 
 namespace ThienAnFuni.Controllers
 {
+    
     public class ManagersController : Controller
     {
         private readonly TAF_DbContext _context;
