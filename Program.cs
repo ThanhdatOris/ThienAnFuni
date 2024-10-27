@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,10 +33,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// Tham số động
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-// Add this route for the admin path
+// Add this route for the admin path, tham số cố định
 app.MapControllerRoute(
     name: "admin",
     pattern: "admin",
