@@ -1,0 +1,32 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userprefs
+
+# Build output
+build/
+obj/
+bin/
+
+# Packages
+packages/
+*.nupkg
+*.pdb
+
+# Logs
+logs/*.log
+
+# IDE settings
+.vscode/
+.idea/
+
+# Other
+*.userassets
+*.sln.docstates
+temp/
+
+appsettings.Local.json
+testPJ.sln
+
+Migrations/
