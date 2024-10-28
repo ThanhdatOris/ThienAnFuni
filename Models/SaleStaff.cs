@@ -6,7 +6,7 @@
         public DateTime IssuingDate { get; set; }
         public string IssuingPlace { get; set; }
 
+        public virtual ICollection<Order>? Orders { get; set; }
         public void AssistCustomerOrder() { }
-        public List<Order>? Orders { get; set; }
     }
 }

@@ -31,13 +31,16 @@ namespace ThienAnFuni.Models
 
         public string? Description { get; set; }
 
-        [Required]
-        public bool Active { get; set; } = true;
         public string? MainImg { get; set; }
+        [Required]
+        public bool IsActive { get; set; } = true;
         public int? CategoryId { get; set; }
-        public Category? Category { get; set; }
-        public List<OrderItem>? OrderItems { get; set; }
-        public List<CartItem>? CartItems { get; set; }
-        public List<Goods>? Goods { get; set; }
+
+        public virtual Category? Category { get; set; }
+        public virtual ICollection<OrderDetail>? OrderItems { get; set; }
+        public virtual ICollection<CartDetail>? CartItems { get; set; }
+        public virtual ICollection<Goods>? Goods { get; set; }
+        public virtual ICollection<ProductImage>? ProductImages { get; set; }
+
     }
 }

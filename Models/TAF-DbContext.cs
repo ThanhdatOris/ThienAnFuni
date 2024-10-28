@@ -11,9 +11,9 @@ namespace ThienAnFuni.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
-        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<CartDetail> CartDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
         public DbSet<Goods> Goods { get; set; }
@@ -25,8 +25,8 @@ namespace ThienAnFuni.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Nội thất phòng khách", RoomType = "Phòng khách", UsageType = "Gia đình", Active = true },
-                new Category { Id = 2, Name = "Ghế sofa", ParentId = 1, RoomType = "Phòng khách", UsageType = "Gia đình", Active = true }
+                new Category { Id = 1, Name = "Nội thất phòng khách", RoomType = "Phòng khách", UsageType = "Gia đình", IsActive = true },
+                new Category { Id = 2, Name = "Ghế sofa", ParentId = 1, RoomType = "Phòng khách", UsageType = "Gia đình", IsActive = true }
             );
 
             modelBuilder.Entity<Product>().HasData(
@@ -44,7 +44,7 @@ namespace ThienAnFuni.Models
                     Brand = "Sofaland",
                     WarrantyPeriod = "1 năm",
                     Description = "Ghế sofa đơn cho phòng khách",
-                    Active = true,
+                    IsActive = true,
                     MainImg = "sofa_don.jpg",
                     CategoryId = 2
                 },
@@ -62,7 +62,7 @@ namespace ThienAnFuni.Models
                     Brand = "Woodland",
                     WarrantyPeriod = "2 năm",
                     Description = "Kệ tivi bằng gỗ sồi chất lượng cao",
-                    Active = true,
+                    IsActive = true,
                     MainImg = "ke_tivi.jpg",
                     CategoryId = 1
                 }

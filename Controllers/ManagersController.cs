@@ -26,7 +26,7 @@ namespace ThienAnFuni.Controllers
         }
 
         // GET: Managers/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace ThienAnFuni.Controllers
         }
 
         // GET: Managers/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace ThienAnFuni.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CitizenId,Id,FullName,PhoneNumber,Address,Gender,DateOfBirth,Password")] Manager manager)
+        public async Task<IActionResult> Edit(int id, [Bind("CitizenId,Id,FullName,PhoneNumber,Address,Gender,DateOfBirth,Password")] Manager manager)
         {
             if (id != manager.Id)
             {
@@ -117,7 +117,7 @@ namespace ThienAnFuni.Controllers
         }
 
         // GET: Managers/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace ThienAnFuni.Controllers
         // POST: Managers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var manager = await _context.Managers.FindAsync(id);
             if (manager != null)
@@ -149,7 +149,7 @@ namespace ThienAnFuni.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ManagerExists(string id)
+        private bool ManagerExists(int id)
         {
             return _context.Managers.Any(e => e.Id == id);
         }

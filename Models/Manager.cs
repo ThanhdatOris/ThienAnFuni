@@ -5,7 +5,7 @@
         public string CitizenId { get; set; }
 
         public void ChangeInfo() { }
-        public List<Shipment> Shipments { get; set; }
-        public List<Category> Categories { get; set; }
+        public virtual List<Shipment>? Shipments { get; set; }
+        public virtual List<Category>? Categories { get; set; }
     }
 }
