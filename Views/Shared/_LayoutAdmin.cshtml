@@ -28,7 +28,75 @@
 
     <!-- The javascript plugin to display page loading on top-->
     <script src="/adminThienAn/js/plugins/pace.min.js"></script>
+    <style>
+        .Choicefile {
+            display: block;
+            background: #14142B;
+            border: 1px solid #fff;
+            color: #fff;
+            width: 150px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 5px 0px;
+            border-radius: 5px;
+            font-weight: 500;
+            align-items: center;
+            justify-content: center;
+        }
 
+            .Choicefile:hover {
+                text-decoration: none;
+                color: white;
+            }
+
+        #uploadfile,
+        .removeimg {
+            display: none;
+        }
+
+        #thumbbox {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .removeimg {
+            height: 25px;
+            position: absolute;
+            background-repeat: no-repeat;
+            top: 5px;
+            left: 5px;
+            background-size: 25px;
+            width: 25px;
+            /* border: 3px solid red; */
+            border-radius: 50%;
+        }
+
+            .removeimg::before {
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                content: '';
+                border: 1px solid red;
+                background: red;
+                text-align: center;
+                display: block;
+                margin-top: 11px;
+                transform: rotate(45deg);
+            }
+
+            .removeimg::after {
+                /* color: #FFF; */
+                /* background-color: #DC403B; */
+                content: '';
+                background: red;
+                border: 1px solid red;
+                text-align: center;
+                display: block;
+                transform: rotate(-45deg);
+                margin-top: -2px;
+            }
+    </style>
 </head>
 
 <body onload="time()" class="app sidebar-mini rtl">
@@ -59,33 +127,39 @@
         <hr>
         <ul class="app-menu">
             <li>
-                <a class="app-menu__item haha" href="phan-mem-ban-hang.html">
+                <a class="app-menu__item haha" asp-controller="POS" asp-action="Index">
                     <i class='app-menu__icon bx bx-cart-alt'></i>
                     <span class="app-menu__label">POS Bán Hàng</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item active" href="index.html">
+                <a class="app-menu__item " asp-controller="Staffs" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý nhân viên</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" href="table-data-product.html">
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Product" ? "active" : "")" asp-controller="AdminProducts" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý sản phẩm</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" href="table-data-oder.html">
+                <a class="app-menu__item" asp-controller="Orders" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý đơn hàng</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" href="#">
+                <a class="app-menu__item" asp-controller="Categories" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý danh mục</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Shipment" ? "active" : "")" asp-controller="Shipments" asp-action="Index">
+                    <i class='app-menu__icon bx bx-id-card'></i>
+                    <span class="app-menu__label">Quản lý nhập hàng</span>
                 </a>
             </li>
         </ul>
@@ -103,9 +177,9 @@
     <script type="text/javascript">
         $('#sampleTable').DataTable();
     </script>
-    
-    <script src="/adminThienAn/js/helper.js"></script>
     <script src="/adminThienAn/js/plugins/chart.js"></script>
+    <script src="/adminThienAn/js/helper.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 
