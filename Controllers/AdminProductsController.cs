@@ -20,6 +20,7 @@ namespace ThienAnFuni.Controllers
             ViewData["ActiveMenu"] = "Product";
             var products = await _context.Products
                 .Include(p => p.Category)
+                .Where(p => p.IsActive == true)
                 .ToListAsync();
             return View(products);
         }
@@ -27,6 +28,8 @@ namespace ThienAnFuni.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            ViewData["ActiveMenu"] = "Product";
+
             try
             {
                 // Lấy danh sách danh mục và nhà cung cấp từ cơ sở dữ liệu
@@ -63,6 +66,8 @@ namespace ThienAnFuni.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Product model, IFormFile ImageUpload)
         {
+            ViewData["ActiveMenu"] = "Product";
+
             //if (ModelState.IsValid)
             //{
             if (ImageUpload != null && ImageUpload.Length > 0)
@@ -106,5 +111,27 @@ namespace ThienAnFuni.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            // Tìm sản phẩm theo ID
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // Cập nhật thuộc tính IsActive thành false
+            product.IsActive = false;
+            _context.Products.Update(product);
+
+            await _context.SaveChangesAsync();
+
+            // Điều hướng về trang Index
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

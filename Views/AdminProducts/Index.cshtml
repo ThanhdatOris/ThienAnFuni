@@ -58,11 +58,8 @@
                                     {
                                         <img src="~/adminThienAn/image_product/default.png" alt="Product Image" width="100px" />
                                     }
-
-                                    @*   <img src="@Url.Content("~/customerThienAn/img/gheSofa_GoTramTN_VLINE601_nau_xamdam.jpg")"
-                                alt="" width="100px" /> *@
                                 </td>
-                                <td>@(product.Goods?.Sum(g => g.Quantity) ?? 0)</td>
+                                <td>@(product?.Goods?.Sum(g => g.Quantity) ?? 0)</td>
                                 <td>
                                     <span class="badge @(product.IsActive ? "bg-success" : "bg-danger")">
                                         @(product.IsActive ? "Còn hàng" : "Hết hàng")
@@ -71,18 +68,19 @@
                                 <td>@String.Format("{0:n0} đ", product.Price)</td>
                                 <td>@product.Category?.Name</td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                            onclick="myFunction(this)">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"
-                                            data-toggle="modal" data-target="#ModalUP">
+                                    <form asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@product.Id" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn ẩn sản phẩm này?');">
+                                        <button type="submit" class="btn btn-primary btn-sm trash" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" data-toggle="modal" data-target="#ModalUP">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                 </td>
                             </tr>
                         }
                     </tbody>
+
                 </table>
             </div>
         </div>
