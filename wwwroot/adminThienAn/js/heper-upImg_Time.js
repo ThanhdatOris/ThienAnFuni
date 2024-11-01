@@ -36,6 +36,48 @@ $(document).ready(function () {
     });
 })
 
+//function readURL(input) {
+//    if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
+//        var reader = new FileReader();
+//        reader.onload = function (e) {
+//            $("#thumbimage").attr('src', e.target.result).show(); // Hiển thị hình ảnh
+//            $(".removeimg").show(); // Hiện nút xóa
+//        }
+//        reader.readAsDataURL(input.files[0]);
+//    } else { // Sử dụng cho IE
+//        $("#thumbimage").attr('src', input.value).show(); // Hiển thị hình ảnh
+//        $(".removeimg").show(); // Hiện nút xóa
+//    }
+
+//    $('.filename').text($("#uploadfile").val());
+//    $('.Choicefile').css('background', '#14142B');
+//    $('.Choicefile').css('cursor', 'default');
+//}
+
+//// Định nghĩa hàm removeImage
+//function removeImage() {
+//    $("#thumbimage").attr('src', '').hide(); // Ẩn hình ảnh
+//    $(".removeimg").hide(); // Ẩn nút xóa hiện tại
+//    $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />'); // Đặt lại input file
+//    $('.filename').text(""); // Xóa tên tệp
+//    $('.Choicefile').css('background', '#14142B'); // Thiết lập lại nền cho nút chọn tệp
+//    $('.Choicefile').css('cursor', 'pointer'); // Thiết lập lại con trỏ chuột cho nút
+//}
+
+$(document).ready(function () {
+    $(".Choicefile").on('click', function () {
+        $("#uploadfile").click();
+    });
+
+    // Gắn sự kiện click cho removeimg
+    $(document).on('click', '.removeimg', function () {
+        removeImage(); // Gọi hàm removeImage
+    });
+});
+
+
+
+
 function time() {
     const today = new Date();
     const weekday = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];

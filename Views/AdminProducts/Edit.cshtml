@@ -1,0 +1,143 @@
+﻿@model ThienAnFuni.Models.Product
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item">Danh sách sản phẩm</li>
+        <li class="breadcrumb-item">Cập nhật sản phẩm</li>
+    </ul>
+    <div id="clock"></div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <h3 class="tile-title">Cập nhật sản phẩm</h3>
+            <div class="tile-body">
+
+                <form asp-action="Edit" asp-controller="AdminProducts" enctype="multipart/form-data" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="row element-button">
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Tên sản phẩm</label>
+                            <input asp-for="Name" class="form-control" required />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Danh mục</label>
+                            <select class="form-control" id="categorySelect" name="CategoryId">
+                                <option value="">-- Chọn danh mục --</option>
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.Id" selected="@(Model.CategoryId == category.Id ? "selected" : null)">
+                                        @category.Name
+                                    </option>
+                                }
+                            </select>
+
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Giá bán</label>
+                            <input asp-for="Price" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Đơn vị</label>
+                            <input asp-for="Unit" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Chất liệu</label>
+                            <input asp-for="Material" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Kích thước</label>
+                            <input asp-for="Dimension" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Tiêu chuẩn</label>
+                            <input asp-for="Standard" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Màu sắc</label>
+                            <input asp-for="Color" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Loại</label>
+                            <input asp-for="Type" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Thương hiệu</label>
+                            <input asp-for="Brand" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Thời gian bảo hành</label>
+                            <input asp-for="WarrantyPeriod" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Kích hoạt</label>
+                            <select asp-for="IsActive" class="form-control">
+                                <option value="true">Có</option>
+                                <option value="false">Không</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Ảnh sản phẩm</label>
+                            <div id="myfileupload">
+                                <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
+                            </div>
+                            <div id="thumbbox">
+                                @if (Model.MainImg != null)
+                                {
+                                    <img src="~/adminThienAn/image_product/@Model.MainImg" alt="@Model.Name" height="130" id="thumbimage" />
+                                    <a class="removeimg d-block" href="javascript:void(0);"></a>
+                                }
+                                else
+                                {
+                                    <img height="130" alt="Thumb image" id="thumbimage" style="display: none" />
+                                    <a class="removeimg d-none" href="javascript:void(0);"></a>
+                                }
+                            </div>
+
+                            <div id="boxchoice">
+                                <a href="javascript:void(0);" class="Choicefile">
+                                    <i class="fas fa-cloud-upload-alt"></i> Chọn ảnh
+                                </a>
+                                <p style="clear:both"></p>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Mô tả sản phẩm</label>
+                            <textarea asp-for="Description" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Lưu lại</button>
+                    <a class="btn btn-secondary" asp-action="Index">Hủy bỏ</a>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+}

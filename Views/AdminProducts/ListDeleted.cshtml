@@ -22,18 +22,6 @@
                             Tạo mới sản phẩm
                         </a>
                     </div>
-                    <div class="col-sm-2">
-                        <a class="btn btn-danger btn-sm" asp-controller="AdminProducts" asp-action="ListDeleted" title="Thêm">
-                            <i class="fas fa-trash"></i>
-                            Sản phẩm ngừng bán
-                        </a>
-                    </div>
-                    <div class="col-sm-2">
-                        <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)">
-                            <i class="fas fa-file-pdf"></i> Xuất PDF
-                        </a>
-                    </div>
-
                 </div>
                 <table class="table table-hover table-bordered" id="sampleTable">
                     <thead>
@@ -41,11 +29,10 @@
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Ảnh</th>
-                            <th>Tồn kho</th>
+                            <th>Số lượng</th>
                             <th>Tình trạng</th>
                             <th>Giá tiền</th>
                             <th>Danh mục</th>
-                            <th>Chức năng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,16 +59,6 @@
                                 </td>
                                 <td>@String.Format("{0:n0} đ", product.Price)</td>
                                 <td>@product.Category?.Name</td>
-                                <td>
-                                    <form asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@product.Id" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn ẩn sản phẩm này?');">
-                                        <button type="submit" class="btn btn-primary btn-sm trash" title="Xóa">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                    <a class="btn btn-primary btn-sm edit" title="Sửa" asp-controller="AdminProducts" asp-action="Edit" asp-route-id="@product.Id">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
                             </tr>
                         }
                     </tbody>
