@@ -2,7 +2,7 @@
 
 namespace ThienAnFuni.Models
 {
-    public class Shipment
+    public class Shipment // Phiếu nhập lô hàng
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Ngày nhập không được để trống")]

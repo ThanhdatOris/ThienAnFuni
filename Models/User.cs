@@ -8,7 +8,10 @@ namespace ThienAnFuni.Models
 
         [Required(ErrorMessage = "Tên không được để trống")]
         [StringLength(100, ErrorMessage = "Tên không thể dài hơn 100 kí tự")]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
+
+        public string Username { get; set; }
+
 
         [Required(ErrorMessage = "Số điện thoại không được để trống")]
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]

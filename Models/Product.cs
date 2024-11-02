@@ -9,8 +9,6 @@ namespace ThienAnFuni.Models
         [StringLength(200)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Giá không được để trống")]
-        [Range(0, double.MaxValue, ErrorMessage = "Giá là số")]
         public double Price { get; set; }
 
         public string? Unit { get; set; }
@@ -32,10 +30,12 @@ namespace ThienAnFuni.Models
         public string? Description { get; set; }
 
         public string? MainImg { get; set; }
-        [Required]
-        public bool IsActive { get; set; } = true;
-        public int? CategoryId { get; set; }
 
+        [Required]
+        public bool IsActive { get; set; } = false;
+        [Required]
+        public bool Import { get; set; } = false;
+        public int? CategoryId { get; set; }
         public virtual Category? Category { get; set; }
         public virtual ICollection<OrderDetail>? OrderItems { get; set; }
         public virtual ICollection<CartDetail>? CartItems { get; set; }

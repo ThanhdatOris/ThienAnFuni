@@ -1,0 +1,260 @@
+﻿@{
+    ViewData["Title"] = "Quản lý nhập hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="app-title">
+    @*     <ul class="app-breadcrumb breadcrumb side">
+    <li class="breadcrumb-item active"><a href="#"><b>Danh sách sản phẩm</b></a></li>
+    </ul> *@
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-controller="adminProducts" asp-action="Create" title="Thêm">
+                            <i class="fas fa-plus"></i>
+                            Tạo mới sản phẩm
+                        </a>
+                    </div>
+
+                    @*                     <div class="col-sm-2">
+                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)">
+                    <i class="fas fa-file-pdf"></i> Xuất PDF
+                    </a>
+                    </div> *@
+
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label class="control-label">Ngày nhập</label>
+                    <input type="date" class="form-control" name="receiptDate" required />
+                </div>
+
+                <form class="row" asp-action="SaveShipmentToDatabase" method="post" enctype="multipart/form-data">
+                    <div class="form-group col-md-3">
+                        <label for="supplierSelect" class="control-label">Nhà cung cấp</label>
+                        <select class="form-control" id="supplierSelect" name="supplierId" required>
+                            <option value="">-- Chọn nhà cung cấp --</option>
+                            @if (ViewBag.Suppliers != null)
+                            {
+                                foreach (var supplier in ViewBag.Suppliers)
+                                {
+                                    <option value="@supplier.Id">@supplier.DisplayName</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="">Không có danh mục nào</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Tên hàng</label>
+                        <input id="searchInput" class="form-control" type="text" placeholder="Tên hàng hoặc mã hàng" />
+                    </div>
+
+
+                    <!-- Kết quả sau khi tìm -->
+                    <table class="table table-hover table-bordered" id="sampleTableSub">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="30">Mã</th>
+                                <th class="text-center">Tên sản phẩm</th>
+                                <th class="text-center">Ảnh</th>
+                                <th class="text-center">Danh mục</th>
+                                <th class="text-center">Giá bán</th>
+                                <th class="text-center" width="30">SL</th>
+                                <th class="text-center">Giá nhập</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="productList">
+                            <!-- Phần này sẽ được điền bằng AJAX -->
+                        </tbody>
+                    </table>
+
+                    <div class="alert w-100">
+                        <i class="fas fa-exclamation-triangle"></i> Gõ mã hoặc tên sản phẩm vào thanh tìm kiếm để thêm hàng vào đơn nhập hàng
+                    </div>
+
+                    <!-- Kết quả sau khi tìm thêm vào session -->
+                    <h4 class="w-100 text-center">Sản phẩm đã thêm vào đơn nhập hàng</h4>
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="30">Mã</th>
+                                <th class="text-center">Tên sản phẩm</th>
+                                <th class="text-center">Ảnh</th>
+                                <th class="text-center" width="30">SL</th>
+                                <th class="text-center">Giá nhập</th>
+                                <th class="text-center">Thành tiền</th>
+
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="productListResult">
+                            <!-- Sản phẩm sẽ thêm vào đây -->
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <button type="submit" name="save" class="btn btn-success">Lưu</button>
+                        <button type="reset" name="close" class="btn btn-secondary">Hủy</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Xử lý tìm kiếm sản phẩm
+            let typingTimer;
+            const typingDelay = 300;
+
+            $('#searchInput').on('input', function () {
+                clearTimeout(typingTimer);
+
+                let keyword = $(this).val().trim();
+
+                typingTimer = setTimeout(function () {
+                    if (keyword.length > 0) {
+                        $.get('/Shipments/SearchProduct', { keyword: keyword }, function (products) {
+                            const productList = $('#productList');
+                            productList.empty();
+
+                            if (products.length === 0) {
+                                productList.append('<tr><td colspan="7" class="text-center">Không tìm thấy sản phẩm nào.</td></tr>');
+                            } else {
+                                products.forEach(function (product) {
+                                    productList.append(`
+                                                                                            <tr>
+                                                                                                <td>#${product.id}</td>
+                                                                                                <td>${product.name}</td>
+                                                                                                <td><img src="${product.mainImg}" alt="${escapeHTML(product.name)}" width="50"></td>
+                                                                                                <td>${product.categoryName || 'Không có'}</td>
+                                                                                                        <td>${product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                                                                                <td><input type="number" min="1" value="1" id="quantity-${product.id}"></td>
+                                                                                                <td><input type="number" min="0" value="0" id="importPrice-${product.id}"></td>
+                                                                                                <td class="text-center">
+                                                                                                    <button type="button" class="btn btn-sm btn-primary add-to-shipment" data-id="${product.id}">Thêm</button>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        `);
+                                });
+                            }
+                        });
+                    } else {
+                        $('#productList').empty();
+                    }
+                }, typingDelay);
+            });
+
+            function escapeHTML(str) {
+                return str.replace(/[&<>"']/g, function (match) {
+                    const escape = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+                    return escape[match];
+                });
+            }
+
+
+            // Tự động tải danh sách sản phẩm khi trang được tải
+            $.get('/Shipments/GetShipmentGoods', function (goodsItems) {
+                const productListResult = $('#productListResult');
+                productListResult.empty();
+
+                if (goodsItems && goodsItems.length > 0) {
+                    goodsItems.forEach(function (item) {
+                        productListResult.append(`
+                              <tr>
+                           <td>#${item.productId}</td>
+                           <td>${item.productName}</td>
+                           <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                           <td>${item.quantity}</td>
+                           <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                           <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                           <td class="text-center">
+                           <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
+                              </tr>`);
+                    });
+                } else {
+                    productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
+                }
+            });
+
+
+
+            // Xử lý thêm sản phẩm vào lô hàng
+            $(document).on('click', '.add-to-shipment', function () {
+                var productId = $(this).data('id');
+                var quantity = $(`#quantity-${productId}`).val();
+                var importPrice = $(`#importPrice-${productId}`).val();
+
+                $.post('/Shipments/AddToShipment', { productId: productId, quantity: quantity, importPrice: importPrice }, function (goodsItems) {
+                    var productListResult = $('#productListResult');
+                    productListResult.empty();
+
+                    if (goodsItems && goodsItems.length > 0) {
+                        goodsItems.forEach(function (item) {
+                            productListResult.append(`
+                                         <tr>
+                                   <td>#${item.productId}</td>
+                                   <td>${item.productName}</td>
+                                   <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                                   <td>${item.quantity}</td>
+                                   <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                   <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                   <td class="text-center">
+                                   <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
+                                      </tr>`);
+                        });
+                    } else {
+                        productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
+                    }
+                });
+            });
+
+            // Xử lý xóa sản phẩm khỏi lô hàng
+            $(document).on('click', '.remove-from-shipment', function () {
+                var productId = $(this).data('id');
+
+                $.post('/Shipments/RemoveFromShipment', { productId: productId }, function (goodsItems) {
+                    var productListResult = $('#productListResult');
+                    productListResult.empty();
+
+                    if (goodsItems && goodsItems.length > 0) {
+                        goodsItems.forEach(function (item) {
+                            productListResult.append(`
+                                         <tr>
+                                   <td>#${item.productId}</td>
+                                   <td>${item.productName}</td>
+                                   <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                                   <td>${item.quantity}</td>
+                                   <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                   <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                   <td class="text-center">
+                                   <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
+                                      </tr>`);
+                        });
+                    } else {
+                        productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
+                    }
+                }).fail(function () {
+                    alert('Không thể xóa sản phẩm khỏi lô hàng.');
+                });
+            });
+        });
+    </script>
+
+
+
+}

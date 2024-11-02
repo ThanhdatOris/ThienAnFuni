@@ -2,7 +2,7 @@
 
 namespace ThienAnFuni.Models
 {
-    public class Goods
+    public class Goods // Chi tiết các đơn hàng
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Quantity is required")]
