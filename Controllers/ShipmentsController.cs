@@ -71,61 +71,8 @@ namespace ThienAnFuni.Controllers
             return Json(result);
         }
 
-
-
-
         // Thêm sản phẩm vào lô hàng trong session
         [HttpPost]
-        //public IActionResult AddToShipment(int productId, int quantity, double importPrice)
-        //{
-        //    // Kiểm tra xem cơ sở dữ liệu có sẵn không
-        //    if (_context.Products == null)
-        //    {
-        //        return StatusCode(500, "Database context is not initialized.");
-        //    }
-
-        //    // Kiểm tra sản phẩm
-        //    var product = _context.Products.FirstOrDefault(p => p.Id == productId);
-        //    if (product == null)
-        //        return NotFound("Product not found");
-
-        //    // Lấy lô hàng
-        //    var shipment = GetShipment();
-        //    if (shipment == null)
-        //    {
-        //        return StatusCode(500, "Shipment not found.");
-        //    }
-
-        //    // Kiểm tra xem Goods có được khởi tạo không
-        //    if (shipment.Goods == null)
-        //    {
-        //        shipment.Goods = new List<Goods>();
-        //    }
-
-        //    var goodsItem = shipment.Goods.FirstOrDefault(g => g.ProductId == productId);
-
-        //    if (goodsItem != null)
-        //    {
-        //        // Cập nhật số lượng và tổng giá nếu sản phẩm đã tồn tại
-        //        goodsItem.Quantity += quantity;
-        //        goodsItem.TotalPrice = goodsItem.Quantity * importPrice;
-        //    }
-        //    else
-        //    {
-        //        // Thêm sản phẩm mới vào lô hàng
-        //        shipment.Goods.Add(new Goods
-        //        {
-        //            ProductId = product.Id,
-        //            Quantity = quantity,
-        //            ImportPrice = importPrice,
-        //            TotalPrice = importPrice * quantity
-        //        });
-        //    }
-
-        //    SaveShipmentSession(shipment);
-        //    return Json(shipment.Goods);
-        //}
-
         public IActionResult AddToShipment(int productId, int quantity, double importPrice)
         {
             // Kiểm tra cơ sở dữ liệu có sẵn hay không
@@ -155,6 +102,11 @@ namespace ThienAnFuni.Controllers
             // Tìm sản phẩm trong lô hàng hiện tại
             var goodsItem = shipment.Goods.FirstOrDefault(g => g.ProductId == productId);
 
+            if(goodsItem != null && goodsItem.Quantity < quantity)
+            {
+                return BadRequest("Số lượng nhập vào lớn hơn số lượng trong kho");
+            }
+
             if (goodsItem != null)
             {
                 // Cập nhật số lượng và tổng giá nếu sản phẩm đã tồn tại
@@ -166,8 +118,8 @@ namespace ThienAnFuni.Controllers
                 // Thêm sản phẩm mới vào lô hàng
                 shipment.Goods.Add(new Goods
                 {
-                    ProductId = product.Id,
                     Product = product,
+                    ProductId = product.Id,
                     Quantity = quantity,
                     ImportPrice = importPrice,
                     TotalPrice = importPrice * quantity,
@@ -187,11 +139,9 @@ namespace ThienAnFuni.Controllers
                 ProductName = g?.Product?.Name ?? "N/A",
                 ProductImage = $"/adminThienAn/image_product/{g?.Product?.MainImg ?? "default.png"}",
                 g.Quantity,
-                Category = product.Category?.Name ?? "N/A",
                 g.ImportPrice
             }));
         }
-
 
 
         [HttpPost]
@@ -220,14 +170,6 @@ namespace ThienAnFuni.Controllers
             return NotFound("Không tìm thấy sản phẩm trong đơn hàng");
         }
 
-
-
-        private Shipment GetShipment()
-        {
-            var session = HttpContext.Session.GetString(ShipmentSessionKey);
-            return session != null ? JsonConvert.DeserializeObject<Shipment>(session) : new Shipment();
-        }
-
         [HttpGet]
         public IActionResult GetShipmentGoods()
         {
@@ -245,28 +187,53 @@ namespace ThienAnFuni.Controllers
             return Json(result);
         }
 
-
-        private void SaveShipmentSession(Shipment shipment)
+        public IActionResult SaveShipmentToDatabase(DateTime receiptDate, int supplierId)
         {
-            HttpContext.Session.SetString(ShipmentSessionKey, JsonConvert.SerializeObject(shipment));
-        }
-
-        public IActionResult SaveShipmentToDatabase(DateTime receiptDate, int supplierId, int managerId)
-        {
-            var shipment = GetShipment();
+            // Lấy thông tin lô hàng từ session
+            var sessionShipment = GetShipment();
 
             // Kiểm tra nếu lô hàng trống
-            if (shipment == null || shipment.Goods == null || !shipment.Goods.Any())
+            if (sessionShipment == null || sessionShipment.Goods == null || !sessionShipment.Goods.Any())
             {
                 return BadRequest("Lô hàng trống, không thể lưu.");
             }
 
-            // Cập nhật thông tin lô hàng
-            shipment.ReceiptDate = receiptDate;
-            shipment.SupplierId = supplierId;
-            shipment.ManagerId = managerId;
+            // **************BUG**************
+            // `managerId` có thể lấy từ session người dùng đang đăng nhập
+            int managerId = HttpContext.Session.GetInt32("ManagerId") ?? 1;
 
-            // Lưu vào cơ sở dữ liệu
+            //if (managerId == 0)
+            //{
+            //    return BadRequest("Không thể xác định người quản lý.");
+            //}
+
+            // Tạo đối tượng Shipment mới để lưu vào database
+            var shipment = new Shipment
+            {
+                ReceiptDate = receiptDate,
+                SupplierId = supplierId,
+                ManagerId = managerId,
+                TotalPrice = sessionShipment.Goods.Sum(g => g.TotalPrice),
+                TotalQuantity = sessionShipment.Goods.Sum(g => g.Quantity),
+                Goods = new List<Goods>(),
+                Note = sessionShipment.Note // Chưa thêm trường ghi chú trong session
+            };
+
+            // Thêm từng Goods vào Shipment
+            foreach (var goodsItem in sessionShipment.Goods)
+            {
+                var goods = new Goods
+                {
+                    ProductId = goodsItem.ProductId,
+                    Quantity = goodsItem.Quantity,
+                    ImportPrice = goodsItem.ImportPrice,
+                    TotalPrice = goodsItem.TotalPrice
+                };
+
+                shipment.Goods.Add(goods);
+            }
+
+            // Lưu Shipment và các Goods vào database
             _context.Shipments.Add(shipment);
             _context.SaveChanges();
 
@@ -274,6 +241,18 @@ namespace ThienAnFuni.Controllers
             HttpContext.Session.Remove(ShipmentSessionKey);
 
             return Ok("Phiếu nhập đã được tạo thành công.");
+        }
+
+
+        // Helper methods session
+        private Shipment GetShipment()
+        {
+            var session = HttpContext.Session.GetString(ShipmentSessionKey);
+            return session != null ? JsonConvert.DeserializeObject<Shipment>(session) : new Shipment();
+        }
+        private void SaveShipmentSession(Shipment shipment)
+        {
+            HttpContext.Session.SetString(ShipmentSessionKey, JsonConvert.SerializeObject(shipment));
         }
 
     }

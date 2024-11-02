@@ -32,9 +32,10 @@ namespace ThienAnFuni.Models
         public string? MainImg { get; set; }
 
         [Required]
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = false;
+        [Required]
+        public bool Import { get; set; } = false;
         public int? CategoryId { get; set; }
-
         public virtual Category? Category { get; set; }
         public virtual ICollection<OrderDetail>? OrderItems { get; set; }
         public virtual ICollection<CartDetail>? CartItems { get; set; }

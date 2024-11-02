@@ -20,7 +20,7 @@ namespace ThienAnFuni.Controllers
             ViewData["ActiveMenu"] = "Product";
             var products = await _context.Products
                 .Include(p => p.Category)
-                .Where(p => p.IsActive == true)
+                //.Where(p => p.IsActive == true)
                 .ToListAsync();
             return View(products);
         }

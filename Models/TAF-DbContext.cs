@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ThienAnFuni.Helpers;
 
 namespace ThienAnFuni.Models
 {
@@ -24,6 +25,33 @@ namespace ThienAnFuni.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Manager>().HasData(
+            new Manager
+            {
+                Id = 1,
+                Username = "sinoo",
+                Password = PasswordHelper.HashPassword("123456"),
+                FullName = "Sinoo",
+                PhoneNumber = "0123456789",
+                Address = "123 Main St",
+                Gender = "Male",
+                DateOfBirth = new DateTime(1985, 5, 12),
+                CitizenId = "123456789"
+            },
+            new Manager
+            {
+                Id = 2,
+                Username = "teoAdmin",
+                FullName = "Nu Thao Vy",
+                Password = PasswordHelper.HashPassword("123456"),
+                PhoneNumber = "0987654321",
+                Address = "456 Another St",
+                Gender = "Female",
+                DateOfBirth = new DateTime(1990, 8, 25),
+                CitizenId = "987654321"
+            }
+        );
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Nội thất phòng khách", RoomType = "Phòng khách", UsageType = "Gia đình", IsActive = true },
                 new Category { Id = 2, Name = "Ghế sofa", ParentId = 1, RoomType = "Phòng khách", UsageType = "Gia đình", IsActive = true },
@@ -79,7 +107,7 @@ namespace ThienAnFuni.Models
                     Brand = "Sofaland",
                     WarrantyPeriod = "1 năm",
                     Description = "Ghế sofa đơn cho phòng khách",
-                    IsActive = true,
+                    IsActive = false,
                     MainImg = "default.png",
                     CategoryId = 2
                 },
@@ -97,7 +125,7 @@ namespace ThienAnFuni.Models
                     Brand = "Woodland",
                     WarrantyPeriod = "2 năm",
                     Description = "Kệ tivi bằng gỗ sồi chất lượng cao",
-                    IsActive = true,
+                    IsActive = false,
                     MainImg = "default.png",
                     CategoryId = 1
                 },
@@ -115,7 +143,7 @@ namespace ThienAnFuni.Models
                     Brand = "Everwood",
                     WarrantyPeriod = "3 năm",
                     Description = "Tủ quần áo gỗ MDF bền đẹp, nhiều ngăn tiện dụng",
-                    IsActive = true,
+                    IsActive = false,
                     MainImg = "default.png",
                     CategoryId = 3
                 },
@@ -133,7 +161,7 @@ namespace ThienAnFuni.Models
                     Brand = "WoodenDream",
                     WarrantyPeriod = "2 năm",
                     Description = "Giường ngủ đôi gỗ tự nhiên chắc chắn, phong cách hiện đại",
-                    IsActive = true,
+                    IsActive = false,
                     MainImg = "default.png",
                     CategoryId = 3
                 }
