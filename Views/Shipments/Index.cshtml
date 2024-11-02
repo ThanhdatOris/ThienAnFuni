@@ -113,81 +113,78 @@
         $(document).ready(function () {
             // Tự động tải danh sách sản phẩm khi trang được tải
             $.get('/Shipments/GetShipmentGoods', function (goodsItems) {
-                var productListResult = $('#productListResult');
+                const productListResult = $('#productListResult');
                 productListResult.empty();
 
                 if (goodsItems && goodsItems.length > 0) {
-                    // Nếu có sản phẩm trong session, hiển thị danh sách
                     goodsItems.forEach(function (item) {
                         productListResult.append(`
-                            <tr>
-                                <td>${item.productId}</td>
-                                <td>${item.product?.name || 'N/A'}</td>
-                                <td><img src="${item.product?.imageUrl || 'default.png'}" alt="${item.product?.name || 'Product Image'}" width="50"></td>
-                                <td>${item.quantity}</td>
-                                <td>${item.product?.category || 'N/A'}</td>
-                                <td>${item.importPrice.toFixed(2)}</td>
-                                <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button>
-                                </td>
-                            </tr>
-                        `);
+                                                                <tr>
+                                                                        <td>${item.productId}</td>
+                                                                        <td>${item.productName}</td>
+                                                                        <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                                                                        <td>${item.quantity}</td>
+                                                                        <td>${item.category}</td>
+                                                                        <td>${item.importPrice.toFixed(2)}</td>
+                                                                        <td class="text-center">
+                                                                            <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button>
+                                                                        </td>
+                                                                    </tr>
+                                                    `);
                     });
                 } else {
-                    // Nếu không có sản phẩm nào, hiển thị thông báo
                     productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
                 }
             });
-        });
-
-
-        $(document).ready(function () {
-            let typingTimer; // Thay đổi biến để theo dõi thời gian gõ
-            const typingDelay = 300; // Thay đổi khoảng thời gian delay (ms)
 
             // Xử lý tìm kiếm sản phẩm
+            let typingTimer;
+            const typingDelay = 300;
+
             $('#searchInput').on('input', function () {
-                clearTimeout(typingTimer); // Xóa timer cũ nếu có
+                clearTimeout(typingTimer);
 
-                var keyword = $(this).val();
+                let keyword = $(this).val().trim();
 
-                // Đặt timer mới
                 typingTimer = setTimeout(function () {
-                    // Kiểm tra xem ô tìm kiếm có giá trị không
                     if (keyword.length > 0) {
                         $.get('/Shipments/SearchProduct', { keyword: keyword }, function (products) {
-                            var productList = $('#productList');
+                            const productList = $('#productList');
                             productList.empty();
 
-                            // Kiểm tra nếu không có sản phẩm nào được tìm thấy
                             if (products.length === 0) {
                                 productList.append('<tr><td colspan="7" class="text-center">Không tìm thấy sản phẩm nào.</td></tr>');
                             } else {
                                 products.forEach(function (product) {
                                     productList.append(`
-                                <tr>
-                                    <td>${product.id}</td>
-                                    <td>${product.name}</td>
-                                    <td><img src="${product.mainImg}" alt="${product.name}" width="50"></td>
-                                    <td>${product.categoryName || 'Không có'}</td>
-                                    <td>${product.price}</td>
-                                    <td><input type="number" min="1" value="1" id="quantity-${product.id}"></td>
-                                    <td><input type="number" min="0" value="0" id="importPrice-${product.id}"></td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-primary add-to-shipment" data-id="${product.id}">Thêm</button>
-                                    </td>
-                                </tr>
-                            `);
+                                                                    <tr>
+                                                                        <td>${product.id}</td>
+                                                                        <td>${product.name}</td>
+                                                                        <td><img src="${product.mainImg}" alt="${escapeHTML(product.name)}" width="50"></td>
+                                                                        <td>${product.categoryName || 'Không có'}</td>
+                                                                        <td>${product.price}</td>
+                                                                        <td><input type="number" min="1" value="1" id="quantity-${product.id}"></td>
+                                                                        <td><input type="number" min="0" value="0" id="importPrice-${product.id}"></td>
+                                                                        <td class="text-center">
+                                                                            <button type="button" class="btn btn-sm btn-primary add-to-shipment" data-id="${product.id}">Thêm</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                `);
                                 });
                             }
                         });
                     } else {
-                        // Nếu ô tìm kiếm rỗng, xóa danh sách sản phẩm
                         $('#productList').empty();
                     }
-                }, typingDelay); // Gọi API sau khoảng thời gian delay
+                }, typingDelay);
             });
 
+            function escapeHTML(str) {
+                return str.replace(/[&<>"']/g, function (match) {
+                    const escape = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+                    return escape[match];
+                });
+            }
 
             // Xử lý thêm sản phẩm vào lô hàng
             $(document).on('click', '.add-to-shipment', function () {
@@ -199,23 +196,21 @@
                     var productListResult = $('#productListResult');
                     productListResult.empty();
 
-                    // Kiểm tra nếu goodsItems có dữ liệu
                     if (goodsItems && goodsItems.length > 0) {
                         goodsItems.forEach(function (item) {
-                            // Đảm bảo các thuộc tính tồn tại trong item
                             productListResult.append(`
-                            <tr>
-                                <td>${item.productId}</td>
-                                <td>${item.product?.name || 'N/A'}</td>
-                                                <td><img src="${item.product?.mainImg || 'default.png'}" alt="${item.product?.name || 'Product Image'}" width="50"></td>
-                                <td>${item.quantity}</td>
-                                <td>${item.product?.category || 'N/A'}</td>
-                                <td>${item.importPrice.toFixed(2)}</td>
-                                <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button>
-                                </td>
-                            </tr>
-                        `);
+                                                            <tr>
+                                                                <td>${item.productId}</td>
+                                                                <td>${item.productName}</td>
+                                                                <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                                                                <td>${item.quantity}</td>
+                                                                <td>${item.category}</td>
+                                                                <td>${item.importPrice.toFixed(2)}</td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button>
+                                                                </td>
+                                                            </tr>
+                                                        `);
                         });
                     } else {
                         productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
@@ -231,22 +226,21 @@
                     var productListResult = $('#productListResult');
                     productListResult.empty();
 
-                    // Cập nhật danh sách sản phẩm sau khi xóa
                     if (goodsItems && goodsItems.length > 0) {
                         goodsItems.forEach(function (item) {
                             productListResult.append(`
-                            <tr>
-                                <td>${item.productId}</td>
-                                <td>${item.product?.name || 'N/A'}</td>
-                                        <td><img src="${item.product?.mainImg || 'default.png'}" alt="${item.product?.name || 'Product Image'}" width="50"></td>
-                                <td>${item.quantity}</td>
-                                <td>${item.product?.category || 'N/A'}</td>
-                                <td>${item.importPrice.toFixed(2)}</td>
-                                <td class="text-center">
-                                <button  type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button>
-                                </td>
-                            </tr>
-                        `);
+                                                <tr>
+                                                                        <td>${item.productId}</td>
+                                                                        <td>${item.productName}</td>
+                                                                        <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                                                                        <td>${item.quantity}</td>
+                                                                        <td>${item.category}</td>
+                                                                        <td>${item.importPrice.toFixed(2)}</td>
+                                                                        <td class="text-center">
+                                                                            <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button>
+                                                                        </td>
+                                                                    </tr>
+                                                        `);
                         });
                     } else {
                         productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
@@ -255,9 +249,9 @@
                     alert('Không thể xóa sản phẩm khỏi lô hàng.');
                 });
             });
-
         });
     </script>
+
 
 
 }
