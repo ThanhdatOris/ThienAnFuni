@@ -29,7 +29,6 @@
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Ảnh</th>
-                            <th>Số lượng</th>
                             <th>Tình trạng</th>
                             <th>Giá tiền</th>
                             <th>Danh mục</th>
@@ -51,7 +50,6 @@
                                         <img src="~/adminThienAn/image_product/default.png" alt="Product Image" width="100px" />
                                     }
                                 </td>
-                                <td>@(product?.Goods?.Sum(g => g.Quantity) ?? 0)</td>
                                 <td>
                                     <span class="badge @(product.IsActive ? "bg-success" : "bg-danger")">
                                         @(product.IsActive ? "Còn hàng" : "Hết hàng")

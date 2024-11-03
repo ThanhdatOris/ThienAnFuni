@@ -32,7 +32,7 @@ namespace ThienAnFuni.Models
         public string? MainImg { get; set; }
 
         [Required]
-        public bool IsActive { get; set; } = false;
+        public bool IsActive { get; set; } = true;
         //[Required]
         public bool? IsImport { get; set; } = false;
         public int? CategoryId { get; set; }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ThienAnFuni.Models.Shipment>
+﻿@model Shipment
+
 @{
     ViewData["Title"] = "Chi tiết nhập hàng";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -16,6 +17,13 @@
             <div class="tile-body">
                 <div class="row element-button">
                     <div class="col-sm-2">
+                        <a class="btn btn-warning btn-sm" asp-controller="Shipments" asp-action="Index" title="Nhập hàng">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            Nhập hàng
+                        </a>
+                    </div>
+
+                    <div class="col-sm-2">
                         <a class="btn btn-add btn-sm" asp-controller="adminProducts" asp-action="Create" title="Thêm sản phẩm mới">
                             <i class="fas fa-plus"></i>
                             Tạo mới sản phẩm
@@ -31,37 +39,71 @@
 
                 </div>
 
+                <h3 class="text-center mb-3">Hóa đơn nhập kho</h3>
                 <div class="row">
-                    <table class="table table-hover table-bordered" id="sampleTable">
-                        <thead>
-                            <tr>
-                                <th class="text-center" width="30">Mã</th>
-                                <th class="text-center">Ngày nhập</th>
-                                <th class="text-center">Người nhập</th>
-                                <th class="text-center">Nhà cung cấp</th>
-                                <th class="text-center">Trạng thái</th>
-                                <th class="text-center">Tổng tiền</th>
-                                <th class="text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var shipment in Model)
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Ngày nhập</label>
+                        <input type="date" class="form-control" name="receiptDate" value="@Model.ReceiptDate.ToString("yyyy-MM-dd")" readonly />
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Nhà cung cấp</label>
+                        <input type="text" class="form-control" value="@Model.Supplier?.DisplayName" readonly />
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Người nhập: (Quản lý)</label>
+                        <input type="text" class="form-control" value="@Model.Manager?.FullName" readonly />
+                    </div>
+
+                    <div class="form-group col-12">
+                        <label class="control-label">Ghi chú</label>
+                        <textarea class="form-control" readonly rows="5">@Model.Note</textarea>
+                    </div>
+                </div>
+
+                @* <h4 class="text-center">Chi tiết hàng hóa</h4> *@
+                <table class="table table-hover table-bordered" id="sampleTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="30">Mã</th>
+                            <th class="text-center">Tên sản phẩm</th>
+                            <th class="text-center">Ảnh</th>
+                            <th class="text-center">Danh mục</th>
+                            <th class="text-center">Giá bán</th>
+                            <th class="text-center" width="30">SL</th>
+                            <th class="text-center">Giá nhập</th>
+                            <th class="text-center">Tổng giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Goods != null && Model.Goods.Any())
+                        {
+                            foreach (var goods in Model.Goods)
                             {
                                 <tr>
-                                    <td class="text-center">@shipment.Id</td>
-                                    <td class="text-center">@shipment.ReceiptDate.ToString("dd/MM/yyyy")</td>
-                                    <td class="text-center">@shipment.Manager?.FullName</td>
-                                    <td class="text-center">@shipment.Supplier?.DisplayName</td>
-                                    <td class="text-center">Hoàn thành</td>
-                                    <td class="text-center">@shipment.TotalPrice.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</td>
+                                    <td class="text-center">@goods.Id</td>
+                                    <td class="text-center">@goods.Product?.Name</td>
                                     <td class="text-center">
-                                        <a asp-controller="Shipments" asp-action="Detail" asp-route-id="@shipment.Id" class="btn btn-info btn-sm"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                        <img src="~/adminThienAn/image_product/@goods.Product?.MainImg" alt="Ảnh sản phẩm" style="width: 50px; height: auto;" />
                                     </td>
+                                    <td class="text-center">@goods.Product?.Category?.Name</td>
+                                    <td class="text-center">@goods.Product?.Price.ToString("N0")đ</td>
+                                    <td class="text-center">@goods.Quantity</td>
+                                    <td class="text-center">@goods.ImportPrice.ToString("N0")đ</td>
+                                    <td class="text-center">@goods.TotalPrice.ToString("N0")đ</td>
                                 </tr>
                             }
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">Không có hàng hóa nào</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
             </div>
         </div>

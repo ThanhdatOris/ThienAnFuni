@@ -15,15 +15,42 @@ namespace ThienAnFuni.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
+        //public async Task<IActionResult> Index()
+        //{
+        //    ViewData["ActiveMenu"] = "Product";
+        //    var products = await _context.Products
+        //        .Include(p => p.Category)
+        //        //.Where(p => p.IsActive == true)
+        //        .ToListAsync();
+        //    return View(products);
+        //}
         public async Task<IActionResult> Index()
         {
             ViewData["ActiveMenu"] = "Product";
+
             var products = await _context.Products
                 .Include(p => p.Category)
-                //.Where(p => p.IsActive == true)
+                .Select(p => new
+                {
+                    p.Id, // Lưu ID của sản phẩm
+                    p.Name, // Lưu tên sản phẩm
+                    p.MainImg,
+                    p.IsActive,
+                    p.Price,
+                    CategoryName = p.Category.Name, // Lưu tên danh mục
+                    QuantityInStock = (_context.Goods
+                        .Where(g => g.ProductId == p.Id)
+                        .Sum(g => (int?)g.Quantity) ?? 0) -
+                        (_context.OrderDetails
+                        .Where(o => o.ProductId == p.Id)
+                        .Sum(o => (int?)o.Quantity) ?? 0)
+                })
                 .ToListAsync();
+
             return View(products);
         }
+
+
         public async Task<IActionResult> ListDeleted()
         {
             ViewData["ActiveMenu"] = "Product";
@@ -211,6 +238,16 @@ namespace ThienAnFuni.Controllers
                 return NotFound();
             }
 
+            // Xóa ảnh nếu có
+            if (!string.IsNullOrEmpty(product.MainImg) && product.MainImg != "default.png")
+            {
+                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product", product.MainImg);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+
             // Cập nhật thuộc tính IsActive thành false
             product.IsActive = false;
             _context.Products.Update(product);
@@ -220,6 +257,7 @@ namespace ThienAnFuni.Controllers
             // Điều hướng về trang Index
             return RedirectToAction("Index");
         }
+
 
 
     }
