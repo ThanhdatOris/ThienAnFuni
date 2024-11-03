@@ -39,6 +39,55 @@ namespace ThienAnFuni.Controllers
                 return View();
             }
         }
+
+        // Lấy danh sách các lô hàng
+        [HttpGet]
+        public async Task<IActionResult> ListShipment()
+        {
+            ViewData["ActiveMenu"] = "Shipment";
+            try
+            {
+                var shipments = await _context.Shipments
+                    .Include(s => s.Supplier)
+                    .Include(s => s.Manager)
+                    .Include(s => s.Goods)
+                    .ThenInclude(g => g.Product) // Đảm bảo thông tin Product được lấy
+                    .ToListAsync();
+
+                return View(shipments); // Trả về View với dữ liệu shipments
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Đã xảy ra lỗi khi tải dữ liệu: " + ex.Message);
+            }
+        }
+        // Xem chi tiết lô hàng
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            ViewData["ActiveMenu"] = "Shipment";
+            try
+            {
+                var shipment = await _context.Shipments
+                    .Include(s => s.Supplier)
+                    .Include(s => s.Manager)
+                    .Include(s => s.Goods)
+                    .ThenInclude(g => g.Product) // Đảm bảo thông tin Product được lấy
+                    .FirstOrDefaultAsync(s => s.Id == id);
+
+                if (shipment == null)
+                {
+                    return NotFound("Không tìm thấy lô hàng");
+                }
+
+                return View(shipment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Đã xảy ra lỗi khi tải dữ liệu: " + ex.Message);
+            }
+        }
+
         // Tìm kiếm sản phẩm
         [HttpGet]
         public IActionResult SearchProduct(string keyword)
@@ -102,7 +151,7 @@ namespace ThienAnFuni.Controllers
             // Tìm sản phẩm trong lô hàng hiện tại
             var goodsItem = shipment.Goods.FirstOrDefault(g => g.ProductId == productId);
 
-            if(goodsItem != null && goodsItem.Quantity < quantity)
+            if (goodsItem != null && goodsItem.Quantity < quantity)
             {
                 return BadRequest("Số lượng nhập vào lớn hơn số lượng trong kho");
             }

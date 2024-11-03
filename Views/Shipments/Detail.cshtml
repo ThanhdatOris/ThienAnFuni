@@ -1,0 +1,74 @@
+﻿@model IEnumerable<ThienAnFuni.Models.Shipment>
+@{
+    ViewData["Title"] = "Chi tiết nhập hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="app-title">
+    @*     <ul class="app-breadcrumb breadcrumb side">
+    <li class="breadcrumb-item active"><a href="#"><b>Danh sách sản phẩm</b></a></li>
+    </ul> *@
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-controller="adminProducts" asp-action="Create" title="Thêm sản phẩm mới">
+                            <i class="fas fa-plus"></i>
+                            Tạo mới sản phẩm
+                        </a>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-controller="Shipments" asp-action="Index" title="Nhập hàng">
+                            <i class="fas fa-plus"></i>
+                            Nhập hàng
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="30">Mã</th>
+                                <th class="text-center">Ngày nhập</th>
+                                <th class="text-center">Người nhập</th>
+                                <th class="text-center">Nhà cung cấp</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-center">Tổng tiền</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var shipment in Model)
+                            {
+                                <tr>
+                                    <td class="text-center">@shipment.Id</td>
+                                    <td class="text-center">@shipment.ReceiptDate.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">@shipment.Manager?.FullName</td>
+                                    <td class="text-center">@shipment.Supplier?.DisplayName</td>
+                                    <td class="text-center">Hoàn thành</td>
+                                    <td class="text-center">@shipment.TotalPrice.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</td>
+                                    <td class="text-center">
+                                        <a asp-controller="Shipments" asp-action="Detail" asp-route-id="@shipment.Id" class="btn btn-info btn-sm"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+
+}
