@@ -107,7 +107,8 @@ namespace ThienAnFuni.Models
                     Brand = "Sofaland",
                     WarrantyPeriod = "1 năm",
                     Description = "Ghế sofa đơn cho phòng khách",
-                    IsActive = false,
+                    IsActive = true,
+                    IsImport = false,
                     MainImg = "default.png",
                     CategoryId = 2
                 },
@@ -125,7 +126,8 @@ namespace ThienAnFuni.Models
                     Brand = "Woodland",
                     WarrantyPeriod = "2 năm",
                     Description = "Kệ tivi bằng gỗ sồi chất lượng cao",
-                    IsActive = false,
+                    IsActive = true,
+                    IsImport = false,
                     MainImg = "default.png",
                     CategoryId = 1
                 },
@@ -143,7 +145,8 @@ namespace ThienAnFuni.Models
                     Brand = "Everwood",
                     WarrantyPeriod = "3 năm",
                     Description = "Tủ quần áo gỗ MDF bền đẹp, nhiều ngăn tiện dụng",
-                    IsActive = false,
+                    IsActive = true,
+                    IsImport = false,
                     MainImg = "default.png",
                     CategoryId = 3
                 },
@@ -161,7 +164,8 @@ namespace ThienAnFuni.Models
                     Brand = "WoodenDream",
                     WarrantyPeriod = "2 năm",
                     Description = "Giường ngủ đôi gỗ tự nhiên chắc chắn, phong cách hiện đại",
-                    IsActive = false,
+                    IsImport = false,
+                    IsActive = true,
                     MainImg = "default.png",
                     CategoryId = 3
                 }

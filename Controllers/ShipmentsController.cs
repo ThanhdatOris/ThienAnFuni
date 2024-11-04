@@ -95,9 +95,11 @@ namespace ThienAnFuni.Controllers
         public IActionResult SearchProduct(string keyword)
         {
             var products = _context.Products
-                .Where(p => p.Name.Contains(keyword) || p.Id.ToString() == keyword)
-                .Include(p => p.Category) // Bao gồm cả Category để lấy thông tin nếu có
+                .Where(p => p.IsActive == true && p.Category.IsActive == true && (p.Name.Contains(keyword) || p.Id.ToString() == keyword))
+                .Include(p => p.Category)
                 .ToList();
+
+
 
             // Cập nhật đường dẫn hình ảnh đầy đủ cho từng sản phẩm
             var result = products.Select(p => new

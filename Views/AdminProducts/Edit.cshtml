@@ -34,7 +34,8 @@
                                 <option value="">-- Chọn danh mục --</option>
                                 @foreach (var category in ViewBag.Categories)
                                 {
-                                    <option value="@category.Id" selected="@(Model.CategoryId == category.Id ? "selected" : null)">
+                                    <option value="@category.Id"
+                                        selected="@(Model.CategoryId == category.Id ? "selected" : null)">
                                         @category.Name
                                     </option>
                                 }
@@ -104,13 +105,16 @@
                             <div id="thumbbox">
                                 @if (Model.MainImg != null)
                                 {
-                                    <img src="~/adminThienAn/image_product/@Model.MainImg" alt="@Model.Name" height="130" id="thumbimage" />
-                                    <a class="removeimg d-block" href="javascript:void(0);"></a>
+                                    <img src="~/adminThienAn/image_product/@Model.MainImg" alt="@Model.Name" height="130"
+                                        id="thumbimage" />
+                                    <a class="removeimg" href="javascript:void(0);" style="display: block;"></a>
+                                    <!-- Hiển thị nút xóa -->
                                 }
                                 else
                                 {
                                     <img height="130" alt="Thumb image" id="thumbimage" style="display: none" />
-                                    <a class="removeimg d-none" href="javascript:void(0);"></a>
+                                    <a class="removeimg" href="javascript:void(0);" style="display: none;"></a>
+                                    <!-- Ẩn nút xóa -->
                                 }
                             </div>
 

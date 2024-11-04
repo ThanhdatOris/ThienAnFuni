@@ -239,14 +239,14 @@ namespace ThienAnFuni.Controllers
             }
 
             // Xóa ảnh nếu có
-            if (!string.IsNullOrEmpty(product.MainImg) && product.MainImg != "default.png")
-            {
-                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product", product.MainImg);
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
-            }
+            //if (!string.IsNullOrEmpty(product.MainImg) && product.MainImg != "default.png")
+            //{
+            //    var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product", product.MainImg);
+            //    if (System.IO.File.Exists(imagePath))
+            //    {
+            //        System.IO.File.Delete(imagePath);
+            //    }
+            //}
 
             // Cập nhật thuộc tính IsActive thành false
             product.IsActive = false;
