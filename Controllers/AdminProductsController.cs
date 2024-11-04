@@ -60,6 +60,37 @@ namespace ThienAnFuni.Controllers
                 .ToListAsync();
             return View(products);
         }
+
+        [HttpPost]
+        public IActionResult DeleteImage(string imageName)
+        {
+            try
+            {
+                // Kiểm tra tên file hợp lệ
+                if (string.IsNullOrEmpty(imageName))
+                {
+                    return Json(new { success = false, message = "Tên file không hợp lệ." });
+                }
+
+                // Xác định đường dẫn tuyệt đối của file trong thư mục wwwroot
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product", imageName);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "File không tồn tại." });
+                }
+            }
+            catch
+            {
+                return Json(new { success = false, message = "Xóa ảnh thất bại." });
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {

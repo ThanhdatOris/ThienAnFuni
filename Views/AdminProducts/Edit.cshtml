@@ -107,15 +107,18 @@
                                 {
                                     <img src="~/adminThienAn/image_product/@Model.MainImg" alt="@Model.Name" height="130"
                                         id="thumbimage" />
-                                    <a class="removeimg" href="javascript:void(0);" style="display: block;"></a>
+                                    <a class="removeimg" href="javascript:void(0);" style="display: block;"
+                                        data-image-name="@Model.MainImg"></a>
                                     <!-- Hiển thị nút xóa -->
                                 }
                                 else
                                 {
                                     <img height="130" alt="Thumb image" id="thumbimage" style="display: none" />
-                                    <a class="removeimg" href="javascript:void(0);" style="display: none;"></a>
+                                    <a class="removeimg" href="javascript:void(0);" style="display: none;"
+                                        data-image-name="@Model.MainImg"></a>
                                     <!-- Ẩn nút xóa -->
                                 }
+
                             </div>
 
                             <div id="boxchoice">

@@ -31,6 +31,35 @@ $(document).ready(function () {
     $(document).on('click', '.removeimg', function () {
         removeImage(); // Gọi hàm removeImage
     });
+
+    // Delete image server side
+    $(document).on('click', '.removeimg', function () {
+        var imageName = $(this).data('image-name'); // Lấy tên file từ data attribute
+        if (imageName) {
+            // Gửi yêu cầu đến server để xóa ảnh
+            $.ajax({
+                url: '/AdminProducts/DeleteImage', // Thay "YourController" bằng tên Controller của bạn
+                type: 'POST',
+                data: { imageName: imageName },
+                success: function (response) {
+                    if (response.success) {
+                        $("#thumbimage").attr('src', '').hide(); // Ẩn hình ảnh
+                        $(".removeimg").hide(); // Ẩn nút xóa
+                        $("#uploadfile").val(''); // Đặt lại input file
+                        $('.filename').text(""); // Xóa tên tệp
+                        $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer'); // Đặt lại nút chọn tệp
+                    } else {
+                        alert('Xóa ảnh thất bại: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi xóa ảnh.');
+                }
+            });
+        } else {
+            alert('Không có tên file để xóa.');
+        }
+    });
 });
 
 // function readURL(input, thumbimage) {
