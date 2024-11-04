@@ -39,14 +39,67 @@ namespace ThienAnFuni.Controllers
                 return View();
             }
         }
+
+        // Lấy danh sách các lô hàng
+        [HttpGet]
+        public async Task<IActionResult> ListShipment()
+        {
+            ViewData["ActiveMenu"] = "Shipment";
+            try
+            {
+                var shipments = await _context.Shipments
+                    .Include(s => s.Supplier)
+                    .Include(s => s.Manager)
+                    .Include(s => s.Goods)
+                    .ThenInclude(g => g.Product) // Đảm bảo thông tin Product được lấy
+                    .ToListAsync();
+
+                return View(shipments); // Trả về View với dữ liệu shipments
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Đã xảy ra lỗi khi tải dữ liệu: " + ex.Message);
+            }
+        }
+        // Xem chi tiết lô hàng
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            ViewData["ActiveMenu"] = "Shipment";
+            try
+            {
+                var shipment = await _context.Shipments
+                    .Include(s => s.Supplier)
+                    .Include(s => s.Manager)
+                    .Include(s => s.Goods)
+                        .ThenInclude(g => g.Product)
+                        .ThenInclude(p => p.Category)
+                    .FirstOrDefaultAsync(s => s.Id == id);
+
+                if (shipment == null)
+                {
+                    return NotFound("Không tìm thấy lô hàng");
+                }
+
+                return View(shipment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Đã xảy ra lỗi khi tải dữ liệu: " + ex.Message);
+            }
+        }
+
+
         // Tìm kiếm sản phẩm
         [HttpGet]
         public IActionResult SearchProduct(string keyword)
         {
             var products = _context.Products
-                .Where(p => p.Name.Contains(keyword) || p.Id.ToString() == keyword)
-                .Include(p => p.Category) // Bao gồm cả Category để lấy thông tin nếu có
+                .Where(p => p.IsActive == true && p.Category.IsActive == true && (p.Name.Contains(keyword) || p.Id.ToString() == keyword))
+                .Include(p => p.Category)
                 .ToList();
+
+
 
             // Cập nhật đường dẫn hình ảnh đầy đủ cho từng sản phẩm
             var result = products.Select(p => new
@@ -102,7 +155,7 @@ namespace ThienAnFuni.Controllers
             // Tìm sản phẩm trong lô hàng hiện tại
             var goodsItem = shipment.Goods.FirstOrDefault(g => g.ProductId == productId);
 
-            if(goodsItem != null && goodsItem.Quantity < quantity)
+            if (goodsItem != null && goodsItem.Quantity < quantity)
             {
                 return BadRequest("Số lượng nhập vào lớn hơn số lượng trong kho");
             }
@@ -139,7 +192,8 @@ namespace ThienAnFuni.Controllers
                 ProductName = g?.Product?.Name ?? "N/A",
                 ProductImage = $"/adminThienAn/image_product/{g?.Product?.MainImg ?? "default.png"}",
                 g.Quantity,
-                g.ImportPrice
+                g.ImportPrice,
+                g.TotalPrice
             }));
         }
 
@@ -187,7 +241,7 @@ namespace ThienAnFuni.Controllers
             return Json(result);
         }
 
-        public IActionResult SaveShipmentToDatabase(DateTime receiptDate, int supplierId)
+        public async Task<IActionResult> SaveShipmentToDatabase(DateTime receiptDate, int supplierId)
         {
             // Lấy thông tin lô hàng từ session
             var sessionShipment = GetShipment();
@@ -230,22 +284,32 @@ namespace ThienAnFuni.Controllers
                     TotalPrice = goodsItem.TotalPrice
                 };
 
+                // Truy xuất sản phẩm từ bảng Product
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == goodsItem.ProductId);
+
+                if (product != null)
+                {
+                    // Cập nhật IsImport thành true
+                    product.IsImport = true;
+                }
+
                 shipment.Goods.Add(goods);
             }
 
             // Lưu Shipment và các Goods vào database
-            _context.Shipments.Add(shipment);
-            _context.SaveChanges();
+            await _context.Shipments.AddAsync(shipment);
+            await _context.SaveChangesAsync();
 
             // Xóa session sau khi lưu
             HttpContext.Session.Remove(ShipmentSessionKey);
 
-            return Ok("Phiếu nhập đã được tạo thành công.");
+            return RedirectToAction("listShipment");
+
         }
 
 
         // Helper methods session
-        private Shipment GetShipment()
+        private Shipment? GetShipment()
         {
             var session = HttpContext.Session.GetString(ShipmentSessionKey);
             return session != null ? JsonConvert.DeserializeObject<Shipment>(session) : new Shipment();

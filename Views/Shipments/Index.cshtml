@@ -15,9 +15,16 @@
             <div class="tile-body">
                 <div class="row element-button">
                     <div class="col-sm-2">
-                        <a class="btn btn-add btn-sm" asp-controller="adminProducts" asp-action="Create" title="Thêm">
+                        <a class="btn btn-add btn-sm" asp-controller="adminProducts" asp-action="Create" title="Thêm sản phẩm mới">
                             <i class="fas fa-plus"></i>
                             Tạo mới sản phẩm
+                        </a>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <a class="btn btn-info btn-sm" asp-controller="Shipments" asp-action="ListShipment" title="Danh sách nhập các lô hàng">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            Danh sách nhập các lô hàng
                         </a>
                     </div>
 
@@ -29,12 +36,12 @@
 
                 </div>
 
-                <div class="form-group col-md-4">
-                    <label class="control-label">Ngày nhập</label>
-                    <input type="date" class="form-control" name="receiptDate" required />
-                </div>
-
                 <form class="row" asp-action="SaveShipmentToDatabase" method="post" enctype="multipart/form-data">
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Ngày nhập</label>
+                        <input type="date" class="form-control" name="receiptDate" required />
+                    </div>
+
                     <div class="form-group col-md-3">
                         <label for="supplierSelect" class="control-label">Nhà cung cấp</label>
                         <select class="form-control" id="supplierSelect" name="supplierId" required>
@@ -101,9 +108,9 @@
                             <!-- Sản phẩm sẽ thêm vào đây -->
                         </tbody>
                     </table>
-
+                    <h3 class="w-100 text-center text-danger">Tổng tiền: <span id="totalPriceMain" class="text-dark font-weight-bold">0</span></h3>
                     <div>
-                        <button type="submit" name="save" class="btn btn-success">Lưu</button>
+                        <button type="submit" name="save" class="btn btn-success">Nhập hàng</button>
                         <button type="reset" name="close" class="btn btn-secondary">Hủy</button>
                     </div>
                 </form>
@@ -137,19 +144,19 @@
                             } else {
                                 products.forEach(function (product) {
                                     productList.append(`
-                                                                                            <tr>
-                                                                                                <td>#${product.id}</td>
-                                                                                                <td>${product.name}</td>
-                                                                                                <td><img src="${product.mainImg}" alt="${escapeHTML(product.name)}" width="50"></td>
-                                                                                                <td>${product.categoryName || 'Không có'}</td>
-                                                                                                        <td>${product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                                                                                                <td><input type="number" min="1" value="1" id="quantity-${product.id}"></td>
-                                                                                                <td><input type="number" min="0" value="0" id="importPrice-${product.id}"></td>
-                                                                                                <td class="text-center">
-                                                                                                    <button type="button" class="btn btn-sm btn-primary add-to-shipment" data-id="${product.id}">Thêm</button>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                        `);
+                                                                                                            <tr>
+                                                                                                                <td>#${product.id}</td>
+                                                                                                                <td>${product.name}</td>
+                                                                                                                <td><img src="${product.mainImg}" alt="${escapeHTML(product.name)}" width="50"></td>
+                                                                                                                <td>${product.categoryName || 'Không có'}</td>
+                                                                                                                        <td>${product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                                                                                                <td><input type="number" min="1" value="1" id="quantity-${product.id}"></td>
+                                                                                                                <td><input type="number" min="0" value="0" id="importPrice-${product.id}"></td>
+                                                                                                                <td class="text-center">
+                                                                                                                    <button type="button" class="btn btn-sm btn-primary add-to-shipment" data-id="${product.id}">Thêm</button>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        `);
                                 });
                             }
                         });
@@ -175,16 +182,16 @@
                 if (goodsItems && goodsItems.length > 0) {
                     goodsItems.forEach(function (item) {
                         productListResult.append(`
-                              <tr>
-                           <td>#${item.productId}</td>
-                           <td>${item.productName}</td>
-                           <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
-                           <td>${item.quantity}</td>
-                           <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                           <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                           <td class="text-center">
-                           <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
-                              </tr>`);
+                                              <tr>
+                                           <td>#${item.productId}</td>
+                                           <td>${item.productName}</td>
+                                           <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                                           <td>${item.quantity}</td>
+                                           <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                           <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                           <td class="text-center">
+                                           <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
+                                              </tr>`);
                     });
                 } else {
                     productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
@@ -204,19 +211,24 @@
                     productListResult.empty();
 
                     if (goodsItems && goodsItems.length > 0) {
+                        let totalPriceMain = 0;
                         goodsItems.forEach(function (item) {
+                            totalPriceMain += item.quantity * item.importPrice;
+
                             productListResult.append(`
-                                         <tr>
-                                   <td>#${item.productId}</td>
-                                   <td>${item.productName}</td>
-                                   <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
-                                   <td>${item.quantity}</td>
-                                   <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                                   <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                                   <td class="text-center">
-                                   <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
-                                      </tr>`);
+                                                         <tr>
+                                                   <td>#${item.productId}</td>
+                                                   <td>${item.productName}</td>
+                                                   <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                                                   <td>${item.quantity}</td>
+                                                   <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                                   <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                                   <td class="text-center">
+                                                   <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
+                                                      </tr>`);
                         });
+                        $('#totalPriceMain').text(totalPriceMain.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+
                     } else {
                         productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
                     }
@@ -234,16 +246,16 @@
                     if (goodsItems && goodsItems.length > 0) {
                         goodsItems.forEach(function (item) {
                             productListResult.append(`
-                                         <tr>
-                                   <td>#${item.productId}</td>
-                                   <td>${item.productName}</td>
-                                   <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
-                                   <td>${item.quantity}</td>
-                                   <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                                   <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                                   <td class="text-center">
-                                   <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
-                                      </tr>`);
+                                                         <tr>
+                                                   <td>#${item.productId}</td>
+                                                   <td>${item.productName}</td>
+                                                   <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                                                   <td>${item.quantity}</td>
+                                                   <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                                   <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                                   <td class="text-center">
+                                                   <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
+                                                      </tr>`);
                         });
                     } else {
                         productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');

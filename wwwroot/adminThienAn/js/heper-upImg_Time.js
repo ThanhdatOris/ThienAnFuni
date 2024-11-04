@@ -1,79 +1,143 @@
-﻿function readURL(input, thumbimage) {
-    if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
+﻿function readURL(input) {
+    if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            $("#thumbimage").attr('src', e.target.result);
+            $("#thumbimage").attr('src', e.target.result).show(); // Hiển thị hình ảnh
+            $(".removeimg").css('display', 'block'); // Hiển thị nút xóa
         }
         reader.readAsDataURL(input.files[0]);
-    } else { // Sử dụng cho IE
-        $("#thumbimage").attr('src', input.value);
-
+    } else {
+        $("#thumbimage").attr('src', input.value).show();
+        $(".removeimg").css('display', 'block'); // Hiển thị nút xóa
     }
-    $("#thumbimage").show();
-    $('.filename').text($("#uploadfile").val());
-    $('.Choicefile').css('background', '#14142B');
-    $('.Choicefile').css('cursor', 'default');
-    $(".removeimg").show();
-    $(".Choicefile").unbind('click');
 
+    $('.filename').text($("#uploadfile").val());
+    $('.Choicefile').css('background', '#14142B').css('cursor', 'default');
 }
 
-$(document).ready(function () {
-    $(".Choicefile").bind('click', function () {
-        $("#uploadfile").click();
-
-    });
-    $(".removeimg").click(function () {
-        $("#thumbimage").attr('src', '').hide();
-        $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
-        $(".removeimg").hide();
-        $(".Choicefile").bind('click', function () {
-            $("#uploadfile").click();
-        });
-        $('.Choicefile').css('background', '#14142B');
-        $('.Choicefile').css('cursor', 'pointer');
-        $(".filename").text("");
-    });
-})
-
-//function readURL(input) {
-//    if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
-//        var reader = new FileReader();
-//        reader.onload = function (e) {
-//            $("#thumbimage").attr('src', e.target.result).show(); // Hiển thị hình ảnh
-//            $(".removeimg").show(); // Hiện nút xóa
-//        }
-//        reader.readAsDataURL(input.files[0]);
-//    } else { // Sử dụng cho IE
-//        $("#thumbimage").attr('src', input.value).show(); // Hiển thị hình ảnh
-//        $(".removeimg").show(); // Hiện nút xóa
-//    }
-
-//    $('.filename').text($("#uploadfile").val());
-//    $('.Choicefile').css('background', '#14142B');
-//    $('.Choicefile').css('cursor', 'default');
-//}
-
-//// Định nghĩa hàm removeImage
-//function removeImage() {
-//    $("#thumbimage").attr('src', '').hide(); // Ẩn hình ảnh
-//    $(".removeimg").hide(); // Ẩn nút xóa hiện tại
-//    $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />'); // Đặt lại input file
-//    $('.filename').text(""); // Xóa tên tệp
-//    $('.Choicefile').css('background', '#14142B'); // Thiết lập lại nền cho nút chọn tệp
-//    $('.Choicefile').css('cursor', 'pointer'); // Thiết lập lại con trỏ chuột cho nút
-//}
+function removeImage() {
+    $("#thumbimage").attr('src', '').hide(); // Ẩn hình ảnh
+    $(".removeimg").css('display', 'none'); // Ẩn nút xóa
+    $("#uploadfile").val(''); // Đặt lại giá trị của input file
+    $('.filename').text(""); // Xóa tên tệp
+    $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer'); // Thiết lập lại nút chọn tệp
+}
 
 $(document).ready(function () {
     $(".Choicefile").on('click', function () {
         $("#uploadfile").click();
     });
 
-    // Gắn sự kiện click cho removeimg
     $(document).on('click', '.removeimg', function () {
         removeImage(); // Gọi hàm removeImage
     });
+
+    // Delete image server side
+    $(document).on('click', '.removeimg', function () {
+        var imageName = $(this).data('image-name'); // Lấy tên file từ data attribute
+        if (imageName) {
+            // Gửi yêu cầu đến server để xóa ảnh
+            $.ajax({
+                url: '/AdminProducts/DeleteImage', // Thay "YourController" bằng tên Controller của bạn
+                type: 'POST',
+                data: { imageName: imageName },
+                success: function (response) {
+                    if (response.success) {
+                        $("#thumbimage").attr('src', '').hide(); // Ẩn hình ảnh
+                        $(".removeimg").hide(); // Ẩn nút xóa
+                        $("#uploadfile").val(''); // Đặt lại input file
+                        $('.filename').text(""); // Xóa tên tệp
+                        $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer'); // Đặt lại nút chọn tệp
+                    } else {
+                        alert('Xóa ảnh thất bại: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi xóa ảnh.');
+                }
+            });
+        } else {
+            alert('Không có tên file để xóa.');
+        }
+    });
 });
+
+// function readURL(input, thumbimage) {
+//     if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
+//         var reader = new FileReader();
+//         reader.onload = function (e) {
+//             $("#thumbimage").attr('src', e.target.result);
+//         }
+//         reader.readAsDataURL(input.files[0]);
+//     } else { // Sử dụng cho IE
+//         $("#thumbimage").attr('src', input.value);
+
+//     }
+//     $("#thumbimage").show();
+//     $('.filename').text($("#uploadfile").val());
+//     $('.Choicefile').css('background', '#14142B');
+//     $('.Choicefile').css('cursor', 'default');
+//     $(".removeimg").show();
+//     $(".Choicefile").unbind('click');
+
+// }
+
+// $(document).ready(function () {
+//     $(".Choicefile").bind('click', function () {
+//         $("#uploadfile").click();
+
+//     });
+//     $(".removeimg").click(function () {
+//         $("#thumbimage").attr('src', '').hide();
+//         $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
+//         $(".removeimg").hide();
+//         $(".Choicefile").bind('click', function () {
+//             $("#uploadfile").click();
+//         });
+//         $('.Choicefile').css('background', '#14142B');
+//         $('.Choicefile').css('cursor', 'pointer');
+//         $(".filename").text("");
+//     });
+// })
+
+// function readURL(input) {
+//     if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
+//         var reader = new FileReader();
+//         reader.onload = function (e) {
+//             $("#thumbimage").attr('src', e.target.result).show(); // Hiển thị hình ảnh
+//             $(".removeimg").show(); // Hiện nút xóa
+//         }
+//         reader.readAsDataURL(input.files[0]);
+//     } else { // Sử dụng cho IE
+//         $("#thumbimage").attr('src', input.value).show(); // Hiển thị hình ảnh
+//         $(".removeimg").show(); // Hiện nút xóa
+//     }
+
+//     $('.filename').text($("#uploadfile").val());
+//     $('.Choicefile').css('background', '#14142B');
+//     $('.Choicefile').css('cursor', 'default');
+// }
+
+// // Định nghĩa hàm removeImage
+// function removeImage() {
+//     $("#thumbimage").attr('src', '').hide(); // Ẩn hình ảnh
+//     $(".removeimg").hide(); // Ẩn nút xóa hiện tại
+//     $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />'); // Đặt lại input file
+//     $('.filename').text(""); // Xóa tên tệp
+//     $('.Choicefile').css('background', '#14142B'); // Thiết lập lại nền cho nút chọn tệp
+//     $('.Choicefile').css('cursor', 'pointer'); // Thiết lập lại con trỏ chuột cho nút
+// }
+
+// $(document).ready(function () {
+//     $(".Choicefile").on('click', function () {
+//         $("#uploadfile").click();
+//     });
+
+//     // Gắn sự kiện click cho removeimg
+//     $(document).on('click', '.removeimg', function () {
+//         removeImage(); // Gọi hàm removeImage
+//     });
+// });
 
 
 
