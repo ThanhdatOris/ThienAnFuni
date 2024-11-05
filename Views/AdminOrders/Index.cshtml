@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách đơn hàng</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-warning btn-sm" asp-controller="AdminOrders" asp-action="ListDeleted" title="Thêm">
+                            <i class="fa fa-trash"></i>
+                            Danh sách đơn đã hủy
+                        </a>
+                    </div>
+                </div>
+                <table class="table table-hover table-bordered" id="sampleTable">
+                    <thead>
+                        <tr>
+                            <th width="20">Mã ĐH</th>
+                            <th width="190">Khách hàng</th>
+                            <th width="250">Địa chỉ</th>
+                            <th width="10">Tổng SL</th>
+                            <th width="220">Thời gian</th>
+                            <th width="100">Tổng giá</th>
+                            <th width="180">Trạng thái</th>
+                            <th width="200">Tính năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <h2 class="text-center bg-success py-2 mt-5">Đơn hàng đã duyệt</h2>
+                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
+                           id="sampleTableSub">
+                        <thead>
+                            <tr class="text-center">
+                                <th width="20">Mã ĐH</th>
+                                <th width="190">Khách hàng</th>
+                                <th width="250">Địa chỉ</th>
+                                <th width="10">Tổng SL</th>
+                                <th width="220">Thời gian</th>
+                                <th width="100">Tổng giá</th>
+                                <th width="180">Trạng thái</th>
+                                <th width="200">Tính năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+}

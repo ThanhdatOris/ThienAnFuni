@@ -45,10 +45,10 @@
             justify-content: center;
         }
 
-            .Choicefile:hover {
-                text-decoration: none;
-                color: white;
-            }
+        .Choicefile:hover {
+            text-decoration: none;
+            color: white;
+        }
 
         #uploadfile,
         .removeimg {
@@ -73,29 +73,29 @@
             border-radius: 50%;
         }
 
-            .removeimg::before {
-                -webkit-box-sizing: border-box;
-                box-sizing: border-box;
-                content: '';
-                border: 1px solid red;
-                background: red;
-                text-align: center;
-                display: block;
-                margin-top: 11px;
-                transform: rotate(45deg);
-            }
+        .removeimg::before {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            content: '';
+            border: 1px solid red;
+            background: red;
+            text-align: center;
+            display: block;
+            margin-top: 11px;
+            transform: rotate(45deg);
+        }
 
-            .removeimg::after {
-                /* color: #FFF; */
-                /* background-color: #DC403B; */
-                content: '';
-                background: red;
-                border: 1px solid red;
-                text-align: center;
-                display: block;
-                transform: rotate(-45deg);
-                margin-top: -2px;
-            }
+        .removeimg::after {
+            /* color: #FFF; */
+            /* background-color: #DC403B; */
+            content: '';
+            background: red;
+            border: 1px solid red;
+            text-align: center;
+            display: block;
+            transform: rotate(-45deg);
+            margin-top: -2px;
+        }
     </style>
 
 </head>
@@ -134,31 +134,36 @@
                 </a>
             </li>
             <li>
-                <a class="app-menu__item " asp-controller="Staffs" asp-action="Index">
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "SaleStaff" ? "active" : "")"
+                    asp-controller="SaleStaffs" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý nhân viên</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Product" ? "active" : "")" asp-controller="AdminProducts" asp-action="Index">
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Product" ? "active" : "")"
+                    asp-controller="AdminProducts" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý sản phẩm</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" asp-controller="Orders" asp-action="Index">
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Order" ? "active" : "")"
+                    asp-controller="AdminOrders" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý đơn hàng</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" asp-controller="Categories" asp-action="Index">
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Category" ? "active" : "")"
+                    asp-controller="Categories" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý danh mục</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Shipment" ? "active" : "")" asp-controller="Shipments" asp-action="Index">
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Shipment" ? "active" : "")"
+                    asp-controller="Shipments" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý nhập hàng</span>
                 </a>
