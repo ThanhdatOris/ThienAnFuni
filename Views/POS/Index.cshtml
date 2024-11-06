@@ -176,24 +176,28 @@
                                 </tr>
                             </thead>
                             <tbody class="table table-hover table-bordered" id="productListResult">
-                               @*  @if(!empty($cart))
-                                @foreach($cart as $id => $product)
+                                @if (ViewBag.Cart != null)
+                                {
+                                    foreach (var item in ViewBag.Cart)
+                                    {
                                 <tr>
-                                    <td>{{ $id }}</td>
-                                    <td>{{ $product['name'] }}</td>
-                                    <td><img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" width="50px"></td>
-                                    <td><input class="so--luong1" type="number" disabled value="{{ $product['quantity'] }}" min="1"></td>
-                                    <td>{{ number_format($product['price'], 0, ',', '.') }} VND</td>
+                                    <td class="text-center">@item.ProductId</td>
+                                    <td>@item.Product.Name</td>
+                                    <td class="text-center"><img src="/adminThienAn/image_product/@item.Product.MainImg" alt="@item.Product.Name" width="50px"></td>
+                                    <td><input class="so--luong1" type="number" disabled value="@item.Quantity" min="1"></td>
+                                            <td class="text-center">@String.Format("{0:N0} VND", item.Price)</td>
                                     <td style="text-align: center; vertical-align: middle;">
-                                        <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                                    <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
                                     </td>
-                                </tr>
-                                @endforeach
-                                @else
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
                                 <tr>
                                     <td colspan="6" style="text-align: center;">Giỏ hàng trống</td>
                                 </tr>
-                                @endif *@
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -354,7 +358,7 @@
                 timer = setTimeout(function() {
                     if (query.length > 0) {
                         $.ajax({
-                            url: "{{ route('admin.search.product') }}", // Gọi route tìm kiếm
+                            url: "/POS/SearchProduct", // Đảm bảo gọi đúng route
                             method: "GET",
                             data: {
                                 query: query
@@ -376,10 +380,10 @@
             var productId = $(this).data('id'); // Lấy ID sản phẩm từ data-id
             var productListQuantity = $(`.productList-quantity[data-id="${productId}"]`).val();
             $.ajax({
-                url: `/admin/pos/session/${productId}`, // Đảm bảo URL đúng
+                url: '/POS/AddProductSession',
                 method: 'POST', // Phương thức POST
                 data: {
-                    _token: '{{ csrf_token() }}', // Token CSRF để bảo mật
+                    id: productId,
                     productListQuantity: productListQuantity
                 },
                 success: function(response) {
@@ -390,11 +394,11 @@
                         $.each(response.cart, function(id, product) {
                             $('#productListResult').append(`
                         <tr>
-                            <td>${id}</td>
-                            <td>${product.name}</td>
-                            <td><img src="${product.image}" alt="${product.name}" width="50px"></td>
+                                    <td class="text-center">${product.productId}</td>
+                                    <td>${product.product.name}</td>
+                                    <td class="text-center"><img src="/adminThienAn/image_product/${product.product.mainImg}" alt="${product.product.name}" width="50px"></td>
                             <td><input class="so--luong1" type="text" disabled value="${product.quantity}" min="1"></td>
-                            <td>${format_currencyVNĐ(product.price * product.quantity)}</td>
+                                    <td class="text-center">${format_currencyVNĐ(product.price * product.quantity)}</td>
                             <td style="text-align: center; vertical-align: middle;">
                                 <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
                             </td>
@@ -404,11 +408,9 @@
                     }
 
                     // Cập nhật tổng tiền và số lượng
-                    // $('#totalPrice').text(response.total);
-                    // $('#totalPrice').text(format_currencyVNĐ(response.total));
                     $('#totalPrice')
-                        .text(format_currencyVNĐ(response.total)) // Hiển thị với định dạng
-                        .data('total', response.total); // Lưu giá trị gốc không định dạng
+                        .text(format_currencyVNĐ(response.total)) 
+                        .data('total', response.total); // Lưu giá trị gốc để phục vụ tính toán số dư
                     $('#totalQuantity').text(response.totalQuantity);
                 },
                 error: function(xhr) {
@@ -417,42 +419,42 @@
             });
         });
 
-        // Xử lý sự kiện khi bấm nút "Xóa"
+        // Xóa SP ra khỏi listProductResult - Bảng đã thêm vào từ session
         $(document).on('click', '.deleteProSession', function(e) {
             e.preventDefault();
 
-            var productId = $(this).closest('tr').find('td:first').text(); // Lấy ID sản phẩm từ hàng đầu tiên của bảng
+            var productId = $(this).closest('tr').find('td:first').text(); 
 
             $.ajax({
-                url: `/admin/pos/session/remove/${productId}`, // Đường dẫn API để xóa sản phẩm khỏi session
-                method: 'POST', // Phương thức POST
+                url: `/POS/RemoveProductFromSession`, 
+                method: 'POST', 
                 data: {
-                    _token: '{{ csrf_token() }}' // Token CSRF để bảo mật
+                    id: productId,
                 },
                 success: function(response) {
                     if (response.cart) {
-                        // Xóa dòng sản phẩm từ bảng
+                        // Clear data trc khi thực hiện
                         $('#productListResult').empty();
 
                         // Cập nhật danh sách sản phẩm mới
                         $.each(response.cart, function(id, product) {
                             $('#productListResult').append(`
-                        <tr>
-                            <td>${id}</td>
-                            <td>${product.name}</td>
-                            <td><img src="${product.image}" alt="${product.name}" width="50px"></td>
-                            <td><input class="so--luong1" type="text" disabled value="${product.quantity}" min="1"></td>
-                            <td>${format_currencyVNĐ(product.price)}</td>
-                            <td style="text-align: center; vertical-align: middle;">
-                                <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
+                            <tr>
+                                    <td class="text-center">${product.productId}</td>
+                                    <td>${product.product.name}</td>
+                                    <td class="text-center"><img src="/adminThienAn/image_product/${product.product.mainImg}" alt="${product.product.name}" width="50px"></td>
+                                    <td><input class="so--luong1" type="text" disabled value="${product.quantity}" min="1"></td>
+                                    <td class="text-center">${format_currencyVNĐ(product.price * product.quantity)}</td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
                     `);
                         });
                     }
 
                     // Cập nhật tổng tiền và số lượng
-                    $('#totalPrice').text(format_currencyVNĐ(response.totalPrice));
+                    $('#totalPrice').text(format_currencyVNĐ(response.total));
                     $('#totalQuantity').text(response.totalQuantity);
                 },
                 error: function(xhr) {
@@ -465,7 +467,7 @@
             $('#checkCustomerPhone').on('click', function(e) {
                 e.preventDefault();
 
-                var phone = $('#customerPhone').val(); // Lấy giá trị số điện thoại từ input
+                var phone = $('#customerPhone').val();
                 var _token = '{{ csrf_token() }}'; // CSRF token cho AJAX
 
                 $.ajax({

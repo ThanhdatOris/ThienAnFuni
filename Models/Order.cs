@@ -13,6 +13,8 @@ namespace ThienAnFuni.Models
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải là số")]
         public int TotalQuantity { get; set; }
+        public string? Note { get; set; }
+        public string Address { get; set; }
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public int OrderStatus { get; set; }
