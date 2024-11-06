@@ -3,9 +3,9 @@
     public class OrderDetail
     {
         public int Id { get; set; }
-        public string ProductName { get; set; }
+        public string? ProductName { get; set; }
         public double PriceAtOrder { get; set; }
-        public double Subtotal { get; set; }
+        public double? Subtotal { get; set; }
         public int Quantity { get; set; }
 
         public int OrderId { get; set; }

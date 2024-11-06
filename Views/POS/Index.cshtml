@@ -351,37 +351,37 @@
 
             // Bắt sự kiện keyup và delay để tránh gửi request liên tục
             $('#myInput').on('keyup', function() {
-                clearTimeout(timer); // Xóa timer trước đó nếu có
-                let query = $(this).val(); // Lấy giá trị tìm kiếm
+                clearTimeout(timer); 
+                let query = $(this).val(); 
 
                 // Đặt delay trước khi gửi request
                 timer = setTimeout(function() {
                     if (query.length > 0) {
                         $.ajax({
-                            url: "/POS/SearchProduct", // Đảm bảo gọi đúng route
+                            url: "/POS/SearchProduct", 
                             method: "GET",
                             data: {
                                 query: query
-                            }, // Gửi từ khóa tìm kiếm
+                            }, 
                             success: function(response) {
-                                $('#productList').html(response); // Hiển thị dữ liệu tìm kiếm trong tbody
+                                $('#productList').html(response);
                             }
                         });
                     } else {
                         $('#productList').html('<tr><td colspan="6">Vui lòng nhập để tìm kiếm</td></tr>');
                     }
-                }, 300); // 300ms delay
+                }, 300); 
             });
         });
 
         $(document).on('click', '.add-to-cart', function(e) {
-            e.preventDefault(); // Ngăn hành vi mặc định của thẻ
+            e.preventDefault(); 
 
-            var productId = $(this).data('id'); // Lấy ID sản phẩm từ data-id
+            var productId = $(this).data('id'); 
             var productListQuantity = $(`.productList-quantity[data-id="${productId}"]`).val();
             $.ajax({
                 url: '/POS/AddProductSession',
-                method: 'POST', // Phương thức POST
+                method: 'POST', 
                 data: {
                     id: productId,
                     productListQuantity: productListQuantity
@@ -399,7 +399,7 @@
                                     <td class="text-center"><img src="/adminThienAn/image_product/${product.product.mainImg}" alt="${product.product.name}" width="50px"></td>
                             <td><input class="so--luong1" type="text" disabled value="${product.quantity}" min="1"></td>
                                     <td class="text-center">${format_currencyVNĐ(product.price * product.quantity)}</td>
-                            <td style="text-align: center; vertical-align: middle;">
+                                    <td style="text-align: center; vertical-align: middle;">
                                 <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
@@ -468,21 +468,21 @@
                 e.preventDefault();
 
                 var phone = $('#customerPhone').val();
-                var _token = '{{ csrf_token() }}'; // CSRF token cho AJAX
 
                 $.ajax({
-                    url: '/admin/check-customer', // URL kiểm tra số điện thoại
+                    url: '/POS/CheckCustomer',
                     method: 'POST',
                     data: {
                         phone: phone,
-                        _token: _token
                     },
                     success: function(response) {
                         if (response.exists) {
                             // Nếu khách hàng đã tồn tại
                             $('#phoneMessage').text('Khách hàng đã có tài khoản').css('color', 'green');
-                            $('#customerPhone').css('border', '2px solid red');
+                            $('#customerPhone').css('border', '2px solid green');
+
                         } else {
+                            $('#customerPhone').css('border', '2px solid red');
                             // Nếu khách hàng không tồn tại, hiển thị cảnh báo yêu cầu tạo khách hàng
                             swal({
                                 title: "Tạo khách hàng mới",
@@ -505,20 +505,18 @@
 
         $(document).ready(function() {
             $('#AddCustomerForm').on('submit', function(e) {
-                e.preventDefault(); // Ngăn chặn hành động mặc định của form
+                e.preventDefault(); 
 
-                // Lấy dữ liệu từ form
                 var formData = {
                     fullname: $('#fullname').val(),
                     phone: $('#phone').val(),
                     // username: $('#phone').val(), // Thêm trường username
-                    _token: $('input[name="_token"]').val()
                 };
 
 
                 // Gửi yêu cầu AJAX
                 $.ajax({
-                    url: '/admin/create-customer', // Đường dẫn tới route xử lý
+                    url: '/POS/AddNewCustomer', 
                     method: 'POST',
                     data: formData,
                     success: function(response) {
@@ -551,11 +549,11 @@
                 address: $('textarea[name="address"]').val(),
                 note: $('textarea[name="note"]').val(),
                 paymentMethod: $('#paymentMethod').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
+                // _token: $('meta[name="csrf-token"]').attr('content')
             };
 
             $.ajax({
-                url: '/admin/order/create',
+                url: '/POS/CreateOrder',
                 method: 'POST',
                 data: formData,
                 success: function(response) {

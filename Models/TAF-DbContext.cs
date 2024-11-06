@@ -109,7 +109,7 @@ namespace ThienAnFuni.Models
                     Description = "Ghế sofa đơn cho phòng khách",
                     IsActive = true,
                     IsImport = false,
-                    MainImg = "default.png",
+                    MainImg = "ghexoayvp_JEFE701_xam.png",
                     CategoryId = 2
                 },
                 new Product

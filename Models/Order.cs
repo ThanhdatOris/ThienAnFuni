@@ -18,10 +18,10 @@ namespace ThienAnFuni.Models
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public int OrderStatus { get; set; }
-        public string PaymentStatus { get; set; }
         public string PaymentMethod { get; set; }
-        public string InvoiceNumber { get; set; }
-        public DateTime InvoiceDate { get; set; }
+        public string? PaymentStatus { get; set; }
+        public string? InvoiceNumber { get; set; }
+        public DateTime? InvoiceDate { get; set; }
 
         public int? CustomerId { get; set; }
         public virtual Customer? Customer { get; set; }

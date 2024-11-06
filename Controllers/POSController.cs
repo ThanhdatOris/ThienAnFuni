@@ -134,9 +134,6 @@ namespace ThienAnFuni.Controllers
             }
 
             // Tính tổng tiền và tổng số lượng
-            //var total = cartItems.Sum(i => i.Price);
-            //var totalQuantity = cartItems.Sum(i => i.Quantity);
-
             var total = cartItems.Sum(item => item.Price * item.Quantity);
             var totalQuantity = cartItems.Sum(item => item.Quantity);
             return Json(new
@@ -169,9 +166,8 @@ namespace ThienAnFuni.Controllers
             {
                 FullName = fullname,
                 PhoneNumber = phone,
-                //Discriminator = "customer",
                 Username = phone,
-                Password = Helpers.PasswordHelper.HashPassword(phone)  // hoặc mật khẩu mặc định
+                Password = Helpers.PasswordHelper.HashPassword(phone)  // mật khẩu mặc định SĐT
             };
 
             _context.Users.Add(customer);
@@ -208,7 +204,7 @@ namespace ThienAnFuni.Controllers
             {
                 // Lấy UserId từ ClaimsPrincipal và chuyển đổi thành int?
                 var saleStaffIdString = User.Identity.GetUserId();  // Lấy UserId dạng string
-                int? saleStaffId = null;
+                int? saleStaffId = 1;
 
                 // Cố gắng chuyển đổi UserId sang int?, nếu không thành công thì giữ giá trị null
                 if (int.TryParse(saleStaffIdString, out int saleStaff))
@@ -219,12 +215,17 @@ namespace ThienAnFuni.Controllers
                 var order = new Order
                 {
                     CustomerId = customer.Id,
-                    SaleStaffId = saleStaffId,  // Cần kiểm tra xem admin đã đăng nhập chưa
-                    Address = address,
-                    TotalQuantity = totalQuantity,
+                    CustomerPhoneNumber = customerPhone,
                     TotalPrice = totalPrice,
-                    Note = note,
+                    TotalQuantity = totalQuantity,
+                    Address = address,
+                    OrderDate = DateTime.Now,
+                    Note = note ?? "",
                     PaymentMethod = paymentMethod,
+                    PaymentStatus = "Đã thanh toán",
+                    InvoiceNumber = "HD" + DateTime.Now.ToString("yyMMddHHmmss"),
+                    InvoiceDate = DateTime.Now,
+                    SaleStaffId = saleStaffId,  // Cần kiểm tra xem admin đã đăng nhập chưa
                     OrderStatus = (int)Helpers.ConstHelper.OrderStatus.Success
                 };
 
