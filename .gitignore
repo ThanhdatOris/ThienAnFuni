@@ -31,3 +31,4 @@ testPJ.sln
 
 Migrations/
 .fake
+.claudiaideconfig
