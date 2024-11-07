@@ -391,12 +391,15 @@
                 success: function (response) {
                     if (response.message) {
                         // Hiển thị thông báo từ response.message
+                        if (response.message.includes("Sản phẩm không tồn tại") || response.message.includes("vượt quá số lượng tồn kho")) {
+
                         swal({
                             title: response.message.includes("Sản phẩm không tồn tại") ? "Lỗi!" : "Thành công!",
                             text: response.message,
                             icon: response.message.includes("Sản phẩm không tồn tại") || response.message.includes("vượt quá số lượng tồn kho") ? "error" : "success",
                             button: "Đóng"
                         });
+                        }
 
                         if (response.cart) {
                             // Cập nhật danh sách sản phẩm

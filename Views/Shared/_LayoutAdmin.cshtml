@@ -154,18 +154,26 @@
                     <span class="app-menu__label">Quản lý đơn hàng</span>
                 </a>
             </li>
-            <li>
-                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Category" ? "active" : "")"
-                    asp-controller="Categories" asp-action="Index">
-                    <i class='app-menu__icon bx bx-id-card'></i>
-                    <span class="app-menu__label">Quản lý danh mục</span>
-                </a>
-            </li>
+        
             <li>
                 <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Shipment" ? "active" : "")"
                     asp-controller="Shipments" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý nhập hàng</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Category" ? "active" : "")"
+                   asp-controller="Categories" asp-action="Index">
+                    <i class='app-menu__icon bx bx-id-card'></i>
+                    <span class="app-menu__label">Quản lý danh mục</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Supplier" ? "active" : "")"
+                   asp-controller="Suppliers" asp-action="Index">
+                    <i class='app-menu__icon bx bx-id-card'></i>
+                    <span class="app-menu__label">Quản lý nhà cung cấp</span>
                 </a>
             </li>
         </ul>

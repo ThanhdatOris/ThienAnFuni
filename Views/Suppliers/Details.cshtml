@@ -1,0 +1,92 @@
+﻿@model ThienAnFuni.Models.Supplier
+
+@{
+    ViewData["Title"] = "Chi tiết nhà cung cấp";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhà cung cấp</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-dark btn-sm" asp-action="Index" title="Trở về">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            Trở về
+                        </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-controller="Suppliers" asp-action="Create" title="Thêm NCC">
+                            <i class="fas fa-plus"></i>
+                            Thêm nhà cung cấp
+                        </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@Model?.Id" title="Sửa NCC">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Sửa NCC
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0 mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-4 fs-4">Thông Tin Người Dùng</h5>
+                        <dl class="row fs-5">
+                            <dt class="col-sm-3 font-weight-bold">
+                                @Html.DisplayNameFor(model => model.DisplayName)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.DisplayName)
+                            </dd>
+                            <dt class="col-sm-3 font-weight-bold">
+                                @Html.DisplayNameFor(model => model.Address)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.Address)
+                            </dd>
+                            <dt class="col-sm-3 font-weight-bold">
+                                @Html.DisplayNameFor(model => model.Email)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+                            <dt class="col-sm-3 font-weight-bold">
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.PhoneNumber)
+                            </dd>
+                            <dt class="col-sm-3 font-weight-bold">
+                                @Html.DisplayNameFor(model => model.Image)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.Image)
+                            </dd>
+                            <dt class="col-sm-3 font-weight-bold">
+                                @Html.DisplayNameFor(model => model.IsActive)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.IsActive)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -23,6 +23,7 @@
                         </a>
                     </div>
                 </div>
+                <h3 class="text-center bg-warning py-2 mt-5">Đơn hàng chờ duyệt</h3>
                 <table class="table table-hover table-bordered" id="sampleTable">
                     <thead>
                         <tr>
@@ -75,61 +76,62 @@
                             </tr>
                         }
                     </tbody>
-                    <h2 class="text-center bg-success py-2 mt-5">Đơn hàng đã duyệt</h2>
-                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
-                           id="sampleTableSub">
-                        <thead>
-                            <tr class="text-center">
-                                <th width="20">Mã ĐH</th>
-                                <th width="190" class="text-center">Khách hàng</th>
-                                <th width="250" class="text-center">Địa chỉ</th>
-                                <th width="10" class="text-center">Tổng SL</th>
-                                <th width="220" class="text-center">Thời gian</th>
-                                <th width="100" class="text-center">Tổng giá</th>
-                                <th width="180" class="text-center">Trạng thái</th>
-                                <th width="200" class="text-center">Tính năng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (ViewBag.SuccessOrders != null)
+                    
+                </table>
+                <h3 class="text-center bg-success py-2 mt-5">Đơn hàng đã duyệt</h3>
+                <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
+                       id="sampleTableSub">
+                    <thead>
+                        <tr class="text-center">
+                            <th width="20">Mã ĐH</th>
+                            <th width="190" class="text-center">Khách hàng</th>
+                            <th width="250" class="text-center">Địa chỉ</th>
+                            <th width="10" class="text-center">Tổng SL</th>
+                            <th width="220" class="text-center">Thời gian</th>
+                            <th width="100" class="text-center">Tổng giá</th>
+                            <th width="180" class="text-center">Trạng thái</th>
+                            <th width="200" class="text-center">Tính năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.SuccessOrders != null)
+                        {
+                            @foreach (var order in ViewBag.SuccessOrders)
                             {
-                                @foreach (var order in ViewBag.SuccessOrders)
-                                {
-                                    <tr class="text-center">
-                                        <td class="text-center">@order.Id</td>
-                                        <td class="text-center">@order.Customer.FullName</td>
-                                        <td>@order.Address</td>
-                                        <td class="text-center">@order.TotalQuantity</td>
-                                        <td class="text-center">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
-                                        <td class="text-center">@String.Format("{0:N0}đ", order.TotalPrice)</td>
-                                        <td class=" text-center @(
+                                <tr class="text-center">
+                                    <td class="text-center">@order.Id</td>
+                                    <td class="text-center">@order.Customer.FullName</td>
+                                    <td>@order.Address</td>
+                                    <td class="text-center">@order.TotalQuantity</td>
+                                    <td class="text-center">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td class="text-center">@String.Format("{0:N0}đ", order.TotalPrice)</td>
+                                    <td class=" text-center @(
                             order.OrderStatus == (int)ConstHelper.OrderStatus.Reject ? "status-reject" :
                             order.OrderStatus == (int)ConstHelper.OrderStatus.Pending ? "status-pending" :
                             "status-success"
                                                     )">
                                         @(
-                                        order.OrderStatus switch
+                                            order.OrderStatus switch
                                             {
-                                              (int)ConstHelper.OrderStatus.Reject => "Bị từ chối",
-                                              (int)ConstHelper.OrderStatus.Pending => "Đang chờ xử lý",
-                                              (int)ConstHelper.OrderStatus.Success => "Thành công",
-                                                    _ => "Không xác định"
-                                             })
-                                        </td>
-                                        <td class="text-center">
-                                            <a asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id" class="btn btn-primary btn-sm">Chi tiết</a>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="8" class="text-center">Không có đơn hàng đã hoàn tất</td>
+                                                (int)ConstHelper.OrderStatus.Reject => "Bị từ chối",
+                                                (int)ConstHelper.OrderStatus.Pending => "Đang chờ xử lý",
+                                                (int)ConstHelper.OrderStatus.Success => "Thành công",
+                                                _ => "Không xác định"
+                                            })
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id" class="btn btn-primary btn-sm">Chi tiết</a>
+                                    </td>
                                 </tr>
                             }
-                        </tbody>
-                    </table>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">Không có đơn hàng đã hoàn tất</td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>

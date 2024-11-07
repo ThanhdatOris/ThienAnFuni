@@ -1,0 +1,103 @@
+﻿@model IEnumerable<ThienAnFuni.Models.Supplier>
+
+@{
+    ViewData["Title"] = "Quản lý nhà cung cấp";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhà cung cấp</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-controller="Suppliers" asp-action="Create" title="Thêm NCC">
+                            <i class="fas fa-plus"></i>
+                            Thêm nhà cung cấp
+                        </a>
+                    </div>
+                </div>
+                <table class="table table-hover table-bordered" id="sampleTable">
+                    <thead>
+                        <tr>
+                            <th width="20">
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DisplayName)
+                            </th>
+                    @*         <th width="50">
+                                @Html.DisplayNameFor(model => model.Image)
+                            </th> *@
+                            <th>
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Address)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IsActive)
+                            </th>
+                            <th>Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var sup in Model)
+                        {
+                            <tr>
+                                <td>@sup.Id</td>
+                                <td>@sup.DisplayName</td>
+                                @* <td>
+                                    @if (sup?.Image != null)
+                                    {
+                                        <img src="~/adminThienAn/image_product/@sup.Image" alt="@sup.DisplayName" width="100px" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/adminThienAn/image_product/default.png" alt="Suplier Image" width="100px" />
+                                    }
+                                </td> *@
+                                <td>@(sup?.PhoneNumber)</td>
+                                <td>@(sup?.Email)</td>
+                                <td>@(sup?.Address)</td>
+
+                                <td>
+                                    <span class="badge @(sup.IsActive ? "bg-success" : "bg-danger")">
+                                        @(sup.IsActive ? "Hoạt động" : "Ngừng hợp tác")
+                                    </span>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm edit" title="Sửa" asp-action="Edit" asp-route-id="@sup.Id">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-info btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@sup.Id">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" title="Xóa" asp-action="Delete" asp-route-id="@sup.Id">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+}
+
