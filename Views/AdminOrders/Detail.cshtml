@@ -1,0 +1,111 @@
+﻿@model ThienAnFuni.Models.Order
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using ThienAnFuni.Helpers
+
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách đơn hàng</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-warning btn-sm" asp-controller="AdminOrders" asp-action="ListDeleted" title="Đơn hàng đã hủy">
+                            <i class="fa fa-trash"></i>
+                            Danh sách đơn đã hủy
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- admin -->
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Nhân viên bán hàng</label>
+                        <input class="form-control" type="text" value="@Model.SaleStaff?.FullName" disabled>
+                    </div>
+
+                    <!-- khách hàng -->
+                    <div class="form-group col-md-3">
+                        <label class="control-label">khách hàng</label>
+                        <input class="form-control" type="text" value="@Model.Customer?.FullName" disabled>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <!-- Mã đơn hàng -->
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Mã đơn hàng</label>
+                        <input class="form-control" type="text" value="#@Model.Id" disabled>
+                    </div>
+
+                    <!-- Ngày tạo -->
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Ngày tạo</label>
+                        <input class="form-control" type="text" value="@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")" disabled>
+                    </div>
+
+                    <!-- Tổng tiền -->
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Tổng tiền</label>
+                        <input class="form-control" type="text" value="@CurrencyHelper.FormatCurrencyVNĐ(Model.TotalPrice)" disabled>
+                    </div>
+                </div>
+
+                <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
+                       id="sampleTable">
+                    <thead>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Tổng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>@detail.Product.Name</td>
+                                <td>@detail.Quantity</td>
+                                <td>@CurrencyHelper.FormatCurrencyVNĐ(detail.PriceAtOrder)</td>
+                                <td>@CurrencyHelper.FormatCurrencyVNĐ(detail.PriceAtOrder * detail.Quantity)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    <style>
+        .status-reject {
+            color: red;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .status-success {
+            color: green;
+            font-weight: bold;
+        }
+
+    </style>
+}

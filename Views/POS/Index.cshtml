@@ -112,7 +112,8 @@
         <!-- Navbar Right Menu-->
         <ul class="app-nav">
             <!-- User Menu-->
-            <li><a class="app-nav__item" href="{{route('customer.home')}}"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+            <li>
+                <a class="app-nav__item" href="#"><i class='bx bx-log-out bx-rotate-180'></i> </a>
             </li>
         </ul>
     </header>
@@ -120,8 +121,10 @@
 
     <main class="app app-ban-hang mt-2">
         <div>
-            <a class="btn btn-warning py-1 px-4 text-danger mb-3" href="{{ route('admin.customer') }}">
-                < Quay về</a>
+            <a href="javascript:history.back()" class="btn btn-warning py-1 px-4 text-danger mb-3">
+                < Quay về
+            </a>
+
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -180,23 +183,23 @@
                                 {
                                     foreach (var item in ViewBag.Cart)
                                     {
-                                <tr>
-                                    <td class="text-center">@item.ProductId</td>
-                                    <td>@item.Product.Name</td>
-                                    <td class="text-center"><img src="/adminThienAn/image_product/@item.Product.MainImg" alt="@item.Product.Name" width="50px"></td>
-                                    <td><input class="so--luong1" type="number" disabled value="@item.Quantity" min="1"></td>
+                                        <tr>
+                                            <td class="text-center">@item.ProductId</td>
+                                            <td>@item.Name</td>
+                                            <td class="text-center"><img src="/adminThienAn/image_product/@item.MainImg" alt="@item.Name" width="50px"></td>
+                                            <td><input class="so--luong1" type="number" disabled value="@item.Quantity" min="1"></td>
                                             <td class="text-center">@String.Format("{0:N0} VND", item.Price)</td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                    <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                                            </td>
                                         </tr>
                                     }
                                 }
                                 else
                                 {
-                                <tr>
-                                    <td colspan="6" style="text-align: center;">Giỏ hàng trống</td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">Giỏ hàng trống</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -286,7 +289,6 @@
                         </div>
                     </div>
                     <form id="AddCustomerForm">
-                        @* @csrf *@
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label class="control-label">Họ và tên</label>
@@ -346,125 +348,137 @@
         }
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             let timer;
 
             // Bắt sự kiện keyup và delay để tránh gửi request liên tục
-            $('#myInput').on('keyup', function() {
-                clearTimeout(timer); 
-                let query = $(this).val(); 
+            $('#myInput').on('keyup', function () {
+                clearTimeout(timer);
+                let query = $(this).val();
 
                 // Đặt delay trước khi gửi request
-                timer = setTimeout(function() {
+                timer = setTimeout(function () {
                     if (query.length > 0) {
                         $.ajax({
-                            url: "/POS/SearchProduct", 
+                            url: "/POS/SearchProduct",
                             method: "GET",
                             data: {
                                 query: query
-                            }, 
-                            success: function(response) {
+                            },
+                            success: function (response) {
                                 $('#productList').html(response);
                             }
                         });
                     } else {
                         $('#productList').html('<tr><td colspan="6">Vui lòng nhập để tìm kiếm</td></tr>');
                     }
-                }, 300); 
+                }, 300);
             });
         });
 
-        $(document).on('click', '.add-to-cart', function(e) {
-            e.preventDefault(); 
+        $(document).on('click', '.add-to-cart', function (e) {
+            e.preventDefault();
 
-            var productId = $(this).data('id'); 
+            var productId = $(this).data('id');
             var productListQuantity = $(`.productList-quantity[data-id="${productId}"]`).val();
             $.ajax({
                 url: '/POS/AddProductSession',
-                method: 'POST', 
+                method: 'POST',
                 data: {
                     id: productId,
                     productListQuantity: productListQuantity
                 },
-                success: function(response) {
-                    if (response.cart) {
-                        // Cập nhật danh sách sản phẩm
-                        $('#productListResult').empty();
-
-                        $.each(response.cart, function(id, product) {
-                            $('#productListResult').append(`
-                        <tr>
-                                    <td class="text-center">${product.productId}</td>
-                                    <td>${product.product.name}</td>
-                                    <td class="text-center"><img src="/adminThienAn/image_product/${product.product.mainImg}" alt="${product.product.name}" width="50px"></td>
-                            <td><input class="so--luong1" type="text" disabled value="${product.quantity}" min="1"></td>
-                                    <td class="text-center">${format_currencyVNĐ(product.price * product.quantity)}</td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                    `);
+                success: function (response) {
+                    if (response.message) {
+                        // Hiển thị thông báo từ response.message
+                        swal({
+                            title: response.message.includes("Sản phẩm không tồn tại") ? "Lỗi!" : "Thành công!",
+                            text: response.message,
+                            icon: response.message.includes("Sản phẩm không tồn tại") || response.message.includes("vượt quá số lượng tồn kho") ? "error" : "success",
+                            button: "Đóng"
                         });
-                    }
 
-                    // Cập nhật tổng tiền và số lượng
-                    $('#totalPrice')
-                        .text(format_currencyVNĐ(response.total)) 
-                        .data('total', response.total); // Lưu giá trị gốc để phục vụ tính toán số dư
-                    $('#totalQuantity').text(response.totalQuantity);
+                        if (response.cart) {
+                            // Cập nhật danh sách sản phẩm
+                            $('#productListResult').empty();
+
+                            $.each(response.cart, function (id, product) {
+                                $('#productListResult').append(`
+                                    <tr>
+                                        <td class="text-center">${product.productId}</td>
+                                        <td>${product.name}</td>
+                                        <td class="text-center"><img src="/adminThienAn/image_product/${product.mainImg}" alt="${product.name}" width="50px"></td>
+                                        <td><input class="so--luong1" type="text" disabled value="${product.quantity}" min="1"></td>
+                                        <td class="text-center">${format_currencyVNĐ(product.price * product.quantity)}</td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                `);
+                            });
+                        }
+
+                        // Cập nhật tổng tiền và số lượng
+                        $('#totalPrice')
+                            .text(format_currencyVNĐ(response.total))
+                            .data('total', response.total); // Lưu giá trị gốc để phục vụ tính toán số dư
+                        $('#totalQuantity').text(response.totalQuantity);
+                    }
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     alert('Đã xảy ra lỗi. Vui lòng thử lại!');
                 }
             });
         });
 
+
         // Xóa SP ra khỏi listProductResult - Bảng đã thêm vào từ session
-        $(document).on('click', '.deleteProSession', function(e) {
+        $(document).on('click', '.deleteProSession', function (e) {
             e.preventDefault();
 
-            var productId = $(this).closest('tr').find('td:first').text(); 
+            var productId = $(this).closest('tr').find('td:first').text();
 
             $.ajax({
-                url: `/POS/RemoveProductFromSession`, 
-                method: 'POST', 
+                url: `/POS/RemoveProductFromSession`,
+                method: 'POST',
                 data: {
                     id: productId,
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.cart) {
                         // Clear data trc khi thực hiện
                         $('#productListResult').empty();
 
                         // Cập nhật danh sách sản phẩm mới
-                        $.each(response.cart, function(id, product) {
+                        $.each(response.cart, function (id, product) {
                             $('#productListResult').append(`
-                            <tr>
-                                    <td class="text-center">${product.productId}</td>
-                                    <td>${product.product.name}</td>
-                                    <td class="text-center"><img src="/adminThienAn/image_product/${product.product.mainImg}" alt="${product.product.name}" width="50px"></td>
-                                    <td><input class="so--luong1" type="text" disabled value="${product.quantity}" min="1"></td>
-                                    <td class="text-center">${format_currencyVNĐ(product.price * product.quantity)}</td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                        <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
-                                </tr>
-                    `);
+                                                 <tr>
+                                                <td class="text-center">${product.productId}</td>
+                                                <td>${product.name}</td>
+                                                <td class="text-center"><img src="/adminThienAn/image_product/${product.mainImg}" alt="${product.name}" width="50px"></td>
+                                                <td><input class="so--luong1" type="text" disabled value="${product.quantity}" min="1"></td>
+                                                <td class="text-center">${format_currencyVNĐ(product.price * product.quantity)}</td>
+                                                <td style="text-align: center; vertical-align: middle;">
+                                                    <button class="btn btn-primary btn-sm deleteProSession" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                                                </td>
+                                            </tr>
+                            `);
                         });
                     }
 
                     // Cập nhật tổng tiền và số lượng
                     $('#totalPrice').text(format_currencyVNĐ(response.total));
                     $('#totalQuantity').text(response.totalQuantity);
+                    
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     alert('Đã xảy ra lỗi khi xóa sản phẩm. Vui lòng thử lại!');
                 }
             });
         });
 
-        $(document).ready(function() {
-            $('#checkCustomerPhone').on('click', function(e) {
+        $(document).ready(function () {
+            $('#checkCustomerPhone').on('click', function (e) {
                 e.preventDefault();
 
                 var phone = $('#customerPhone').val();
@@ -475,7 +489,7 @@
                     data: {
                         phone: phone,
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.exists) {
                             // Nếu khách hàng đã tồn tại
                             $('#phoneMessage').text('Khách hàng đã có tài khoản').css('color', 'green');
@@ -496,16 +510,16 @@
                             });
                         }
                     },
-                    error: function() {
+                    error: function () {
                         $('#phoneMessage').text('Có lỗi xảy ra. Vui lòng thử lại.').css('color', 'red');
                     }
                 });
             });
         });
 
-        $(document).ready(function() {
-            $('#AddCustomerForm').on('submit', function(e) {
-                e.preventDefault(); 
+        $(document).ready(function () {
+            $('#AddCustomerForm').on('submit', function (e) {
+                e.preventDefault();
 
                 var formData = {
                     fullname: $('#fullname').val(),
@@ -516,10 +530,10 @@
 
                 // Gửi yêu cầu AJAX
                 $.ajax({
-                    url: '/POS/AddNewCustomer', 
+                    url: '/POS/AddNewCustomer',
                     method: 'POST',
                     data: formData,
-                    success: function(response) {
+                    success: function (response) {
                         // Hiển thị thông báo thành công
                         swal("Thành công!", "Khách hàng đã được tạo thành công!", "success");
 
@@ -529,7 +543,7 @@
                         // Thực hiện các hành động khác như làm mới danh sách khách hàng nếu cần
                         // location.reload(); // Ví dụ, làm mới trang để thấy danh sách khách hàng mới
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         // Xử lý lỗi từ server
                         if (xhr.status === 422) { // Kiểm tra lỗi validate
                             var errors = xhr.responseJSON.errors;
@@ -543,7 +557,7 @@
             });
         });
 
-        $('.luu-san-pham').click(function() {
+        $('.luu-san-pham').click(function () {
             var formData = {
                 customerPhone: $('#customerPhone').val(),
                 address: $('textarea[name="address"]').val(),
@@ -556,7 +570,7 @@
                 url: '/POS/CreateOrder',
                 method: 'POST',
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         swal({
                             title: "Thành công!",
@@ -576,7 +590,7 @@
                         });
                     }
                 },
-                error: function(response) {
+                error: function (response) {
                     alert('Có lỗi xảy ra, vui lòng thử lại!');
                 }
             });
