@@ -1,0 +1,86 @@
+﻿@model ThienAnFuni.Models.Supplier
+
+@{
+    ViewData["Title"] = "Thêm nhà cung cấp mới";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhà cung cấp</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-dark btn-sm" asp-action="Index" title="Trở về">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            Trở về
+                        </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-controller="Suppliers" asp-action="Create" title="Thêm NCC">
+                            <i class="fas fa-plus"></i>
+                            Thêm nhà cung cấp
+                        </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-controller="Suppliers" asp-action="Index" title="Thêm NCC">
+                            <i class="fas fa-plus"></i>
+                            Danh sách nhà cung cấp
+                        </a>
+                    </div>
+                </div>
+                <h3 class="bg-warning w-100 text-center p-2">Cập nhật nhà cung cấp</h3>
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="form-group col-6">
+                            <label asp-for="DisplayName" class="control-label"></label>
+                            <input asp-for="DisplayName" class="form-control" />
+                            <span asp-validation-for="DisplayName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-6">
+                            <label asp-for="Address" class="control-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-4">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-4">
+                            <label asp-for="PhoneNumber" class="control-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group form-check col-4 d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                            </label>
+                        </div>
+                        <div class="form-group col-12 ">
+                            <input type="submit" value="Lưu thông tin" class="btn btn-success px-4" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

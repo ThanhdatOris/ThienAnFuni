@@ -30,3 +30,5 @@ appsettings.Local.json
 testPJ.sln
 
 Migrations/
+.fake
+.claudiaideconfig

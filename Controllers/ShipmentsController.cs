@@ -113,7 +113,6 @@ namespace ThienAnFuni.Controllers
                 p.Dimension,
                 p.Standard,
                 p.Color,
-                p.Type,
                 p.Brand,
                 p.WarrantyPeriod,
                 p.IsActive,
