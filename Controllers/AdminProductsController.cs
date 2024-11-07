@@ -219,7 +219,6 @@ namespace ThienAnFuni.Controllers
         //        product.Dimension = updatedProduct.Dimension;
         //        product.Standard = updatedProduct.Standard;
         //        product.Color = updatedProduct.Color;
-        //        product.Type = updatedProduct.Type;
         //        product.Brand = updatedProduct.Brand;
         //        product.WarrantyPeriod = updatedProduct.WarrantyPeriod;
         //        product.IsActive = updatedProduct.IsActive;
@@ -275,36 +274,41 @@ namespace ThienAnFuni.Controllers
             product.Dimension = updatedProduct.Dimension;
             product.Standard = updatedProduct.Standard;
             product.Color = updatedProduct.Color;
-            product.Type = updatedProduct.Type;
             product.Brand = updatedProduct.Brand;
             product.WarrantyPeriod = updatedProduct.WarrantyPeriod;
             product.IsActive = updatedProduct.IsActive;
             product.Description = updatedProduct.Description;
             product.CategoryId = updatedProduct.CategoryId;
 
-            // Xử lý upload ảnh nếu có
+            // Xử lý upload ảnh nếu có file mới
             if (ImageUpload != null && ImageUpload.Length > 0)
             {
                 var fileName = Path.GetFileName(ImageUpload.FileName);
-                var filePath = Path.Combine("wwwroot/adminThienAn/image_product", fileName);
 
+                // Xóa hình ảnh cũ nếu có và không phải là "default.png"
+                if (!string.IsNullOrEmpty(product.MainImg) && product.MainImg != "default.png")
+                {
+                    var oldImagePath = Path.Combine("wwwroot/adminThienAn/image_product", product.MainImg);
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+                // Lưu hình ảnh mới
+                var filePath = Path.Combine("wwwroot/adminThienAn/image_product", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await ImageUpload.CopyToAsync(stream);
                 }
 
-                // Lưu tên ảnh vào product
+                // Cập nhật tên hình ảnh mới vào product
                 product.MainImg = fileName;
             }
-            else if (string.IsNullOrEmpty(updatedProduct.MainImg))
+            else if (string.IsNullOrEmpty(product.MainImg))
             {
-                // Nếu không có ảnh upload và tên ảnh đã bị xóa, thì xóa tên ảnh trong product
-                var imagePath = Path.Combine("wwwroot/adminThienAn/image_product", product.MainImg);
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
-                product.MainImg = null; // Hoặc giữ nguyên nếu không muốn xóa tên ảnh
+                // Nếu không có hình ảnh tải lên và sản phẩm chưa có hình ảnh, đặt thành "default.png"
+                product.MainImg = "default.png";
             }
 
             // Cập nhật sản phẩm
