@@ -66,8 +66,13 @@
                                 <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
                             </label>
                         </div>
-                        <div class="form-group col-12 ">
-                            <input type="submit" value="Lưu thông tin" class="btn btn-success px-4" />
+                        <div class="row col-12">
+                            <div class="form-group col-1">
+                                <input type="submit" value="Lưu thông tin" class="btn btn-success px-4" />
+                            </div>
+                            <div>
+                                <a class="btn btn-dark" asp-action="Index"> Trở về</a>
+                            </div>
                         </div>
                     </div>
 

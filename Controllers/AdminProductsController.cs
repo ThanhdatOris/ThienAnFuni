@@ -193,63 +193,6 @@ namespace ThienAnFuni.Controllers
         // POST: AdminProducts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, Product updatedProduct, IFormFile ImageUpload)
-        //{
-        //    ViewData["ActiveMenu"] = "Product";
-
-        //    if (id != updatedProduct.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        var product = await _context.Products.FindAsync(id);
-
-        //        if (product == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        // Cập nhật các thông tin được phép
-        //        product.Name = updatedProduct.Name;
-        //        product.Price = updatedProduct.Price;
-        //        product.Unit = updatedProduct.Unit;
-        //        product.Material = updatedProduct.Material;
-        //        product.Dimension = updatedProduct.Dimension;
-        //        product.Standard = updatedProduct.Standard;
-        //        product.Color = updatedProduct.Color;
-        //        product.Brand = updatedProduct.Brand;
-        //        product.WarrantyPeriod = updatedProduct.WarrantyPeriod;
-        //        product.IsActive = updatedProduct.IsActive;
-        //        product.Description = updatedProduct.Description;
-        //        product.CategoryId = updatedProduct.CategoryId;
-
-        //        // Xử lý upload ảnh nếu có
-        //        if (ImageUpload != null && ImageUpload.Length > 0)
-        //        {
-        //            var fileName = Path.GetFileName(ImageUpload.FileName);
-        //            var filePath = Path.Combine("wwwroot/adminThienAn/image_product", fileName);
-
-        //            using (var stream = new FileStream(filePath, FileMode.Create))
-        //            {
-        //                await ImageUpload.CopyToAsync(stream);
-        //            }
-
-        //            // Lưu tên ảnh vào product
-        //            product.MainImg = fileName;
-        //        }
-
-        //        _context.Update(product);
-        //        await _context.SaveChangesAsync();
-
-        //        return RedirectToAction(nameof(Index));
-        //}
-
-        //// Nếu có lỗi, đưa danh mục vào ViewBag lại để hiển thị trong form
-        //ViewBag.Categories = _context.Categories.ToList();
-        //    return View(updatedProduct);
-        //}
         public async Task<IActionResult> Edit(int id, Product updatedProduct, IFormFile ImageUpload)
         {
             ViewData["ActiveMenu"] = "Product";
@@ -280,7 +223,7 @@ namespace ThienAnFuni.Controllers
             product.Description = updatedProduct.Description;
             product.CategoryId = updatedProduct.CategoryId;
 
-            // Xử lý upload ảnh nếu có file mới
+            // Xử lý upload ảnh nếu có ảnh mới
             if (ImageUpload != null && ImageUpload.Length > 0)
             {
                 var fileName = Path.GetFileName(ImageUpload.FileName);
@@ -311,7 +254,6 @@ namespace ThienAnFuni.Controllers
                 product.MainImg = "default.png";
             }
 
-            // Cập nhật sản phẩm
             _context.Update(product);
             await _context.SaveChangesAsync();
 
