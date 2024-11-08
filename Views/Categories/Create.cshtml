@@ -1,0 +1,83 @@
+﻿@model ThienAnFuni.Models.Category
+
+@{
+    ViewData["Title"] = "Thêm mới danh mục";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhà cung cấp</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-controller="Categories" asp-action="Create" title="Thêm danh mục">
+                            <i class="fas fa-plus"></i>
+                            Thêm danh mục
+                        </a>
+                    </div>
+                </div>
+                @{
+                    var errorMessage = TempData["ErrorMessage"] as string;
+                    if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger bg-danger">
+                            @errorMessage
+                        </div>
+                    }
+                }
+
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="ParentId" class="control-label"></label>
+                            <input asp-for="ParentId" class="form-control" />
+                            <span asp-validation-for="ParentId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group form-check col-12 ml-3">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                            </label>
+                        </div>
+
+                        <div class="d-flex col-12">
+                            <div class="form-group ">
+                                <input type="submit" value="Tạo danh mục mới" class="btn btn-success" />
+                            </div>
+                            <div class="form-group ml-2">
+                                <a class="btn btn-dark" asp-action="Index"> Trở về</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+

@@ -122,9 +122,11 @@ namespace ThienAnFuni.Models
 
                 new Category { Id = 7, Name = "Phòng làm việc", IsActive = true },
                 new Category { Id = 8, Name = "Bàn làm việc", ParentId = 7, IsActive = true },
-                new Category { Id = 9, Name = "Ghế văn phòng", ParentId = 7, IsActive = true }
+                new Category { Id = 9, Name = "Ghế văn phòng", ParentId = 7, IsActive = true },
 
-
+                new Category { Id = 10, Name = "Phòng ăn", IsActive = true },
+                new Category { Id = 11, Name = "Bàn ăn", ParentId = 10, IsActive = true },
+                new Category { Id = 12, Name = "Ghế ăn", ParentId = 10, IsActive = true }
             );
 
             modelBuilder.Entity<Supplier>().HasData(
@@ -160,8 +162,8 @@ namespace ThienAnFuni.Models
                 }
             );
 
-
             modelBuilder.Entity<Product>().HasData(
+            // Ghế sofa
                 new Product
                 {
                     Id = 1,
@@ -199,7 +201,46 @@ namespace ThienAnFuni.Models
                     CategoryId = 2
                 },
 
-                // Phòng ngủ: Giường
+                 // Bàn sofa
+                 new Product
+                 {
+                     Id = 3,
+                     Name = "Bàn Sofa HOBRO 301",
+                     Price = 1990000,
+                     Unit = "Cái",
+                     Material = "Sử dụng gỗ tràm tự nhiên đảm bảo về độ chắc chắn cao, chống chông vênh, mối mọt cho tủ đầu giường nhà bạn.; MDF veneer gỗ tràm/ PB: Sử dụng MDF veneer gỗ tràm giúp tăng giá trị của tủ đầu giường HOBRO đặc biệt đem tới hiệu ứng giác quang học và màu sắc vô cùng độc đáo. Đây cũng là đặc trưng của bộ sưu tập HOBRO. Hơn nữa, THIÊN ÂN sử dụng MDF và PB đạt chuẩn CARB-P2 an toàn tuyệt đối cho người sức khỏe người dùng an toàn cho cả gia đình bạn.",
+                     Dimension = "400 x 900 400 cm",
+                     Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                     Color = "Nâu",
+                     Brand = "Sofaland",
+                     WarrantyPeriod = "1 năm",
+                     Description = "Thiết kế tinh tế: Sự cơ bản về hình dáng kết hợp những lát vân veneer kỹ thuật tạo hình nhẹ nhàng. Bàn sofa Hobro trở thành mảnh ghép cuối cùng trong không gian sang trọng của bộ sưu tập…;Bền bỉ theo thời gian: Cấu trúc rắn chắc với độ dày lớn của khung gỗ. Bên canh đó, sự hoàn thiện chỉnh chu và tỉ mỉ của những đường veneer cũng giúp bảo vệ mặt bàn tuyệt đối.; Sáng tạo theo cách của bạn: Bàn Sofa dài bằng chiều rộng của Sofa Hobro, vừa làm bàn trà vừa làm bàn trang trí bênh cạnh Sofa. Sản phẩm này sẽ giúp bạn tạo nên những bố cục nội thất độc đáo sang tạo cho ngôi nhà.;",
+                     IsActive = true,
+                     IsImport = false,
+                     MainImg = "banSofa_HOBRO301.jpg",
+                     CategoryId = 2
+                 },
+                new Product
+                {
+                    Id = 4,
+                    Name = "Bàn Trà Gỗ THIÊN ÂN OSLO 901",
+                    Price = 2190000,
+                    Unit = "Cái",
+                    Material = "Gỗ cao su tự nhiên: Bàn trà chữ nhật OSLO làm từ gỗ cao su giúp sản phẩm có khả năng chịu lực tốt và độ bền cao.; Gỗ công nghiệp, Veneer gỗ sồi: Sử dụng chất liệu gỗ công nghiệp PB đạt chuẩn CARB-P2 và chứng nhận FSC thân thiện với môi trường.;",
+                    Dimension = "Dài 95cm x Rộng 50cm x Cao 42cm",
+                    Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                    Color = "Tự nhiên",
+                    Brand = "Woodland",
+                    WarrantyPeriod = "2 năm",
+                    Description = "Thiết kế tối ưu tiện ích: Bàn trà có thiết kế thêm kệ ngăn bên dưới gia tăng khả năng chứa đồ đầy tiện lợi.; Mặt bàn Veneer gỗ sồi: Bề mặt sản phẩm được xử lý nhẵn mịn, veneer thêm vân gỗ sồi mang màu sắc đẹp tự nhiên.; Các góc cạnh bàn được bo tròn: Từng đường nét góc cạnh được hoàn thiện một cách tỉ mỉ đem lại vẻ đẹp hoàn thiện cho sản phẩm.; Chân bàn gỗ cao su: Phần chân bàn trà sofa được làm hoàn toàn bằng gỗ cao su tự nhiên giúp khung bàn hoàn toàn chắc chắn, chịu tải trọng lớn từ nhiều món đồ trang trí như chậu cây, sách báo...; Độ rộng giữa kệ ngăn và mặt bàn rộng: Khoảng cách giữa ngăn kệ và mặt bàn khá lớn, thuận tiện cho việc vệ sinh, lau chùi.",
+                    IsActive = true,
+                    IsImport = false,
+                    MainImg = "banSofa_OSLO901.jpg",
+                    CategoryId = 2
+                },
+
+                // Phòng ngủ: 
+                // Giường
                 new Product
                 {
                     Id = 11,
@@ -235,10 +276,143 @@ namespace ThienAnFuni.Models
                     IsActive = true,
                     MainImg = "giuong_HBRO301.jpg",
                     CategoryId = 5
-                }
+                },
+                 // Bàn trang điểm: 13
+                 new Product
+                 {
+                     Id = 13,
+                     Name = "Bàn Trang Điểm Gỗ Đa Năng THIÊN ÂN VIENNA 202 Màu Tự Nhiên",
+                     Price = 13990000,
+                     Unit = "Cái",
+                     Material = "",
+                     Dimension = "Dài 100cm x Rộng 40cm x Cao 75cm",
+                     Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                     Color = "Nâu",
+                     Brand = "Woodland",
+                     WarrantyPeriod = "2 năm",
+                     Description = "",
+                     IsActive = true,
+                     IsImport = false,
+                     MainImg = "btd_GoDN_VIENNA202_nau.jpg",
+                     CategoryId = 6
+                 },
+            // Phòng Ăn:
+            // Bàn ăn 14 15
+            new Product
+            {
+                Id = 14,
+                Name = "Bàn Ăn Gỗ Cao Su THIÊN ÂN OSLO 901",
+                Price = 13990000,
+                Unit = "Cái",
+                Material = "",
+                Dimension = "Dài 1m4 x Rộng 75cm x Cao 73cm",
+                Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                Color = "Nâu",
+                Brand = "Woodland",
+                WarrantyPeriod = "2 năm",
+                Description = "default.png",
+                IsActive = true,
+                IsImport = false,
+                MainImg = "banan_GoCaoSu_OSLO901_nau.jpg",
+                CategoryId = 11
+            },
+            new Product
+            {
+                Id = 15,
+                Name = "Bàn Ăn Gỗ Cao Su Tự Nhiên THIÊN ÂN VLINE 601 1m6",
+                Price = 13990000,
+                Unit = "Cái",
+                Material = "",
+                Dimension = "Dài 160cm x Rộng 75cm x Cao 65cm",
+                Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                Color = "Nâu",
+                Brand = "Woodland",
+                WarrantyPeriod = "2 năm",
+                Description = "default.png",
+                IsActive = true,
+                IsImport = false,
+                MainImg = "banan_GoCaoSuTN_VLINE601_1m6_nau.jpg",
+                CategoryId = 11
+            },
+            // Ghế ăn 16 17
+             new Product
+             {
+                 Id = 16,
+                 Name = "Ghế Ăn Gỗ Cao Su Tự Nhiên MOHO ODESSA",
+                 Price = 13990000,
+                 Unit = "Cái",
+                 Material = "",
+                 Dimension = " Dài 43cm x Rộng 51cm x Cao đến phần ngồi/lưng tựa 43cm/92cm",
+                 Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                 Color = "Nâu",
+                 Brand = "Woodland",
+                 WarrantyPeriod = "2 năm",
+                 Description = "",
+                 IsActive = true,
+                 IsImport = false,
+                 MainImg = "ghean_GoCaoSuTN_ODESSA_nau.jpg",
+                 CategoryId = 12
+             },
+              new Product
+              {
+                  Id = 17,
+                  Name = "Ghế Ăn Gỗ Cao Su Tự Nhiên MOHO VLINE 601",
+                  Price = 13990000,
+                  Unit = "Cái",
+                  Material = "",
+                  Dimension = "Dài 50cm x Rộng 56cm x Cao đến đệm ngồi/lưng tựa 37cm/70cm",
+                  Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                  Color = "Nâu",
+                  Brand = "Woodland",
+                  WarrantyPeriod = "2 năm",
+                  Description = "",
+                  IsActive = true,
+                  IsImport = false,
+                  MainImg = "btd_GoDN_VIENNA202_nau.jpg",
+                  CategoryId = 12
+              },
+
+            // Phòng làm việc:
+            // Bàn làm việc 18 19
+             new Product
+             {
+                 Id = 18,
+                 Name = "Bàn Làm Việc Gỗ MOHO FYN 601 Màu Tự Nhiên",
+                 Price = 13990000,
+                 Unit = "Cái",
+                 Material = "",
+                 Dimension = "Kích thước bàn: Dài 120cm x Rộng 60cm x Cao 74cm; Kích thước hộc kéo: Dài 23cm x Rộng 40cm x Cao 7cm",
+                 Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                 Color = "Nâu",
+                 Brand = "Woodland",
+                 WarrantyPeriod = "2 năm",
+                 Description = "",
+                 IsActive = true,
+                 IsImport = false,
+                 MainImg = "blv_FYN601_tn.jpg",
+                 CategoryId = 8
+             },
+              new Product
+              {
+                  Id = 19,
+                  Name = "Bàn Máy Tính Gỗ MOHO WORKS 702",
+                  Price = 13990000,
+                  Unit = "Cái",
+                  Material = "",
+                  Dimension = " Bàn và chân bài: Dài 120cm x Rộng 62cm x Cao 72cm; Giá đỡ ổ điện: Dài 33cm x Rộng 9.74cm x Sâu 12cm; Trọng lượng chịu tải: 50~70 kg, tối đa 100kg khi phân phối đều khối lượng trên mặt bàn (1m4)",
+                  Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                  Color = "Nâu",
+                  Brand = "Woodland",
+                  WarrantyPeriod = "2 năm",
+                  Description = "",
+                  IsActive = true,
+                  IsImport = false,
+                  MainImg = "bmt_WORKS702_trang.jpg",
+                  CategoryId = 8
+              }
+            // Ghế văn phòng 20 21
 
             );
         }
-
     }
 }

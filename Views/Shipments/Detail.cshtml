@@ -42,7 +42,12 @@
                 <h3 class="text-center mb-3">Hóa đơn nhập kho</h3>
                 <div class="row">
 
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Mã phiếu nhập</label>
+                        <input type="text" class="form-control" name="receiptDate" value="#@Model.Id" readonly />
+                    </div>
+
+                    <div class="form-group col-md-3">
                         <label class="control-label">Ngày nhập</label>
                         <input type="date" class="form-control" name="receiptDate" value="@Model.ReceiptDate.ToString("yyyy-MM-dd")" readonly />
                     </div>
@@ -52,7 +57,7 @@
                         <input type="text" class="form-control" value="@Model.Supplier?.DisplayName" readonly />
                     </div>
 
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label class="control-label">Người nhập: (Quản lý)</label>
                         <input type="text" class="form-control" value="@Model.Manager?.FullName" readonly />
                     </div>

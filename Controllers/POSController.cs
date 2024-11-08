@@ -29,121 +29,9 @@ namespace ThienAnFuni.Controllers
             return View(products);
         }
 
-        //public async Task<IActionResult> AddProductSession(int id, int productListQuantity = 1)
-        //{
-        //    var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
-        //    if (product == null)
-        //    {
-        //        return Json(new { message = "Sản phẩm không tồn tại!" });
-        //    }
 
-        //    var cart = HttpContext.Session.GetString("cart");
-        //    var cartItems = string.IsNullOrEmpty(cart) ? new List<CartDetail>() : JsonConvert.DeserializeObject<List<CartDetail>>(cart);
-
-        //    var existingProduct = cartItems.FirstOrDefault(item => item.ProductId == id);
-
-        //    if (existingProduct != null)
-        //    {
-        //        existingProduct.Quantity += productListQuantity;
-        //    }
-        //    else
-        //    {
-        //        cartItems.Add(new CartDetail
-        //        {
-        //            ProductId = product.Id,
-        //            Product = product,
-        //            Price = product.Price,
-        //            Quantity = productListQuantity,
-        //            //ImageUrl = product.MainImage?.ImageUrl ?? "/images/default.jpg"
-        //        });
-        //    }
-
-        //    // Lưu giỏ hàng vào session
-        //    HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cartItems));
-
-        //    // Tính tổng tiền và số lượng
-        //    var total = cartItems.Sum(item => item.Price * item.Quantity);
-        //    var totalQuantity = cartItems.Sum(item => item.Quantity);
-
-        //    // Cập nhật tổng tiền và tổng số lượng vào session
-        //    HttpContext.Session.SetInt32("total", (int)total);
-        //    HttpContext.Session.SetInt32("totalQuantity", totalQuantity);
-
-        //    return Json(new
-        //    {
-        //        message = "Sản phẩm đã được thêm vào giỏ hàng!",
-        //        cart = cartItems,
-        //        total,
-        //        totalQuantity
-        //    });
-        //}
-
-        //public async Task<IActionResult> AddProductSession(int id, int productListQuantity = 1)
-        //{
-        //    var product = await _context.Products
-        //        .Where(p => p.Id == id)
-        //        .Include(p => p.Category) // Bao gồm thông tin về danh mục nếu cần
-        //        .FirstOrDefaultAsync(p => p.Id == id);
-
-        //    if (product == null)
-        //    {
-        //        return Json(new { message = "Sản phẩm không tồn tại!" });
-        //    }
-
-        //    // Tính số lượng tồn kho của sản phẩm
-        //    var quantityInStock = (_context.Goods
-        //        .Where(g => g.ProductId == id)
-        //        .Sum(g => (int?)g.Quantity) ?? 0) -
-        //        (_context.OrderDetails
-        //        .Where(o => o.ProductId == id)
-        //        .Sum(o => (int?)o.Quantity) ?? 0);
-
-        //    // Kiểm tra xem số lượng muốn thêm có vượt quá tồn kho không
-        //    if (productListQuantity > quantityInStock)
-        //    {
-        //        return Json(new { message = $"Số lượng yêu cầu vượt quá số lượng tồn kho. Tồn kho hiện tại: {quantityInStock}" });
-        //    }
-
-        //    var cart = HttpContext.Session.GetString("cart");
-        //    var cartItems = string.IsNullOrEmpty(cart) ? new List<CartDetail>() : JsonConvert.DeserializeObject<List<CartDetail>>(cart);
-
-        //    var existingProduct = cartItems.FirstOrDefault(item => item.ProductId == id);
-
-        //    if (existingProduct != null)
-        //    {
-        //        existingProduct.Quantity += productListQuantity;
-        //    }
-        //    else
-        //    {
-        //        cartItems.Add(new CartDetail
-        //        {
-        //            ProductId = product.Id,
-        //            Product = product,
-        //            Price = product.Price,
-        //            Quantity = productListQuantity,
-        //        });
-        //    }
-
-        //    // Lưu giỏ hàng vào session
-        //    HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cartItems));
-
-        //    // Tính tổng tiền và số lượng
-        //    var total = cartItems.Sum(item => item.Price * item.Quantity);
-        //    var totalQuantity = cartItems.Sum(item => item.Quantity);
-
-        //    // Cập nhật tổng tiền và tổng số lượng vào session
-        //    HttpContext.Session.SetInt32("total", (int)total);
-        //    HttpContext.Session.SetInt32("totalQuantity", totalQuantity);
-
-        //    return Json(new
-        //    {
-        //        message = "Sản phẩm đã được thêm vào giỏ hàng!",
-        //        cart = cartItems,
-        //        total,
-        //        totalQuantity
-        //    });
-        //}
+        // V3 FINAL
 
         //public async Task<IActionResult> AddProductSession(int id, int productListQuantity = 1)
         //{
@@ -200,7 +88,7 @@ namespace ThienAnFuni.Controllers
         //        cartItems.Add(new CartDetail
         //        {
         //            ProductId = product.Id,
-        //            Product = product, // Đảm bảo Product không phải null
+        //            Product = product, // Lưu toàn bộ đối tượng sản phẩm
         //            Price = product.Price, // Đảm bảo Price có giá trị
         //            Quantity = productListQuantity,
         //        });
@@ -222,8 +110,14 @@ namespace ThienAnFuni.Controllers
         //        })
         //        .ToList();
 
+        //    // Cấu hình để bỏ qua vòng lặp tham chiếu khi serialize
+        //    JsonSerializerSettings settings = new JsonSerializerSettings
+        //    {
+        //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        //    };
+
         //    // Lưu lại giỏ hàng trong session dưới dạng DTO để tránh vòng lặp khi serialize
-        //    HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cartItemDTOs));
+        //    HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cartItems, settings));
 
         //    // Trả lại thông tin giỏ hàng
         //    return Json(new
@@ -234,8 +128,6 @@ namespace ThienAnFuni.Controllers
         //        totalQuantity
         //    });
         //}
-
-        // V3 FINAL
 
         public async Task<IActionResult> AddProductSession(int id, int productListQuantity = 1)
         {
@@ -275,26 +167,39 @@ namespace ThienAnFuni.Controllers
             // Nếu sản phẩm đã có trong giỏ hàng
             if (existingProduct != null)
             {
+                // Kiểm tra nếu số lượng yêu cầu vượt quá số lượng tồn kho
                 if (existingProduct.Quantity + productListQuantity > quantityInStock)
                 {
-                    return Json(new { message = $"Số lượng yêu cầu vượt quá số lượng tồn kho. Tồn kho hiện tại: {quantityInStock}" });
+                    return Json(new
+                    {
+                        message = $"Số lượng yêu cầu vượt quá số lượng tồn kho. Tồn kho hiện tại: {quantityInStock}",
+                        total = cartItems.Sum(item => item.Price * item.Quantity),
+                        totalQuantity = cartItems.Sum(item => item.Quantity)
+                    });
                 }
-                existingProduct.Quantity += productListQuantity; // Cập nhật số lượng
+
+                existingProduct.Quantity += productListQuantity; // Cập nhật số lượng sản phẩm trong giỏ
             }
             else
             {
-                // Nếu sản phẩm chưa có trong giỏ hàng
+                // Kiểm tra nếu sản phẩm mới thêm vào giỏ hàng có vượt quá số lượng tồn kho
                 if (productListQuantity > quantityInStock)
                 {
-                    return Json(new { message = $"Số lượng yêu cầu vượt quá số lượng tồn kho. Tồn kho hiện tại: {quantityInStock}" });
+                    return Json(new
+                    {
+                        message = $"Số lượng yêu cầu vượt quá số lượng tồn kho. Tồn kho hiện tại: {quantityInStock}",
+                        total = cartItems.Sum(item => item.Price * item.Quantity),
+                        totalQuantity = cartItems.Sum(item => item.Quantity)
+                    });
                 }
+
                 // Thêm sản phẩm vào giỏ hàng
                 cartItems.Add(new CartDetail
                 {
                     ProductId = product.Id,
-                    Product = product, // Lưu toàn bộ đối tượng sản phẩm
-                    Price = product.Price, // Đảm bảo Price có giá trị
-                    Quantity = productListQuantity,
+                    Product = product, 
+                    Price = product.Price,
+                    Quantity = productListQuantity
                 });
             }
 
@@ -302,7 +207,7 @@ namespace ThienAnFuni.Controllers
             var total = cartItems.Sum(item => item.Price * item.Quantity);
             var totalQuantity = cartItems.Sum(item => item.Quantity);
 
-            // Chuyển dữ liệu giỏ hàng thành DTO để trả lại cho view
+            // Chuyển giỏ hàng thành danh sách DTO để trả lại cho client
             var cartItemDTOs = cartItems
                 .Select(item => new CartItemDTO
                 {
@@ -320,10 +225,10 @@ namespace ThienAnFuni.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
 
-            // Lưu lại giỏ hàng trong session dưới dạng DTO để tránh vòng lặp khi serialize
+            // Lưu lại giỏ hàng trong session dưới dạng JSON
             HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cartItems, settings));
 
-            // Trả lại thông tin giỏ hàng
+            // Trả lại thông tin giỏ hàng và tổng tiền
             return Json(new
             {
                 message = "Sản phẩm đã được thêm vào giỏ hàng!",
@@ -332,7 +237,6 @@ namespace ThienAnFuni.Controllers
                 totalQuantity
             });
         }
-
 
 
 
