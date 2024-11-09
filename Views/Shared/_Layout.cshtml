@@ -28,7 +28,7 @@
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="@Url.Action("Index", "Home")"><img src="customerThienAn/img/logo.png" alt=""></a>
+            <a href="@Url.Action("Index", "Home")"><img src="/customerThienAn/img/logo.png" alt=""></a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
@@ -57,15 +57,15 @@
                 <li class="active">
                     <a class="app-nav__item" href="@Url.Action("Index", "Home")">Trang chủ</a>
                 </li>
-                <li><a href="./shop-grid.html">Shop</a></li>
+                <li><a asp-action="Shop">Shop</a></li>
                 <li><a href="./shop-grid.html">Đơn hàng</a></li>
-                <li>
-                    @* Thêm link Shop *@
+            @*     <li>
                     <a href="#">Danh mục</a>
                     <ul class="header__menu__dropdown pl-3">
                         <li><a href="./shop-details.html">Shop</a></li>
                     </ul>
-                </li>
+                </li> *@
+
                 <li><a asp-controller="adminProducts" asp-action="Index">Liên hệ</a></li>
             </ul>
         </nav>
@@ -126,25 +126,17 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="@Url.ActionLink("Index","Home")"><img src="customerThienAn/img/logo.png" alt="Logo FuniShop"></a>
+                        <a href="@Url.ActionLink("Index","Home")"><img src="/customerThienAn/img/logo.png" alt="Logo FuniShop"></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         @* Bê thằng ở trên xuống *@
                         <ul>
-                            <li class="active"><a href="@Url.ActionLink("Index","Home")">Home</a></li>
-                            <li><a href="./shop-grid.html">Shop</a></li>
-                            <li>
-                                <a href="#">Pages</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./contact.html">Contact</a></li>
+                            <li class="active"><a href="@Url.ActionLink("Index","Home")">Trang chủ</a></li>
+                            <li><a asp-action="Shop">Shop</a></li>
+                            <li><a href="./contact.html">Đơn hàng</a></li>
+                            <li><a href="./contact.html">Liên hệ</a></li>
                             <li><a asp-controller="adminProducts" asp-action="Index">Admin</a></li>
 
                         </ul>
@@ -167,7 +159,7 @@
         </div>
     </header>
     <!-- Header Section End -->
-    <!-- Hero Section Begin -->
+    <!-- Hero Section Begin hero-normal-->
     <section class="hero @(Context.Request.Path == "/" ? "" : "hero-normal")">
         <div class="container">
             <div class="row">
@@ -177,13 +169,9 @@
                             <i class="fa fa-bars"></i>
                             <span>Danh mục</span>
                         </div>
-                        <ul>
-                            @* duyệt danh mục (Có thể thêm slug) *@
-                            <li><a href="#">Phòng khách</a></li>
-                            <li><a href="#">Phòng làm việc</a></li>
-                            <li><a href="#">Phòng ngủ</a></li>
-                            <li><a href="#">Phòng ăn</a></li>
-                        </ul>
+
+                        @await Component.InvokeAsync("CategoryHero")
+
                     </div>
                 </div>
                 <div class="col-lg-9">
