@@ -27,7 +27,7 @@ namespace ThienAnFuni.Models
         [Required(ErrorMessage = "Password bắt buộc nhập")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
+        public bool IsActive { get; set; }
         public void ChangePassword() { }
         public void ForgotPassword() { }
         public void UpdateProfile() { }

@@ -36,7 +36,9 @@ namespace ThienAnFuni.Models
                 Address = "123 Main St",
                 Gender = "Nam",
                 DateOfBirth = new DateTime(2004, 5, 12),
-                CitizenId = "123456789"
+                CitizenId = "123456789",
+                IsActive = true
+
             },
             new Manager
             {
@@ -48,7 +50,9 @@ namespace ThienAnFuni.Models
                 Address = "456 Another St",
                 Gender = "Nữ",
                 DateOfBirth = new DateTime(2004, 8, 25),
-                CitizenId = "987654321"
+                CitizenId = "987654321",
+                IsActive = true
+
             }
                 );
 
@@ -65,7 +69,8 @@ namespace ThienAnFuni.Models
                 DateOfBirth = new DateTime(1995, 5, 12),
                 CitizenId = "999456789",
                 IssuingDate = new DateTime(2015, 5, 12),
-                IssuingPlace = "Sóc Trăng"
+                IssuingPlace = "Sóc Trăng",
+                IsActive = true
 
             },
             new SaleStaff
@@ -80,7 +85,9 @@ namespace ThienAnFuni.Models
                 DateOfBirth = new DateTime(1990, 8, 25),
                 CitizenId = "9876234521",
                 IssuingDate = new DateTime(2015, 8, 25),
-                IssuingPlace = "An Giang"
+                IssuingPlace = "An Giang",
+                IsActive = true
+
             }
                 );
 
@@ -95,7 +102,7 @@ namespace ThienAnFuni.Models
                    Address = "123 Kiên Giang",
                    Gender = "Nữ",
                    DateOfBirth = new DateTime(1995, 5, 12),
-
+                   IsActive = true
 
                },
                new Customer
@@ -108,6 +115,8 @@ namespace ThienAnFuni.Models
                    Address = "456 Hậu Giang",
                    Gender = "Nam",
                    DateOfBirth = new DateTime(1990, 8, 25),
+                   IsActive = true
+
                }
                );
 
