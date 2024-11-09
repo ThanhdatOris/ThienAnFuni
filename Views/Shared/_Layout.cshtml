@@ -22,7 +22,7 @@
 <body>
     <!-- Page Preloder -->
     @* <div id="preloder">
-        <div class="loader"></div>
+    <div class="loader"></div>
     </div> *@
     <!-- Humberger Begin -->
     <div class="humberger__menu__overlay"></div>
@@ -40,11 +40,10 @@
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
                 <img src="/customerThienAn/img/vietnamese.jpg" width="20" alt="">
-                <div>English</div>
+                <div>Vietnamese</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li><a href="#">Spanis</a></li>
-                    <li><a href="#">English</a></li>
+                    <li><a href="#">Vietnamese</a></li>
                 </ul>
             </div>
             <div class="header__top__right__auth">
@@ -53,21 +52,21 @@
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a class="app-nav__item" href="@Url.Action("Index", "Home")">Home</a>
+                @* Thêm Action*@
+
+                <li class="active">
+                    <a class="app-nav__item" href="@Url.Action("Index", "Home")">Trang chủ</a>
                 </li>
                 <li><a href="./shop-grid.html">Shop</a></li>
+                <li><a href="./shop-grid.html">Đơn hàng</a></li>
                 <li>
-                    <a href="#">Pages</a>
-                    <ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                        <li><a href="./checkout.html">Check Out</a></li>
-                        <li><a href="./blog-details.html">Blog Details</a></li>
+                    @* Thêm link Shop *@
+                    <a href="#">Danh mục</a>
+                    <ul class="header__menu__dropdown pl-3">
+                        <li><a href="./shop-details.html">Shop</a></li>
                     </ul>
                 </li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a asp-controller="adminProducts" asp-action="Index">Contact</a></li>
-
+                <li><a asp-controller="adminProducts" asp-action="Index">Liên hệ</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -79,8 +78,8 @@
         </div>
         <div class="humberger__menu__contact">
             <ul>
-                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li>Free Shipping for all Order of $99</li>
+                <li><i class="fa fa-envelope"></i> funiteam@ctuet.edu.vn</li>
+                <li>Giao hàng miễn phí vận chuyển nội thành.</li>
             </ul>
         </div>
     </div>
@@ -93,8 +92,8 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                                <li>Free Shipping for all Order of $99</li>
+                                <li><i class="fa fa-envelope"></i> funiteam@ctuet.edu.vn</li>
+                                <li>Giao hàng miễn phí vận chuyển nội thành.</li>
                             </ul>
                         </div>
                     </div>
@@ -108,14 +107,14 @@
                             </div>
                             <div class="header__top__right__language">
                                 <img src="/customerThienAn/img/vietnamese.jpg" width="30" alt="">
-                                <div>English</div>
+                                <div>Vietnamese</div>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
-                                    <li><a href="#">Spanis</a></li>
-                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">Vietnamese</a></li>
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
+                                @* Check logic nếu Login thì hiện Logout và ngược lại *@
                                 <a href="@Url.Action("Login", "Home")"><i class="fa fa-user"></i> Login</a>
                             </div>
                         </div>
@@ -127,11 +126,12 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="@Url.ActionLink("Index","Home")"><img src="customerThienAn/img/logo.png" alt=""></a>
+                        <a href="@Url.ActionLink("Index","Home")"><img src="customerThienAn/img/logo.png" alt="Logo FuniShop"></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
+                        @* Bê thằng ở trên xuống *@
                         <ul>
                             <li class="active"><a href="@Url.ActionLink("Index","Home")">Home</a></li>
                             <li><a href="./shop-grid.html">Shop</a></li>
@@ -152,6 +152,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="header__cart">
+                        @* Bê thằng ở trên xuống *@
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                             <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
@@ -166,7 +167,58 @@
         </div>
     </header>
     <!-- Header Section End -->
+    <!-- Hero Section Begin -->
+    <section class="hero @(Context.Request.Path == "/" ? "" : "hero-normal")">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <i class="fa fa-bars"></i>
+                            <span>Danh mục</span>
+                        </div>
+                        <ul>
+                            @* duyệt danh mục (Có thể thêm slug) *@
+                            <li><a href="#">Phòng khách</a></li>
+                            <li><a href="#">Phòng làm việc</a></li>
+                            <li><a href="#">Phòng ngủ</a></li>
+                            <li><a href="#">Phòng ăn</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="hero__search">
+                        <div class="hero__search__form">
+                            @* Xử lý tìm kiếm, cho nó sang 1 page riêng *@
+                            <form action="#">
+                                @*<div class="hero__search__categories">
+                                All Categories
+                                <span class="arrow_carrot-down"></span>
+                                </div> *@
+                                <input type="text" name="query" placeholder="Bạn muốn tìm gì?"
+                                       value="">
+                                <button type="submit" class="site-btn">Tìm kiếm</button>
+                            </form>
+                        </div>
+                        <div class="hero__search__phone">
+                            <div class="hero__search__phone__icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="hero__search__phone__text">
+                                <h5>+84 30 04 1975</h5>
+                                <span>Hỗ trợ 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                    @* renderSection *@
+                    @RenderSection("background_home", required: false)
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
 
+    @RenderSection("breadcrumb", required: false)
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -183,40 +235,39 @@
                             <a href="./index.html"><img src="/customerThienAn/img/logo.png" alt=""></a>
                         </div>
                         <ul>
-                            <li>Address: 256, An Hoa, Ninh Kieu</li>
+                            <li>Address: 256 Nguyễn Văn Cừ, An Hòa, Ninh Kiều, Cần Thơ</li>
                             <li>Phone: +84 30 04 1975</li>
-                            <li>Email: httt2211@ctuet.edu.vn</li>
+                            <li>Email: funiteam@ctuet.edu.vn</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
                     <div class="footer__widget">
-                        <h6>Useful Links</h6>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">About Our Shop</a></li>
-                            <li><a href="#">Secure Shopping</a></li>
-                            <li><a href="#">Delivery infomation</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Our Sitemap</a></li>
-                        </ul>
-                        <ul>
-                            <li><a href="#">Who We Are</a></li>
-                            <li><a href="#">Our Services</a></li>
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Innovation</a></li>
-                            <li><a href="#">Testimonials</a></li>
+                        <h6>Chính sách</h6>
+                        <ul class="w-100">
+                            <li><a href="#">Hướng Dẫn Mua Hàng</a></li>
+                            <li><a href="#">Chính sách bảo mật dữ liệu</a></li>
+                            <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
+                            <li><a href="#">Chính sách bảo hành</a></li>
+                            <li><a href="#">Chính sách bán hàng</a></li>
+                            <li><a href="#">Chính sách kiểm hàng</a></li>
+                            <li><a href="#">Chính sách đổi trả</a></li>
+                            <li><a href="#">Chính sách hoàn tiền</a></li>
+                            <li><a href="#">Quy chế hoạt động</a></li>
+                            <li><a href="#">Chính sách vận chuyển</a></li>
+                            <li>
+                                <a href="#">Chính sách giao hàng và thanh toán</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="footer__widget">
-                        <h6>Join Our Newsletter Now</h6>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
+                        <h6>Liên hệ</h6>
+                        <p>Nhận thông tin cập nhật qua Email về cửa hàng mới nhất của chúng tôi và các ưu đãi đặc biệt.</p>
                         <form action="#">
-                            <input type="text" placeholder="Enter your mail">
-                            <button type="submit" class="site-btn">Subscribe</button>
+                            <input type="text" placeholder="Địa chỉ mail của bạn">
+                            <button type="submit" class="site-btn">Đăng ký</button>
                         </form>
                         <div class="footer__widget__social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
@@ -232,9 +283,7 @@
                     <div class="footer__copyright">
                         <div class="footer__copyright__text">
                             <p>
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> | Bản quyền được giữ bởi FuniTeam
                             </p>
                         </div>
                         <div class="footer__copyright__payment"><img src="/customerThienAn/img/payment-item.png" alt=""></div>
