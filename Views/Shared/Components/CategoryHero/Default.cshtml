@@ -6,7 +6,7 @@
     {
         <li>
             <a class="pl-3" href="#">@category.Name</a>
-           @*  @if (category.SubCategories != null && category.SubCategories.Any())
+            @if (category.SubCategories != null && category.SubCategories.Any())
             {
                 <ul class="subcategories">
                     @foreach (var subCategory in category.SubCategories)
@@ -16,7 +16,7 @@
                         </li>
                     }
                 </ul>
-            } *@
+            }
         </li>
     }
 </ul>

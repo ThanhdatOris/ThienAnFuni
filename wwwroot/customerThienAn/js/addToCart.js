@@ -6,10 +6,11 @@ $(document).on('click', '.add-to-cart', function (e) {
     console.log("Selected quantity:", quantity);
 
     $.ajax({
-        url: `/customer/cart/add/${productId}`,
+        url: `/cart/AddToCart/`,
         method: 'POST',
         data: {
-            _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token
+            //_token: $('meta[name="csrf-token"]').attr('content'), // CSRF token
+            id: productId, 
             quantity: quantity // Gửi số lượng lên server
         },
         success: function (response) {
