@@ -3624,14 +3624,14 @@ ol {
 }
 
     .category-list > li {
-        margin-bottom: 10px;
+        /*margin-bottom: 10px;*/
     }
 
         .category-list > li > a {
             text-decoration: none;
             color: #007bff;
             font-weight: bold;
-            padding: 5px 10px;
+            /*padding: 5px 10px;*/
             display: block;
         }
 
@@ -3654,7 +3654,7 @@ ol {
 .subcategories li a {
     text-decoration: none;
     color: #6c757d;
-    padding: 5px 10px;
+    /*padding: 5px 10px;*/
     display: block;
 }
 
