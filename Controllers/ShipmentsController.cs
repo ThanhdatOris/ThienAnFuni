@@ -253,7 +253,7 @@ namespace ThienAnFuni.Controllers
 
             // **************BUG**************
             // `managerId` có thể lấy từ session người dùng đang đăng nhập
-            int managerId = HttpContext.Session.GetInt32("ManagerId") ?? 1;
+            string managerId = HttpContext.Session.GetString("ManagerId") ?? "1";
 
             //if (managerId == 0)
             //{

@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 // Load configurations from appsettings.json and appsettings.Local.json
 builder.Configuration
@@ -17,6 +20,15 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<TAF_DbContext>(options =>
     options.UseSqlServer(connectionString));
 
+// IdentityRole config
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<TAF_DbContext>()
+    .AddDefaultTokenProviders();
+// Không có quyền thì bị đá vào Controller Account - Action:AccessDenied
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = "/Account/AccessDenied";  // Trang xử lý khi bị từ chối quyền truy cập
+});
 // Add session 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -27,6 +39,13 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
+
+// Role sẽ được tạo khi app nó chạy nha bà con
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await RoleInitializer.SeedRolesAsync(roleManager);
+}
 
 // Cấu hình middleware
 if (app.Environment.IsDevelopment())

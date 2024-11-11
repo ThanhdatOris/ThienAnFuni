@@ -34,7 +34,7 @@ namespace ThienAnFuni.Controllers
         }
 
         // GET: SaleStaffs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 
@@ -102,7 +102,7 @@ namespace ThienAnFuni.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,Username,PhoneNumber,Address,Gender,DateOfBirth")] SaleStaff saleStaff)
+        public async Task<IActionResult> Edit(string id, [Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,Username,PhoneNumber,Address,Gender,DateOfBirth")] SaleStaff saleStaff)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 
@@ -133,7 +133,7 @@ namespace ThienAnFuni.Controllers
                     existingStaff.EndDate = saleStaff.EndDate;
                     existingStaff.Degree = saleStaff.Degree;
                     existingStaff.FullName = saleStaff.FullName;
-                    existingStaff.Username = saleStaff.Username;
+                    existingStaff.UserName = saleStaff.UserName;
                     existingStaff.PhoneNumber = saleStaff.PhoneNumber;
                     existingStaff.Address = saleStaff.Address;
                     existingStaff.Gender = saleStaff.Gender;
@@ -159,7 +159,7 @@ namespace ThienAnFuni.Controllers
         }
 
         // GET: SaleStaffs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 
@@ -197,7 +197,7 @@ namespace ThienAnFuni.Controllers
         }
 
 
-        private bool SaleStaffExists(int id)
+        private bool SaleStaffExists(string id)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 

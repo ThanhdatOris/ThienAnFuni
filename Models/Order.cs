@@ -23,9 +23,9 @@ namespace ThienAnFuni.Models
         public string? InvoiceNumber { get; set; }
         public DateTime? InvoiceDate { get; set; }
 
-        public int? CustomerId { get; set; }
+        public string? CustomerId { get; set; }
         public virtual Customer? Customer { get; set; }
-        public int? SaleStaffId { get; set; }
+        public string? SaleStaffId { get; set; }
         public virtual SaleStaff? SaleStaff { get; set; }
         public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
     }

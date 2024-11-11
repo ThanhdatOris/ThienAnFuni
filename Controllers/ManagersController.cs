@@ -26,7 +26,7 @@ namespace ThienAnFuni.Controllers
         }
 
         // GET: Managers/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace ThienAnFuni.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CitizenId,Id,FullName,PhoneNumber,Address,Gender,DateOfBirth,Password")] Manager manager)
+        public async Task<IActionResult> Edit(string id, [Bind("CitizenId,Id,FullName,PhoneNumber,Address,Gender,DateOfBirth,Password")] Manager manager)
         {
             if (id != manager.Id)
             {
@@ -117,7 +117,7 @@ namespace ThienAnFuni.Controllers
         }
 
         // GET: Managers/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -149,7 +149,7 @@ namespace ThienAnFuni.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ManagerExists(int id)
+        private bool ManagerExists(string id)
         {
             return _context.Managers.Any(e => e.Id == id);
         }

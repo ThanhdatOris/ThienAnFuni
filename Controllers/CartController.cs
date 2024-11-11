@@ -43,7 +43,7 @@ namespace ThienAnFuni.Controllers
 
             if (product == null || product.QuantityInStock <= 0)
             {
-                return Json(new { error = "Sản phẩm này hiện đã hết hàng!" });
+                return BadRequest(new { error = "Sản phẩm này hiện đã hết hàng!" });
             }
 
             var cart = HttpContext.Session.GetObjectFromJson<Dictionary<int, CartDetail>>("cart") ?? new Dictionary<int, CartDetail>();
@@ -51,7 +51,9 @@ namespace ThienAnFuni.Controllers
             // Kiểm tra xem tổng số lượng muốn thêm có vượt quá tồn kho không
             if (product.QuantityInStock < cart.GetValueOrDefault(id)?.Quantity + quantity)
             {
-                return Json(new { error = "Thêm sản phẩm quá số lượng trong kho!" });
+                //return Json(new { error = "Thêm sản phẩm quá số lượng trong kho!" });
+                return BadRequest(new { error = "Thêm sản phẩm quá số lượng trong kho!" });
+
             }
 
             // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng

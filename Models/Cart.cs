@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ThienAnFuni.Models
 {
@@ -12,7 +13,9 @@ namespace ThienAnFuni.Models
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải là số và không được để trống")]
         public int TotalQuantity { get; set; }
-        public int CustomerId { get; set; }
+
+        [ForeignKey("Customer")]  // Chỉ định Cart.CustomerId là khóa ngoại tham chiếu đến Customer
+        public string CustomerId { get; set; }
         public virtual Customer? Customer { get; set; }
         public virtual ICollection<CartDetail>? CartDetails { get; set; }
 

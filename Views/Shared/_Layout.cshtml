@@ -47,8 +47,23 @@
                 </ul>
             </div>
             <div class="header__top__right__auth">
-                <a href="@Url.Action("Login", "Home")"><i class="fa fa-user"></i> Login</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <span>Hi, @User.Identity.Name</span>
+                    <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
+                        <button type="submit" class="btn p-1 text-danger font-weight-bold">
+                            <i class="fa fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account")"><i class="fa fa-user"></i> Login</a>
+                }
             </div>
+
+
+
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -114,9 +129,22 @@
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
-                                @* Check logic nếu Login thì hiện Logout và ngược lại *@
-                                <a href="@Url.Action("Login", "Home")"><i class="fa fa-user"></i> Login</a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <span>Hi, @User.Identity.Name</span>
+                                    <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
+                                        <button type="submit" class="btn p-1 text-danger font-weight-bold">
+                                            <i class="fa fa-sign-out-alt"></i> Logout
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Account")"><i class="fa fa-user"></i> Login</a>
+                                }
                             </div>
+
+
                         </div>
                     </div>
                 </div>
