@@ -5,7 +5,7 @@ using ThienAnFuni.Models;
 
 namespace ThienAnFuni.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    //[Authorize(Roles = "Manager")]
     public class AdminProductsController : Controller
     {
         private readonly TAF_DbContext _context;
@@ -44,7 +44,6 @@ namespace ThienAnFuni.Controllers
 
             return View(products);
         }
-
 
         public async Task<IActionResult> ListDeleted()
         {

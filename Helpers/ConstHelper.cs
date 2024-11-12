@@ -1,13 +1,7 @@
 ﻿namespace ThienAnFuni.Helpers
 {
-    public class ConstHelper
+    public static class ConstHelper
     {
-        //public static class OrderStatusConstants
-        //{
-        //    public const int Reject = -1;
-        //    public const int Pending = 0;
-        //    public const int Success = 1;
-        //}
         public enum OrderStatus
         {
             Reject = -1,
@@ -15,12 +9,6 @@
             Success = 1
         }
 
-        //public static class RolesConstants 
-        //{
-        //    public const int Admin = 0;
-        //    public const int SaleStaff = 1;
-        //    public const int Customer = 2;
-        //}
         public enum Roles
         {
             Admin = 0,
@@ -28,5 +16,12 @@
             Customer = 2
         }
 
+        // Định nghĩa hằng số cho các role
+        public const string RoleManager = "Manager";
+        public const string RoleSaleStaff = "SaleStaff";
+        public const string RoleCustomer = "Customer";
+
+        // Mảng chứa tất cả các role hằng số
+        public static readonly string[] AllRoles = { RoleManager, RoleSaleStaff, RoleCustomer };
     }
 }

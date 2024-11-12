@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
 using ThienAnFuni.ViewModels;
-
+using ThienAnFuni.Helpers;
 namespace ThienAnFuni.Controllers
 {
     public class AccountController : Controller
@@ -93,15 +93,15 @@ namespace ThienAnFuni.Controllers
                     var roles = await _userManager.GetRolesAsync(user); // Lấy tất cả vai trò của người dùng
 
                     // Điều hướng người dùng theo vai trò
-                    if (roles.Contains("Manager"))
+                    if (roles.Contains(ConstHelper.RoleManager))
                     {
                         return RedirectToAction("Index", "AdminOrders");
                     }
-                    else if (roles.Contains("SaleStaff"))
+                    else if (roles.Contains(ConstHelper.RoleSaleStaff))
                     {
                         return RedirectToAction("Index", "AdminOrders");
                     }
-                    else if (roles.Contains("Customer"))
+                    else if (roles.Contains(ConstHelper.RoleCustomer))
                     {
                         return RedirectToAction("Index", "Home");
                     }

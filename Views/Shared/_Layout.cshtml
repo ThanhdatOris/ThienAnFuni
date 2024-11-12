@@ -1,4 +1,5 @@
 ﻿@using ThienAnFuni.Extensions
+@using ThienAnFuni.Helpers
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -46,7 +47,7 @@
                     <li><a href="#">Vietnamese</a></li>
                 </ul>
             </div>
-            <div class="header__top__right__auth">
+            @* <div class="header__top__right__auth">
                 @if (User.Identity.IsAuthenticated)
                 {
                     <span>Hi, @User.Identity.Name</span>
@@ -60,9 +61,32 @@
                 {
                     <a href="@Url.Action("Login", "Account")"><i class="fa fa-user"></i> Login</a>
                 }
+            </div> *@
+
+            <div class="header__top__right__auth">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <span>Hi, @User.Identity.Name</span>
+
+                    @if (User.IsInRole(ConstHelper.RoleManager) && User.IsInRole(ConstHelper.RoleSaleStaff))
+                    {
+                        <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Admin -->
+                        <a href="@Url.Action("Index", "AdminProducts")" class="btn btn-primary">
+                            <i class="fa fa-cogs"></i> Admin Dashboard
+                        </a>
+                    }
+
+                    <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
+                        <button type="submit" class="btn p-1 text-danger font-weight-bold">
+                            <i class="fa fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account")"><i class="fa fa-user"></i> Login</a>
+                }
             </div>
-
-
 
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -128,10 +152,35 @@
                                     <li><a href="#">Vietnamese</a></li>
                                 </ul>
                             </div>
+                            @* <div class="header__top__right__auth">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <span>Hi, @User.Identity.Name</span>
+                                    <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
+                                        <button type="submit" class="btn p-1 text-danger font-weight-bold">
+                                            <i class="fa fa-sign-out-alt"></i> Logout
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Account")"><i class="fa fa-user"></i> Login</a>
+                                }
+                            </div> *@
                             <div class="header__top__right__auth">
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <span>Hi, @User.Identity.Name</span>
+
+                                    @if (User.IsInRole(ConstHelper.RoleManager) || User.IsInRole(ConstHelper.RoleSaleStaff))
+                                    {
+                                        <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Manager hoặc SaleStaff -->
+                                        <a href="@Url.Action("Index", "AdminProducts")" class="btn btn-primary">
+                                            <i class="fa fa-cogs"></i> Admin Dashboard
+                                        </a>
+                                    }
+
+
                                     <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
                                         <button type="submit" class="btn p-1 text-danger font-weight-bold">
                                             <i class="fa fa-sign-out-alt"></i> Logout

@@ -108,65 +108,13 @@ Dưới đây là hướng dẫn chi tiết từ đầu để cấu hình chức
 Tạo `AccountController` để quản lý các chức năng đăng ký, đăng nhập, và đăng xuất.
 
 1. **Đăng ký người dùng**:
-   ```csharp
-   [HttpPost]
-   public async Task<IActionResult> Register(RegisterViewModel model)
-   {
-       if (ModelState.IsValid)
-       {
-           var user = new User
-           {
-               UserName = model.Username,
-               FullName = model.FullName,
-               PhoneNumber = model.PhoneNumber,
-               Address = model.Address,
-               Gender = model.Gender,
-               DateOfBirth = model.DateOfBirth,
-               IsActive = true
-           };
-           var result = await _userManager.CreateAsync(user, model.Password);
-           if (result.Succeeded)
-           {
-               await _userManager.AddToRoleAsync(user, model.Role);
-               await _signInManager.SignInAsync(user, isPersistent: false);
-               return RedirectToAction("Index", "Home");
-           }
-           foreach (var error in result.Errors)
-           {
-               ModelState.AddModelError("", error.Description);
-           }
-       }
-       return View(model);
-   }
-   ```
+  
 
 2. **Đăng nhập người dùng**:
-   ```csharp
-   [HttpPost]
-   public async Task<IActionResult> Login(LoginViewModel model)
-   {
-       if (ModelState.IsValid)
-       {
-           var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
-           if (result.Succeeded)
-           {
-               return RedirectToAction("Index", "Home");
-           }
-           ModelState.AddModelError("", "Đăng nhập không thành công");
-       }
-       return View(model);
-   }
-   ```
+  
 
 3. **Đăng xuất**:
-   ```csharp
-   [HttpPost]
-   public async Task<IActionResult> Logout()
-   {
-       await _signInManager.SignOutAsync();
-       return RedirectToAction("Index", "Home");
-   }
-   ```
+ 
 
 ### 7. Phân Quyền Cho Các Controller
 

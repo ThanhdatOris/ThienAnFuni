@@ -89,18 +89,15 @@
                     <label class="control-label">Giá bán</label>
                     <input class="form-control" type="text" name="Price" placeholder="Nhập giá bán">
                     </div>
-                    <div class="form-group col-md-3">
+          @*           <div class="form-group col-md-3">
                         <label class="control-label">Giá nhập</label>
                         <input class="form-control" type="text" name="CostPrice" placeholder="Giá nhập" disabled>
-                    </div>
+                    </div> *@
                     <div class="form-group col-md-3">
                         <label class="control-label">Đơn vị</label>
                         <input class="form-control" type="text" name="Unit" placeholder="Nhập đơn vị">
                     </div>
-                    <div class="form-group col-md-3">
-                        <label class="control-label">Chất liệu</label>
-                        <input class="form-control" type="text" name="Material" placeholder="Nhập chất liệu">
-                    </div>
+             
                     <div class="form-group col-md-3">
                         <label class="control-label">Kích thước</label>
                         <input class="form-control" type="text" name="Dimension" placeholder="Nhập kích thước">
@@ -113,10 +110,10 @@
                         <label class="control-label">Màu sắc</label>
                         <input class="form-control" type="text" name="Color" placeholder="Nhập màu sắc">
                     </div>
-                    <div class="form-group col-md-3">
+          @*           <div class="form-group col-md-3">
                         <label class="control-label">Loại</label>
                         <input class="form-control" type="text" name="Type" placeholder="Nhập loại">
-                    </div>
+                    </div> *@
                     <div class="form-group col-md-3">
                         <label class="control-label">Thương hiệu</label>
                         <input class="form-control" type="text" name="Brand" placeholder="Nhập thương hiệu">
@@ -151,10 +148,14 @@
                         </div>
                     </div>
                     <div class="form-group col-md-12">
+                        <label class="control-label">Chất liệu</label>
+                        <textarea class="form-control ckeditor" name="Material" 
+                                  placeholder="Nhập chất liệu"></textarea>
+                    </div>
+                    <div class="form-group col-md-12">
                         <label class="control-label">Mô tả sản phẩm</label>
-                        <textarea class="form-control" name="Description" id="mota"
+                        <textarea class="form-control ckeditor" name="Description"
                                   placeholder="Nhập mô tả sản phẩm"></textarea>
-                        <script>CKEDITOR.replace('mota');</script>
                     </div>
 
                     <button class="btn btn-save" type="submit">Lưu lại</button>
@@ -167,5 +168,10 @@
 </div>
 
 @section Scripts {
+    <script>
+        document.querySelectorAll('.ckeditor').forEach((el) => {
+            CKEDITOR.replace(el);
+        });
+    </script>
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
 }
