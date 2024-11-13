@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-sm-2">
                         <a class="btn btn-danger btn-sm" asp-controller="AdminProducts" asp-action="ListDeleted" title="Thêm">
-                            <i class="fas fa-trash"></i>
+                            <i class="fa fa-lock" aria-hidden="true"></i>
                             Sản phẩm ngừng bán
                         </a>
                     </div>
@@ -74,14 +74,14 @@
                                 <td>@String.Format("{0:n0}đ", product.Price)</td>
                                 <td>@product.CategoryName</td>
                                 <td>
-                                    <form asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@product.Id" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn ẩn sản phẩm này?');">
-                                        <button type="submit" class="btn btn-primary btn-sm trash" title="Xóa">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
                                     <a class="btn btn-primary btn-sm edit" title="Sửa" asp-controller="AdminProducts" asp-action="Edit" asp-route-id="@product.Id">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    <form asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@product.Id" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn ẩn sản phẩm này?');">
+                                        <button type="submit" class=" trash btn btn-warning btn-sm " title="Xóa">
+                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         }

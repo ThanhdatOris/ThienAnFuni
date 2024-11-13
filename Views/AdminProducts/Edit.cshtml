@@ -54,11 +54,6 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label class="control-label">Chất liệu</label>
-                            <input asp-for="Material" class="form-control" />
-                        </div>
-
-                        <div class="form-group col-md-3">
                             <label class="control-label">Kích thước</label>
                             <input asp-for="Dimension" class="form-control" />
                         </div>
@@ -124,12 +119,16 @@
                             </div>
                         </div>
 
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Chất liệu</label>
+                            <textarea asp-for="Material" class="form-control ckeditor" 
+                                      placeholder="Nhập chất liệu"></textarea>
+                        </div>
 
                         <div class="form-group col-md-12">
                             <label class="control-label">Mô tả sản phẩm</label>
-                            <textarea asp-for="Description" class="form-control" id="mota"
+                            <textarea asp-for="Description" class="form-control ckeditor" 
                                       placeholder="Nhập mô tả sản phẩm"></textarea>
-                            <script>CKEDITOR.replace('mota');</script>
                         </div>
                     </div>
 
@@ -143,5 +142,10 @@
 </div>
 
 @section Scripts {
+    <script>
+        document.querySelectorAll('.ckeditor').forEach((el) => {
+            CKEDITOR.replace(el);
+        });
+    </script>
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
 }

@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+    Layout = null;
+}
+
+<head>
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="/adminThienAn/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" href="/adminThienAn/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="/adminThienAn/js/plugins/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="/adminThienAn/css/jquery-confirm.min.css">
+    <script type="text/javascript" src="/adminThienAn/ckeditor/ckeditor.js"></script>
+
+    <!-- Essential javascripts for application to work-->
+
+    <script src="/adminThienAn/js/jquery-3.2.1.min.js"></script>
+    <script src="/adminThienAn/js/popper.min.js"></script>
+    <script src="/adminThienAn/js/bootstrap.min.js"></script>
+    <script src="/adminThienAn/js/plugins/jquery.min.js"></script>
+    <script src="/adminThienAn/js/main.js"></script>
+
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="/adminThienAn/js/plugins/pace.min.js"></script>
+    <!-- My config -->
+    <link rel="stylesheet" type="text/css" href="~/adminThienAn/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/adminThienAn/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/adminThienAn/css/index.css">
+</head>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+                <img src="~/adminThienAn/assets/images/team.jpg" alt="IMG">
+            </div>
+            <div class="login100-form validate-form">
+                <span class="login100-form-title">
+                    <b>@ViewData["Title"]</b>
+                </span>
+                @* <form asp-action="Login" method="post">
+                <div class="wrap-input100 validate-input">
+                <input class="input100" type="text" placeholder="Tài khoản quản trị" name="username" id="username">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                <i class='bx bx-user'></i>
+                </span>
+                </div>
+                <div class="wrap-input100 validate-input">
+                <input autocomplete="off" class="input100" type="password" placeholder="Mật khẩu" name="password"
+                id="password-field">
+                <!-- <span toggle="#password-field" class="bx fa-fw bx-hide field-icon click-eye"></span> -->
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                <i class='bx bx-key'></i>
+                </span>
+                </div>
+                <div class="wrap-input100 form-check validate-input d-flex justify-center align-items-center">
+                <input class="form-check-input mt-2" type="checkbox" name="remember" id="remember" style="width: 20px;">
+                <label class="form-check-label pl-3" for="remember">
+                Remember me
+                </label>
+                </div>
+                <div class="container-login100-form-btn">
+                <button type="submit" class="btn btn-info w-100">Đăng nhập</button>
+                </div>
+                <div class="text-right p-t-12">
+                <a class="txt2" asp-action="ForgotPassword">
+                Bạn quên mật khẩu?
+                </a>
+                </div>
+                </form> *@
+                <form asp-action="Register" method="post">
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="FullName" placeholder="Họ và tên" required>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="Username" placeholder="Tên đăng nhập" required>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="password" name="Password" placeholder="Mật khẩu" required>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="password" name="ConfirmPassword" placeholder="Xác nhận mật khẩu"
+                            required>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="PhoneNumber" placeholder="Số điện thoại" required>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger text-danger font-weight-bold">
+                            @Html.ValidationSummary(false)
+                        </div>
+                    }
+                    
+                    <div class="container-login100-form-btn">
+                        <button type="submit" class="btn btn-info w-100">Đăng ký</button>
+                    </div>
+                </form>
+                <div class="text-center p-t-70 txt2 d-flex flex-col">
+                    <span>Phần mềm quản lý bán hàng ClapShop</span>
+                    <div>
+                        <i class="far fa-copyright" aria-hidden="true"></i>
+                        <script type="text/javascript">
+                            document.write(new Date().getFullYear());
+                        </script>
+                        <a class="txt2" href="#"> Five Hero Team </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>

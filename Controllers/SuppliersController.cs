@@ -22,8 +22,19 @@ namespace ThienAnFuni.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["ActiveMenu"] = "Supplier";
+            var suppliers = await _context.Suppliers.Where(s => s.IsActive == true).ToListAsync();
 
-            return View(await _context.Suppliers.ToListAsync());
+            return View(suppliers);
+
+        }
+
+        public async Task<IActionResult> ListDeleted()
+        {
+            ViewData["ActiveMenu"] = "Supplier";
+
+            var suppliers = await _context.Suppliers.Where(s => s.IsActive == false).ToListAsync();
+
+            return View(suppliers);
         }
 
         // GET: Suppliers/Details/5
@@ -157,7 +168,7 @@ namespace ThienAnFuni.Controllers
             var supplier = await _context.Suppliers.FindAsync(id);
             if (supplier != null)
             {
-                _context.Suppliers.Remove(supplier);
+                supplier.IsActive = false;
             }
 
             await _context.SaveChangesAsync();

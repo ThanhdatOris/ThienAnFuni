@@ -1,0 +1,127 @@
+﻿@model IEnumerable<ThienAnFuni.Models.SaleStaff>
+
+@{
+    ViewData["Title"] = "Quản lý nhân viên";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhà cung cấp</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" asp-action="Create" title="Thêm nhân viên mới">
+                            <i class="fas fa-plus"></i>
+                            Thêm nhân viên mới
+                        </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-danger btn-sm" asp-action="ListDeleted" title="DS nhân viên nghĩ việc">
+                            <i class="fa fa-trash"></i>
+                            DS nhân viên nghĩ việc
+                        </a>
+                    </div>
+                </div>
+                @{
+                    var errorMessage = TempData["ErrorMessage"] as string;
+                    if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger bg-danger">
+                            @errorMessage
+                        </div>
+                    }
+                }
+                <table class="table table-hover table-bordered" id="sampleTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CitizenId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.StartDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Address)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Gender)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateOfBirth)
+                            </th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CitizenId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Address)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Gender)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm edit" title="Sửa" asp-action="Edit" asp-route-id="@item.Id">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    <a class="btn btn-info btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </a>
+
+                                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn cho nghĩ việc nhân viên này?');" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Xóa">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+}

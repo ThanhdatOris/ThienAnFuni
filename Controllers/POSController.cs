@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using ThienAnFuni.Data;
 using ThienAnFuni.Helpers;
 using ThienAnFuni.Models;
@@ -12,10 +14,11 @@ namespace ThienAnFuni.Controllers
     public class POSController : Controller
     {
         private readonly TAF_DbContext _context;
-
-        public POSController(TAF_DbContext context)
+        private readonly UserManager<User> _userManager;
+        public POSController(TAF_DbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -28,106 +31,6 @@ namespace ThienAnFuni.Controllers
 
             return View(products);
         }
-
-
-
-        // V3 FINAL
-
-        //public async Task<IActionResult> AddProductSession(int id, int productListQuantity = 1)
-        //{
-        //    // Lấy thông tin sản phẩm từ cơ sở dữ liệu
-        //    var product = await _context.Products
-        //        .Where(p => p.Id == id)
-        //        .Include(p => p.Category) // Bao gồm thông tin về danh mục nếu cần
-        //        .FirstOrDefaultAsync(p => p.Id == id);
-
-        //    // Kiểm tra nếu sản phẩm không tồn tại hoặc không có giá
-        //    if (product == null || product.Price == null)
-        //    {
-        //        return Json(new { message = "Sản phẩm không tồn tại hoặc thông tin sản phẩm không đầy đủ!" });
-        //    }
-
-        //    // Tính số lượng tồn kho của sản phẩm
-        //    var quantityInStock = (_context.Goods
-        //        .Where(g => g.ProductId == id)
-        //        .Sum(g => (int?)g.Quantity) ?? 0) -
-        //        (_context.OrderDetails
-        //        .Where(o => o.ProductId == id)
-        //        .Sum(o => (int?)o.Quantity) ?? 0);
-
-        //    // Kiểm tra nếu số lượng trong kho không hợp lệ
-        //    if (quantityInStock < 0)
-        //    {
-        //        quantityInStock = 0; // Đảm bảo không có số âm
-        //    }
-
-        //    // Lấy giỏ hàng từ session
-        //    var cart = HttpContext.Session.GetString("cart");
-        //    var cartItems = string.IsNullOrEmpty(cart) ? new List<CartDetail>() : JsonConvert.DeserializeObject<List<CartDetail>>(cart) ?? new List<CartDetail>();
-
-        //    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-        //    var existingProduct = cartItems.FirstOrDefault(item => item.ProductId == id);
-
-        //    // Nếu sản phẩm đã có trong giỏ hàng
-        //    if (existingProduct != null)
-        //    {
-        //        if (existingProduct.Quantity + productListQuantity > quantityInStock)
-        //        {
-        //            return Json(new { message = $"Số lượng yêu cầu vượt quá số lượng tồn kho. Tồn kho hiện tại: {quantityInStock}" });
-        //        }
-        //        existingProduct.Quantity += productListQuantity; // Cập nhật số lượng
-        //    }
-        //    else
-        //    {
-        //        // Nếu sản phẩm chưa có trong giỏ hàng
-        //        if (productListQuantity > quantityInStock)
-        //        {
-        //            return Json(new { message = $"Số lượng yêu cầu vượt quá số lượng tồn kho. Tồn kho hiện tại: {quantityInStock}" });
-        //        }
-        //        // Thêm sản phẩm vào giỏ hàng
-        //        cartItems.Add(new CartDetail
-        //        {
-        //            ProductId = product.Id,
-        //            Product = product, // Lưu toàn bộ đối tượng sản phẩm
-        //            Price = product.Price, // Đảm bảo Price có giá trị
-        //            Quantity = productListQuantity,
-        //        });
-        //    }
-
-        //    // Tính toán tổng tiền và tổng số lượng trong giỏ hàng
-        //    var total = cartItems.Sum(item => item.Price * item.Quantity);
-        //    var totalQuantity = cartItems.Sum(item => item.Quantity);
-
-        //    // Chuyển dữ liệu giỏ hàng thành DTO để trả lại cho view
-        //    var cartItemDTOs = cartItems
-        //        .Select(item => new CartItemDTO
-        //        {
-        //            ProductId = item.ProductId,
-        //            Name = item.Product?.Name, // Nếu Product null, trả về null
-        //            MainImg = item.Product?.MainImg, // Nếu Product null, trả về null
-        //            Price = item.Price,
-        //            Quantity = item.Quantity
-        //        })
-        //        .ToList();
-
-        //    // Cấu hình để bỏ qua vòng lặp tham chiếu khi serialize
-        //    JsonSerializerSettings settings = new JsonSerializerSettings
-        //    {
-        //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        //    };
-
-        //    // Lưu lại giỏ hàng trong session dưới dạng DTO để tránh vòng lặp khi serialize
-        //    HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cartItems, settings));
-
-        //    // Trả lại thông tin giỏ hàng
-        //    return Json(new
-        //    {
-        //        message = "Sản phẩm đã được thêm vào giỏ hàng!",
-        //        cart = cartItemDTOs,
-        //        total,
-        //        totalQuantity
-        //    });
-        //}
 
         public async Task<IActionResult> AddProductSession(int id, int productListQuantity = 1)
         {
@@ -197,7 +100,7 @@ namespace ThienAnFuni.Controllers
                 cartItems.Add(new CartDetail
                 {
                     ProductId = product.Id,
-                    Product = product, 
+                    Product = product,
                     Price = product.Price,
                     Quantity = productListQuantity
                 });
@@ -239,8 +142,6 @@ namespace ThienAnFuni.Controllers
         }
 
 
-
-
         public async Task<IActionResult> SearchProduct(string query)
         {
             var products = await _context.Products
@@ -280,34 +181,6 @@ namespace ThienAnFuni.Controllers
 
         // Phương thức xóa sản phẩm khỏi session giỏ hàng
         [HttpPost]
-        //public IActionResult RemoveProductFromSession(int id)
-        //{
-        //    // Lấy giỏ hàng từ session
-        //    var cart = HttpContext.Session.GetString("cart");
-        //    var cartItems = string.IsNullOrEmpty(cart)
-        //        ? new List<CartDetail>()
-        //        : JsonConvert.DeserializeObject<List<CartDetail>>(cart);
-
-        //    // Kiểm tra và xóa sản phẩm khỏi giỏ hàng
-        //    var item = cartItems.FirstOrDefault(i => i.ProductId == id);
-        //    if (item != null)
-        //    {
-        //        cartItems.Remove(item);
-        //        HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cartItems));
-        //    }
-
-        //    // Tính tổng tiền và tổng số lượng
-        //    var total = cartItems.Sum(item => item.Price * item.Quantity);
-        //    var totalQuantity = cartItems.Sum(item => item.Quantity);
-        //    return Json(new
-        //    {
-        //        cart = cartItems,
-        //        //total = $"{total:n0}₫",
-        //        total = total,
-        //        totalQuantity
-        //    });
-        //}
-
         public IActionResult RemoveProductFromSession(int id)
         {
             // Lấy giỏ hàng từ session
@@ -358,36 +231,88 @@ namespace ThienAnFuni.Controllers
         public async Task<IActionResult> CheckCustomer(string phone)
         {
             var customer = await _context.Customers
-                .FirstOrDefaultAsync(u => u.PhoneNumber == phone);
+                .FirstOrDefaultAsync(u => u.PhoneNumber.Equals(phone));
 
             return Json(new { exists = customer != null });
         }
 
         // Phương thức thêm khách hàng mới
+        //[HttpPost]
+        //public async Task<IActionResult> AddNewCustomer(string fullname, string phone)
+        //{
+        //    if (await _context.Users.AnyAsync(u => u.PhoneNumber == phone))
+        //        return Json(new { success = false, message = "Số điện thoại đã tồn tại" });
+
+        //    var customer = new Customer
+        //    {
+        //        FullName = fullname,
+        //        PhoneNumber = phone,
+        //        UserName = phone,
+        //        //Password = Helpers.PasswordHelper.HashPassword(phone)  // mật khẩu mặc định SĐT
+        //    };
+        //    // Tạo tài khoản cho khách hàng với mật khẩu mặc định là số điện thoại
+        //    var result = await _userManager.CreateAsync(customer, phone);
+
+        //    // Kiểm tra xem việc tạo tài khoản có thành công không
+        //    if (!result.Succeeded)
+        //    {
+        //        // Nếu không thành công, trả về lỗi
+        //        return Json(new { success = false, message = "Lỗi khi tạo tài khoản: " + string.Join(", ", result.Errors.Select(e => e.Description)) });
+        //    }
+
+        //    _context.Users.Add(customer);
+        //    await _context.SaveChangesAsync();
+
+        //    return Json(new { success = true, customer });
+        //}
+
         [HttpPost]
         public async Task<IActionResult> AddNewCustomer(string fullname, string phone)
         {
+            // Kiểm tra xem số điện thoại đã tồn tại trong cơ sở dữ liệu chưa
             if (await _context.Users.AnyAsync(u => u.PhoneNumber == phone))
                 return Json(new { success = false, message = "Số điện thoại đã tồn tại" });
 
+            // Khởi tạo đối tượng Customer
             var customer = new Customer
             {
                 FullName = fullname,
                 PhoneNumber = phone,
-                Username = phone,
-                Password = Helpers.PasswordHelper.HashPassword(phone)  // mật khẩu mặc định SĐT
+                UserName = phone, // Sử dụng số điện thoại làm tên đăng nhập
             };
+            // MK: !aK + phone
 
-            _context.Users.Add(customer);
+            // Tạo tài khoản cho khách hàng với mật khẩu mặc định là số điện thoại
+            var result = await _userManager.CreateAsync(customer, "!aK" + phone);
+
+            // Kiểm tra xem việc tạo tài khoản có thành công không
+            if (!result.Succeeded)
+            {
+                // Tạo thông báo lỗi với các lỗi từ Identity
+                var errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+
+                // Trả về lỗi với mã trạng thái 400 và thông điệp lỗi
+                return BadRequest(new { success = false, message = "Lỗi khi tạo tài khoản: " + errorMessage });
+            }
+
+            // Không cần thêm lại vào _context.Users nếu CreateAsync đã thành công
             await _context.SaveChangesAsync();
 
+            // Trả về thông tin khách hàng nếu thành công
             return Json(new { success = true, customer });
         }
 
         // Phương thức tạo đơn hàng
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(string customerPhone, string address, string paymentMethod, string note)
+        public async Task<IActionResult> CreateOrder(string customerPhone, string address, int paymentMethod, string note)
         {
+            //VALIDATE
+            if (string.IsNullOrEmpty(customerPhone))
+                return Json(new { error = "Số điện thoại khách hàng không được để trống" });
+
+            if (string.IsNullOrEmpty(address))
+                return Json(new { error = "Địa chỉ không được để trống" });
+
             var customer = await _context.Users
                 .FirstOrDefaultAsync(u => u.PhoneNumber == customerPhone);
 
@@ -410,15 +335,16 @@ namespace ThienAnFuni.Controllers
 
             try
             {
-                // Lấy UserId từ ClaimsPrincipal và chuyển đổi thành int?
-                var saleStaffIdString = User.Identity.GetUserId();  // Lấy UserId dạng string
-                int? saleStaffId = 1;
 
-                // Cố gắng chuyển đổi UserId sang int?, nếu không thành công thì giữ giá trị null
-                if (int.TryParse(saleStaffIdString, out int saleStaff))
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
                 {
-                    saleStaffId = saleStaff;
+                    return Unauthorized("Không tìm thấy người dùng hiện tại.");
                 }
+
+                // Lấy danh sách các role của người dùng hiện tại
+                var userRoles = await _userManager.GetRolesAsync(user);
 
                 var order = new Order
                 {
@@ -430,12 +356,28 @@ namespace ThienAnFuni.Controllers
                     OrderDate = DateTime.Now,
                     Note = note ?? "",
                     PaymentMethod = paymentMethod,
-                    PaymentStatus = "Đã thanh toán",
-                    InvoiceNumber = "HD" + DateTime.Now.ToString("yyMMddHHmmss"),
+                    PaymentStatus = (int?)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD" + DateTime.Now.ToString("yyMMddHHmmss") + customer.Id,
                     InvoiceDate = DateTime.Now,
-                    SaleStaffId = saleStaffId,  // Cần kiểm tra xem admin đã đăng nhập chưa
-                    OrderStatus = (int)Helpers.ConstHelper.OrderStatus.Success
+                    SaleStaffId = userId,  // Có cần kiểm tra xem admin đã đăng nhập ?
+                    ManagerId = userId,
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending
+
                 };
+
+
+                // Kiểm tra nếu người dùng là SaleStaff
+                if (userRoles.Contains(ConstHelper.RoleSaleStaff))
+                {
+                    order.SaleStaffId = userId;
+                    order.ManagerId = null; // Đảm bảo rằng ManagerId không được gán
+                }
+                // Kiểm tra nếu người dùng là Manager
+                else if (userRoles.Contains(ConstHelper.RoleManager))
+                {
+                    order.ManagerId = userId;
+                    order.SaleStaffId = null; // Đảm bảo rằng SaleStaffId không được gán
+                }
 
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();

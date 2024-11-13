@@ -20,7 +20,7 @@ namespace ThienAnFuni.Models
 
         public int SupplierId { get; set; }
         public virtual Supplier? Supplier { get; set; }
-        public int ManagerId { get; set; }
+        public string ManagerId { get; set; }
         public virtual Manager? Manager { get; set; }
         public virtual ICollection<Goods> Goods { get; set; } = new List<Goods>();
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ThienAnFuni.Models
 {
@@ -18,15 +19,18 @@ namespace ThienAnFuni.Models
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public int OrderStatus { get; set; }
-        public string PaymentMethod { get; set; } = string.Empty;
-        public string? PaymentStatus { get; set; }
+        public int PaymentMethod { get; set; }
+        public int? PaymentStatus { get; set; }
         public string? InvoiceNumber { get; set; }
         public DateTime? InvoiceDate { get; set; }
 
-        public int? CustomerId { get; set; }
+        public string? CustomerId { get; set; }
         public virtual Customer? Customer { get; set; }
-        public int? SaleStaffId { get; set; }
+
+        public string? SaleStaffId { get; set; }
         public virtual SaleStaff? SaleStaff { get; set; }
+        public string? ManagerId { get; set; }
+        public virtual Manager? Manager { get; set; }
         public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }

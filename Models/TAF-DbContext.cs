@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Helpers;
 
 namespace ThienAnFuni.Models
 {
-    public class TAF_DbContext : DbContext
+    public class TAF_DbContext : IdentityDbContext<User>
     {
         public TAF_DbContext(DbContextOptions<TAF_DbContext> options)
         : base(options)
@@ -25,91 +27,102 @@ namespace ThienAnFuni.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            // Sử dụng PasswordHasher để mã hóa mật khẩu khi tạo người dùng mẫu
+            var passwordHasher = new PasswordHasher<User>();
+
             modelBuilder.Entity<Manager>().HasData(
-            new Manager
-            {
-                Id = 1,
-                Username = "sinoo",
-                Password = PasswordHelper.HashPassword("123456"),
-                FullName = "Sinoo",
-                PhoneNumber = "0123456789",
-                Address = "123 Main St",
-                Gender = "Nam",
-                DateOfBirth = new DateTime(2004, 5, 12),
-                CitizenId = "123456789"
-            },
-            new Manager
-            {
-                Id = 2,
-                Username = "vyvy",
-                FullName = "Nu Thao Vy",
-                Password = PasswordHelper.HashPassword("123456"),
-                PhoneNumber = "0987654321",
-                Address = "456 Another St",
-                Gender = "Nữ",
-                DateOfBirth = new DateTime(2004, 8, 25),
-                CitizenId = "987654321"
-            }
-                );
+                new Manager
+                {
+                    Id = "1",
+                    UserName = "sinoo",
+                    NormalizedUserName = "SINOO",
+                    PasswordHash = passwordHasher.HashPassword(null, "123456"), // Sử dụng PasswordHasher
+                    FullName = "Sinoo",
+                    PhoneNumber = "0123456789",
+                    Address = "123 Main St",
+                    Gender = "Nam",
+                    DateOfBirth = new DateTime(2004, 5, 12),
+                    CitizenId = "123456789",
+                    IsActive = true
+                },
+                new Manager
+                {
+                    Id = "2",
+                    UserName = "vyvy",
+                    NormalizedUserName = "VYVY",
+                    PasswordHash = passwordHasher.HashPassword(null, "123456"),
+                    FullName = "Nu Thao Vy",
+                    PhoneNumber = "0987654321",
+                    Address = "456 Another St",
+                    Gender = "Nữ",
+                    DateOfBirth = new DateTime(2004, 8, 25),
+                    CitizenId = "987654321",
+                    IsActive = true
+                }
+            );
 
             modelBuilder.Entity<SaleStaff>().HasData(
-            new SaleStaff
-            {
-                Id = 3,
-                Username = "tramanh",
-                Password = PasswordHelper.HashPassword("123456"),
-                FullName = "Huynh Thị Trâm Anh",
-                PhoneNumber = "0123456789",
-                Address = "123 Sóc Trăng",
-                Gender = "Nữ",
-                DateOfBirth = new DateTime(1995, 5, 12),
-                CitizenId = "999456789",
-                IssuingDate = new DateTime(2015, 5, 12),
-                IssuingPlace = "Sóc Trăng"
-
-            },
-            new SaleStaff
-            {
-                Id = 4,
-                Username = "vanminh",
-                FullName = "Nguyễn Văn Minh",
-                Password = PasswordHelper.HashPassword("123456"),
-                PhoneNumber = "0987654321",
-                Address = "456 An Giang",
-                Gender = "Nam",
-                DateOfBirth = new DateTime(1990, 8, 25),
-                CitizenId = "9876234521",
-                IssuingDate = new DateTime(2015, 8, 25),
-                IssuingPlace = "An Giang"
-            }
-                );
+                new SaleStaff
+                {
+                    Id = "3",
+                    UserName = "tramanh",
+                    NormalizedUserName = "TRAMANH",
+                    PasswordHash = passwordHasher.HashPassword(null, "123456"),
+                    FullName = "Huynh Thị Trâm Anh",
+                    PhoneNumber = "0123456789",
+                    Address = "123 Sóc Trăng",
+                    Gender = "Nữ",
+                    DateOfBirth = new DateTime(1995, 5, 12),
+                    CitizenId = "999456789",
+                    IsActive = true
+                },
+                new SaleStaff
+                {
+                    Id = "4",
+                    UserName = "vanminh",
+                    NormalizedUserName = "VANMINH",
+                    PasswordHash = passwordHasher.HashPassword(null, "123456"),
+                    FullName = "Nguyễn Văn Minh",
+                    PhoneNumber = "0987654321",
+                    Address = "456 An Giang",
+                    Gender = "Nam",
+                    DateOfBirth = new DateTime(1990, 8, 25),
+                    CitizenId = "9876234521",
+                    IsActive = true
+                }
+            );
 
             modelBuilder.Entity<Customer>().HasData(
-               new Customer
-               {
-                   Id = 5,
-                   Username = "hongdaocus",
-                   Password = PasswordHelper.HashPassword("123456"),
-                   FullName = "Huỳnh Hồng Đào",
-                   PhoneNumber = "012322289",
-                   Address = "123 Kiên Giang",
-                   Gender = "Nữ",
-                   DateOfBirth = new DateTime(1995, 5, 12),
+                new Customer
+                {
+                    Id = "5",
+                    UserName = "hongdaocus",
+                    NormalizedUserName = "HONGDAOCUS",
+                    PasswordHash = passwordHasher.HashPassword(null, "123456"),
+                    FullName = "Huỳnh Hồng Đào",
+                    PhoneNumber = "012322289",
+                    Address = "123 Kiên Giang",
+                    Gender = "Nữ",
+                    DateOfBirth = new DateTime(1995, 5, 12),
+                    IsActive = true
+                },
+                new Customer
+                {
+                    Id = "6",
+                    UserName = "teoemcus",
+                    NormalizedUserName = "TEOEMCUS",
+                    PasswordHash = passwordHasher.HashPassword(null, "123456"),
+                    FullName = "Nguyễn Văn Tèo",
+                    PhoneNumber = "0987111321",
+                    Address = "456 Hậu Giang",
+                    Gender = "Nam",
+                    DateOfBirth = new DateTime(1990, 8, 25),
+                    IsActive = true
+                }
+            );
 
-
-               },
-               new Customer
-               {
-                   Id = 6,
-                   Username = "teoemcus",
-                   FullName = "Nguyễn Văn Tèo",
-                   Password = PasswordHelper.HashPassword("123456"),
-                   PhoneNumber = "0987111321",
-                   Address = "456 Hậu Giang",
-                   Gender = "Nam",
-                   DateOfBirth = new DateTime(1990, 8, 25),
-               }
-               );
 
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Phòng khách", IsActive = true },
