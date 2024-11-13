@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ThienAnFuni.Models;
+using ThienAnFuni.Helpers;
 
 namespace ThienAnFuni.Controllers
 {
@@ -29,7 +30,7 @@ namespace ThienAnFuni.Controllers
                 .Include(o => o.Customer)
                 .Include(o => o.OrderDetails)
                     .ThenInclude(d => d.Product)
-                .Where(o => o.OrderStatus == (int)Helpers.ConstHelper.OrderStatus.Pending) 
+                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending)
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
 
@@ -38,7 +39,7 @@ namespace ThienAnFuni.Controllers
                 .Include(o => o.Customer)
                 .Include(o => o.OrderDetails)
                     .ThenInclude(d => d.Product)
-                .Where(o => o.OrderStatus == (int)Helpers.ConstHelper.OrderStatus.Success) 
+                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
 
@@ -55,7 +56,7 @@ namespace ThienAnFuni.Controllers
 
             //  -1 là "reject"
             var rejectOrders = await _context.Orders
-                .Where(o => o.OrderStatus == (int)Helpers.ConstHelper.OrderStatus.Reject)
+                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Reject)
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
             ViewBag.RejectOrders = rejectOrders;
@@ -70,6 +71,7 @@ namespace ThienAnFuni.Controllers
             // Lấy chi tiết đơn hàng dựa vào orderId
             var order = await _context.Orders
                 .Include(o => o.SaleStaff)
+                .Include(o => o.Manager)
                 .Include(o => o.Customer)
                 .Include(o => o.OrderDetails)
                     .ThenInclude(d => d.Product)

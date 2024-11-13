@@ -10,6 +10,7 @@
         public string? Degree { get; set; } = string.Empty;
 
         public void ChangeInfo() { }
+        public virtual ICollection<Order>? Orders { get; set; }
         public virtual List<Shipment>? Shipments { get; set; }
         public virtual List<Category>? Categories { get; set; }
     }

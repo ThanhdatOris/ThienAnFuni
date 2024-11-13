@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using ThienAnFuni.Data;
 using ThienAnFuni.Helpers;
 using ThienAnFuni.Models;
@@ -99,7 +100,7 @@ namespace ThienAnFuni.Controllers
                 cartItems.Add(new CartDetail
                 {
                     ProductId = product.Id,
-                    Product = product, 
+                    Product = product,
                     Price = product.Price,
                     Quantity = productListQuantity
                 });
@@ -230,7 +231,7 @@ namespace ThienAnFuni.Controllers
         public async Task<IActionResult> CheckCustomer(string phone)
         {
             var customer = await _context.Customers
-                .FirstOrDefaultAsync(u => u.PhoneNumber.Equals( phone));
+                .FirstOrDefaultAsync(u => u.PhoneNumber.Equals(phone));
 
             return Json(new { exists = customer != null });
         }
@@ -303,8 +304,15 @@ namespace ThienAnFuni.Controllers
 
         // Phương thức tạo đơn hàng
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(string customerPhone, string address, string paymentMethod, string note)
+        public async Task<IActionResult> CreateOrder(string customerPhone, string address, int paymentMethod, string note)
         {
+            //VALIDATE
+            if (string.IsNullOrEmpty(customerPhone))
+                return Json(new { error = "Số điện thoại khách hàng không được để trống" });
+
+            if (string.IsNullOrEmpty(address))
+                return Json(new { error = "Địa chỉ không được để trống" });
+
             var customer = await _context.Users
                 .FirstOrDefaultAsync(u => u.PhoneNumber == customerPhone);
 
@@ -327,15 +335,16 @@ namespace ThienAnFuni.Controllers
 
             try
             {
-                // Lấy UserId từ ClaimsPrincipal và chuyển đổi thành int?
-                var saleStaffIdString = User.Identity.GetUserId();  // Lấy UserId dạng string
-                int? saleStaffId = null;
 
-                // Cố gắng chuyển đổi UserId sang int?, nếu không thành công thì giữ giá trị null
-                if (int.TryParse(saleStaffIdString, out int saleStaff))
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
                 {
-                    saleStaffId = saleStaff;
+                    return Unauthorized("Không tìm thấy người dùng hiện tại.");
                 }
+
+                // Lấy danh sách các role của người dùng hiện tại
+                var userRoles = await _userManager.GetRolesAsync(user);
 
                 var order = new Order
                 {
@@ -347,12 +356,28 @@ namespace ThienAnFuni.Controllers
                     OrderDate = DateTime.Now,
                     Note = note ?? "",
                     PaymentMethod = paymentMethod,
-                    PaymentStatus = "Đã thanh toán",
-                    InvoiceNumber = "HD" + DateTime.Now.ToString("yyMMddHHmmss"),
+                    PaymentStatus = (int?)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD" + DateTime.Now.ToString("yyMMddHHmmss") + customer.Id,
                     InvoiceDate = DateTime.Now,
-                    SaleStaffId = saleStaffIdString,  // Cần kiểm tra xem admin đã đăng nhập chưa
-                    OrderStatus = (int)Helpers.ConstHelper.OrderStatus.Success
+                    SaleStaffId = userId,  // Có cần kiểm tra xem admin đã đăng nhập ?
+                    ManagerId = userId,
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending
+
                 };
+
+
+                // Kiểm tra nếu người dùng là SaleStaff
+                if (userRoles.Contains(ConstHelper.RoleSaleStaff))
+                {
+                    order.SaleStaffId = userId;
+                    order.ManagerId = null; // Đảm bảo rằng ManagerId không được gán
+                }
+                // Kiểm tra nếu người dùng là Manager
+                else if (userRoles.Contains(ConstHelper.RoleManager))
+                {
+                    order.ManagerId = userId;
+                    order.SaleStaffId = null; // Đảm bảo rằng SaleStaffId không được gán
+                }
 
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();

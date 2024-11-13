@@ -29,12 +29,13 @@
                     <!-- admin -->
                     <div class="form-group col-md-3">
                         <label class="control-label">Nhân viên bán hàng</label>
-                        <input class="form-control" type="text" value="@Model.SaleStaff?.FullName" disabled>
+                        <input class="form-control" type="text" value="@((Model.SaleStaff?.FullName ?? Model.Manager?.FullName) ?? "Không có nhân viên")" disabled>
+
                     </div>
 
                     <!-- khách hàng -->
                     <div class="form-group col-md-3">
-                        <label class="control-label">khách hàng</label>
+                        <label class="control-label">Khách hàng</label>
                         <input class="form-control" type="text" value="@Model.Customer?.FullName" disabled>
                     </div>
                 </div>
@@ -48,18 +49,57 @@
                         <input class="form-control" type="text" value="#@Model.Id" disabled>
                     </div>
 
+                    <!-- Trạng thái đơn hàng-->
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Trạng thái đơn hàng</label>
+                        <input class="form-control" type="text" value="@ConstHelper.GetOrderStatus((ConstHelper.OrderStatus)Model.OrderStatus)" disabled>
+
+                    </div>
+
                     <!-- Ngày tạo -->
                     <div class="form-group col-md-3">
-                        <label class="control-label">Ngày tạo</label>
+                        <label class="control-label">Ngày đặt hàng</label>
                         <input class="form-control" type="text" value="@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")" disabled>
                     </div>
+                </div>
+                <div class="row">
+
+                    <!-- Mã hóa đơn -->
+                    <div class="form-group col-md-5">
+                        <label class="control-label">Mã hóa đơn</label>
+                        <input class="form-control" type="text" value="#@Model.InvoiceNumber" disabled>
+                    </div>
+
+                    <!-- Ngày tạo hóa đơn-->
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Ngày tạo hóa đơn</label>
+                        <input class="form-control" type="text"
+                               value="@(Model.InvoiceDate.HasValue ? Model.InvoiceDate.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")"
+                               disabled>
+
+                    </div>
+             
 
                     <!-- Tổng tiền -->
                     <div class="form-group col-md-2">
                         <label class="control-label">Tổng tiền</label>
                         <input class="form-control" type="text" value="@CurrencyHelper.FormatCurrencyVNĐ(Model.TotalPrice)" disabled>
                     </div>
+
+                    <!-- Phương thức thanh toán -->
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Phương thức thanh toán</label>
+                        <input class="form-control" type="text" value="@ConstHelper.GetPaymentStatus((ConstHelper.PaymentStatus)Model.PaymentStatus)" disabled>
+                    </div>
+
+                    <!-- Trạng thái thanh toán -->
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Trạng thái thanh toán</label>
+                        <input class="form-control" type="text" value="@ConstHelper.GetPaymentMethod((ConstHelper.PaymentMethod)Model.PaymentMethod)" disabled>
+                    </div>
                 </div>
+
+
 
                 <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
                        id="sampleTable">

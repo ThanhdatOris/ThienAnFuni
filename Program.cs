@@ -4,8 +4,6 @@ using ThienAnFuni.Models;
 using ThienAnFuni.Helpers;
 var builder = WebApplication.CreateBuilder(args);
 
-
-
 // Load configurations from appsettings.json and appsettings.Local.json
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
