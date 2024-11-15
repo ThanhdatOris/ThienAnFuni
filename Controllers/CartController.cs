@@ -19,6 +19,8 @@ namespace ThienAnFuni.Controllers
             _context = context;
         }
 
+       
+
         [HttpPost]
         public async Task<IActionResult> AddToCart(int id, int quantity = 1)
         {

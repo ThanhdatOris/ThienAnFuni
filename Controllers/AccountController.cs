@@ -18,6 +18,14 @@ namespace ThienAnFuni.Controllers
         }
         public IActionResult Index()
         {
+            // Kiểm tra xem người dùng đã đăng nhập chưa
+            if (!User.Identity.IsAuthenticated)
+            // Chưa đăng nhập => đk là T => thực hiện if
+            // Đăng nhập => đk là F => bỏ qua if
+            {
+                // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập và lưu lại trang người dùng muốn vào (nếu có)
+                return RedirectToAction("Login", "Account", new { ReturnUrl = "/Checkout/Index" });
+            }
             return View();
         }
 
@@ -77,13 +85,43 @@ namespace ThienAnFuni.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            // Lưu lại URL người dùng muốn truy cập sau khi đăng nhập
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+            //if (ModelState.IsValid)
+            //{
+            //    var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+            //    if (result.Succeeded)
+            //    {
+            //        var user = await _userManager.FindByNameAsync(model.Username);
+            //        var roles = await _userManager.GetRolesAsync(user); // Lấy tất cả vai trò của người dùng
+
+            //        // Điều hướng người dùng theo vai trò
+            //        if (roles.Contains(ConstHelper.RoleManager))
+            //        {
+            //            return RedirectToAction("Index", "AdminOrders");
+            //        }
+            //        else if (roles.Contains(ConstHelper.RoleSaleStaff))
+            //        {
+            //            return RedirectToAction("Index", "AdminOrders");
+            //        }
+            //        else if (roles.Contains(ConstHelper.RoleCustomer))
+            //        {
+            //            return RedirectToAction("Index", "Home");
+            //        }
+
+            //        return RedirectToAction("Index", "Home");
+            //    }
+            //    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
+            //}
+
+
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
@@ -103,7 +141,8 @@ namespace ThienAnFuni.Controllers
                     }
                     else if (roles.Contains(ConstHelper.RoleCustomer))
                     {
-                        return RedirectToAction("Index", "Home");
+                        // Nếu có returnUrl, điều hướng đến URL đó
+                        return Redirect(returnUrl ?? "/Home/Index");
                     }
 
                     return RedirectToAction("Index", "Home");

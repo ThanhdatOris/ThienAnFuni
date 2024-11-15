@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ThienAnFuni.Models.Order>
+
+@{
+    ViewData["Title"] = "Đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section breadcrumb {
+    <section class="breadcrumb-section set-bg" data-setbg="/customerThienAn/img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Order Shop</h2>
+                        <div class="breadcrumb__option">
+                            <a href="./index.html">Order</a>
+                            <span>Shop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product text-center">Mã ĐH</th>
+                                <th>Ngày đặt</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                            <tr>
+                                <td>#1</td>
+                                <td>14/11/2024</td>
+                                <td>30.000.000đ</td>
+                                <td class="font-weight-bold  text-warning">Đang xử lý</td>
+                                <td class="shoping__cart__item__close d-flex justify-content-center align-items-center">
+                                    <a class="btn btn-info" href="{{ route('customer.order.show', $order->id) }}">Chi tiết</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="shoping__cart__btns">
+                    <a asp-controller="Shop" asp-action="Index" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+<!-- Shoping Cart Section End -->
