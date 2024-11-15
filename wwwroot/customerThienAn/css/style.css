@@ -576,7 +576,7 @@ ol {
             position: relative;
         }
 
-            .hero.hero-normal .hero__categories ul {
+            .hero.hero-normal .hero__categories>ul {
                 display: none;
                 position: absolute;
                 left: 0;
@@ -3632,7 +3632,7 @@ ol {
             color: #007bff;
             font-weight: bold;
             /*padding: 5px 10px;*/
-            display: block;
+            /*display: block;*/
         }
 
             .category-list > li > a:hover {
@@ -3643,19 +3643,19 @@ ol {
 
 .subcategories {
     padding-left: 20px;
-    margin-top: 5px;
+    /*margin-top: 5px;*/
     border: none !important;
 }
 
-.category-list > li:hover .subcategories {
+/*.category-list > li:hover .subcategories {
     display: block;
-}
-
+}*/
+    
 .subcategories li a {
     text-decoration: none;
     color: #6c757d;
     /*padding: 5px 10px;*/
-    display: block;
+    /*display: block;*/
 }
 
     .subcategories li a:hover {

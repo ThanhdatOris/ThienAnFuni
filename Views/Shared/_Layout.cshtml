@@ -42,26 +42,11 @@
             <div class="header__top__right__language">
                 <img src="/customerThienAn/img/vietnamese.jpg" width="20" alt="">
                 <div>Vietnamese</div>
-                <span class="arrow_carrot-down"></span>
+                @* <span class="arrow_carrot-down"></span> *@
                 <ul>
                     <li><a href="#">Vietnamese</a></li>
                 </ul>
             </div>
-            @* <div class="header__top__right__auth">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <span>Hi, @User.Identity.Name</span>
-                    <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
-                        <button type="submit" class="btn p-1 text-danger font-weight-bold">
-                            <i class="fa fa-sign-out-alt"></i> Logout
-                        </button>
-                    </form>
-                }
-                else
-                {
-                    <a href="@Url.Action("Login", "Account")"><i class="fa fa-user"></i> Login</a>
-                }
-            </div> *@
 
             <div class="header__top__right__auth">
                 @if (User.Identity.IsAuthenticated)
@@ -147,26 +132,12 @@
                             <div class="header__top__right__language">
                                 <img src="/customerThienAn/img/vietnamese.jpg" width="30" alt="">
                                 <div>Vietnamese</div>
-                                <span class="arrow_carrot-down"></span>
+                                @* <span class="arrow_carrot-down"></span> *@
                                 <ul>
                                     <li><a href="#">Vietnamese</a></li>
                                 </ul>
                             </div>
-                            @* <div class="header__top__right__auth">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <span>Hi, @User.Identity.Name</span>
-                                    <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
-                                        <button type="submit" class="btn p-1 text-danger font-weight-bold">
-                                            <i class="fa fa-sign-out-alt"></i> Logout
-                                        </button>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <a href="@Url.Action("Login", "Account")"><i class="fa fa-user"></i> Login</a>
-                                }
-                            </div> *@
+                           
                             <div class="header__top__right__auth">
                                 @if (User.Identity.IsAuthenticated)
                                 {
@@ -179,7 +150,6 @@
                                             <i class="fa fa-cogs"></i> Admin Dashboard
                                         </a>
                                     }
-
 
                                     <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
                                         <button type="submit" class="btn p-1 text-danger font-weight-bold">
@@ -210,8 +180,12 @@
                     <nav class="header__menu">
                         @* Bê thằng ở trên xuống *@
                         <ul>
-                            <li class="active"><a href="@Url.ActionLink("Index","Home")">Trang chủ</a></li>
-                            <li><a asp-controller="Shop" asp-action="Index">Shop</a></li>
+                            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
+                                <a href="@Url.Action("Index", "Home")">Trang chủ</a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Shop"  ? "active" : "")">
+                                <a asp-controller="Shop" asp-action="Index">Shop</a>
+                            </li>
                             <li><a href="./contact.html">Đơn hàng</a></li>
                             <li><a href="./contact.html">Liên hệ</a></li>
                             <li><a asp-controller="adminProducts" asp-action="Index">Admin</a></li>
@@ -268,15 +242,12 @@
                     <div class="hero__search">
                         <div class="hero__search__form">
                             @* Xử lý tìm kiếm, cho nó sang 1 page riêng *@
-                            <form action="#">
-                                @*<div class="hero__search__categories">
-                                All Categories
-                                <span class="arrow_carrot-down"></span>
-                                </div> *@
-                                <input type="text" name="query" placeholder="Bạn muốn tìm gì?"
-                                       value="">
+                            <form action="@Url.Action("Index", "Shop")" method="get">
+                                @* <input type="text" name="query" placeholder="Bạn muốn tìm gì?" value=""> *@
+                                <input type="text" name="query" placeholder="Bạn muốn tìm gì?" value="@ViewContext.HttpContext.Request.Query["query"]">
                                 <button type="submit" class="site-btn">Tìm kiếm</button>
                             </form>
+
                         </div>
                         <div class="hero__search__phone">
                             <div class="hero__search__phone__icon">

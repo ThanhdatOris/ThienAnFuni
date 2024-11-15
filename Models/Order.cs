@@ -18,8 +18,8 @@ namespace ThienAnFuni.Models
         public string Address { get; set; } = string.Empty;
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
-        public int OrderStatus { get; set; }
-        public int PaymentMethod { get; set; }
+        public int? OrderStatus { get; set; }
+        public int? PaymentMethod { get; set; }
         public int? PaymentStatus { get; set; }
         public string? InvoiceNumber { get; set; }
         public DateTime? InvoiceDate { get; set; }

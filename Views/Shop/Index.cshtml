@@ -1,4 +1,8 @@
-﻿@model IEnumerable<Product>
+﻿@* @model IEnumerable<Product> *@
+ @using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@model IPagedList<Product>
 @{
     ViewData["Title"] = "Shop";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -199,7 +203,7 @@
                         </div>
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
-                                <h6><span>16</span> Products found</h6>
+                                <h6><span>@ViewBag.Count</span> Sản phẩm</h6>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-3">
@@ -232,12 +236,31 @@
 
                 </div>
                 @* Pagination *@
+
                 <div class="product__pagination">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+                             new PagedListRenderOptions
+                    {
+                        LinkToPreviousPageFormat = "<i class='fa fa-long-arrow-left'></i>",
+                        LinkToNextPageFormat = "<i class='fa fa-long-arrow-right'></i>",
+                        MaximumPageNumbersToDisplay = 3,
+                        DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                        DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                        Display = PagedListDisplayMode.IfNeeded,
+                        DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+                        LinkToIndividualPageFormat = "{0}"
+                    })
+                </div>
+
+
+           @*      <div class="product__pagination">
                     <a href="#">1</a>
                     <a href="#">2</a>
                     <a href="#">3</a>
                     <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                </div>
+                </div> *@
             </div>
         </div>
     </div>

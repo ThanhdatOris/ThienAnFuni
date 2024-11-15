@@ -13,24 +13,24 @@ namespace ThienAnFuni.ViewComponents
             _context = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-            var categories = await _context.Categories
-                .Where(c => c.IsActive && c.ParentId == null)
-                .Include(c => c.SubCategories)
-                .ToListAsync();
-
-            return View(categories);
-        }
-        //public IViewComponentResult Invoke()
+        //public async Task<IViewComponentResult> InvokeAsync()
         //{
-        //    var categories = _context.Categories
+        //    var categories = await _context.Categories
         //        .Where(c => c.IsActive && c.ParentId == null)
         //        .Include(c => c.SubCategories)
-        //        .ToList();
+        //        .ToListAsync();
 
         //    return View(categories);
         //}
+        public IViewComponentResult Invoke()
+        {
+            var categories = _context.Categories
+                .Where(c => c.IsActive && c.ParentId == null)
+                .Include(c => c.SubCategories)
+                .ToList();
+
+            return View(categories);
+        }
 
 
     }

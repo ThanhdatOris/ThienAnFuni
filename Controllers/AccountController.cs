@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
 using ThienAnFuni.ViewModels;
 using ThienAnFuni.Helpers;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 namespace ThienAnFuni.Controllers
 {
     public class AccountController : Controller
@@ -81,7 +83,38 @@ namespace ThienAnFuni.Controllers
         {
             return View();
         }
+
         [HttpPost]
+        //public async Task<IActionResult> Login(LoginViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+        //        if (result.Succeeded)
+        //        {
+        //            var user = await _userManager.FindByNameAsync(model.Username);
+        //            var roles = await _userManager.GetRolesAsync(user); // Lấy tất cả vai trò của người dùng
+
+        //            // Điều hướng người dùng theo vai trò
+        //            if (roles.Contains(ConstHelper.RoleManager))
+        //            {
+        //                return RedirectToAction("Index", "AdminOrders");
+        //            }
+        //            else if (roles.Contains(ConstHelper.RoleSaleStaff))
+        //            {
+        //                return RedirectToAction("Index", "AdminOrders");
+        //            }
+        //            else if (roles.Contains(ConstHelper.RoleCustomer))
+        //            {
+        //                return RedirectToAction("Index", "Home");
+        //            }
+
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
+        //    }
+        //    return View(model);
+        //}
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -90,7 +123,40 @@ namespace ThienAnFuni.Controllers
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.Username);
+
+                    // Kiểm tra nếu user không null và đảm bảo không có giá trị null cho các claim
+                    if (user == null)
+                    {
+                        ModelState.AddModelError("", "Người dùng không tồn tại.");
+                        return View(model);
+                    }
+
                     var roles = await _userManager.GetRolesAsync(user); // Lấy tất cả vai trò của người dùng
+
+                    // Tạo các claims cho người dùng
+                    var claims = new List<Claim>
+                    {
+                        // Kiểm tra nếu các giá trị không null
+                        new Claim(ClaimTypes.NameIdentifier, user.Id?.ToString() ?? "UnknownId"), 
+
+                        new Claim(ClaimTypes.Name, user.UserName ?? "UnknownName"), 
+
+                        new Claim(ClaimTypes.Email, user.Email ?? "UnknownEmail") 
+
+                    };
+
+                    // Thêm thông tin về role vào claims
+                    foreach (var role in roles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role)); // Thêm mỗi role vào claims
+                    }
+
+                    // Tạo ClaimsIdentity với các claims
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                    // Đăng nhập người dùng với các claims này
+                    await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
 
                     // Điều hướng người dùng theo vai trò
                     if (roles.Contains(ConstHelper.RoleManager))
@@ -112,6 +178,7 @@ namespace ThienAnFuni.Controllers
             }
             return View(model);
         }
+
 
 
 
