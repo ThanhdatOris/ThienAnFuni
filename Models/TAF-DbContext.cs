@@ -123,23 +123,22 @@ namespace ThienAnFuni.Models
                 }
             );
 
-
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Phòng khách", IsActive = true },
-                new Category { Id = 2, Name = "Ghế sofa", ParentId = 1, IsActive = true },
-                new Category { Id = 3, Name = "Bàn sofa", ParentId = 1, IsActive = true },
+                new Category { Id = 1, Name = "Phòng khách", Slug = "Phòng khách".ToSlug(), IsActive = true },
+                new Category { Id = 2, Name = "Ghế sofa", Slug = "Ghế sofa".ToSlug(), ParentId = 1, IsActive = true },
+                new Category { Id = 3, Name = "Bàn sofa", Slug = "Bàn sofa".ToSlug(), ParentId = 1, IsActive = true },
 
-                new Category { Id = 4, Name = "Phòng ngủ", IsActive = true },
-                new Category { Id = 5, Name = "Giường", ParentId = 4, IsActive = true },
-                new Category { Id = 6, Name = "Bàn Trang Điểm", ParentId = 4, IsActive = true },
+                new Category { Id = 4, Name = "Phòng ngủ", Slug = "Phòng ngủ".ToSlug(), IsActive = true },
+                new Category { Id = 5, Name = "Giường", Slug = "Giường".ToSlug(), ParentId = 4, IsActive = true },
+                new Category { Id = 6, Name = "Bàn Trang Điểm", Slug = "Bàn Trang Điểm".ToSlug(), ParentId = 4, IsActive = true },
 
-                new Category { Id = 7, Name = "Phòng làm việc", IsActive = true },
-                new Category { Id = 8, Name = "Bàn làm việc", ParentId = 7, IsActive = true },
-                new Category { Id = 9, Name = "Ghế văn phòng", ParentId = 7, IsActive = true },
+                new Category { Id = 7, Name = "Phòng làm việc", Slug = "Phòng làm việc".ToSlug(), IsActive = true },
+                new Category { Id = 8, Name = "Bàn làm việc", Slug = "Bàn làm việc".ToSlug(), ParentId = 7, IsActive = true },
+                new Category { Id = 9, Name = "Ghế văn phòng", Slug = "Ghế văn phòng".ToSlug(), ParentId = 7, IsActive = true },
 
-                new Category { Id = 10, Name = "Phòng ăn", IsActive = true },
-                new Category { Id = 11, Name = "Bàn ăn", ParentId = 10, IsActive = true },
-                new Category { Id = 12, Name = "Ghế ăn", ParentId = 10, IsActive = true }
+                new Category { Id = 10, Name = "Phòng ăn", Slug = "Phòng ăn".ToSlug(), IsActive = true },
+                new Category { Id = 11, Name = "Bàn ăn", Slug = "Bàn ăn".ToSlug(), ParentId = 10, IsActive = true },
+                new Category { Id = 12, Name = "Ghế ăn", Slug = "Ghế ăn".ToSlug(), ParentId = 10, IsActive = true }
             );
 
             modelBuilder.Entity<Supplier>().HasData(

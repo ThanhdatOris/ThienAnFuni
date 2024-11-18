@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ThienAnFuni.Helpers;
 using ThienAnFuni.Models;
 
 namespace ThienAnFuni.Controllers
 {
+    [Authorize(Roles = ConstHelper.RoleManager)]
     public class SaleStaffsController : Controller
     {
         private readonly TAF_DbContext _context;
@@ -181,7 +184,7 @@ namespace ThienAnFuni.Controllers
         // POST: SaleStaffs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 
@@ -189,6 +192,7 @@ namespace ThienAnFuni.Controllers
             if (saleStaff != null)
             {
                 saleStaff.IsActive = false; 
+                saleStaff.EndDate = DateTime.Now;
                 _context.SaleStaffs.Update(saleStaff); 
                 await _context.SaveChangesAsync();
             }

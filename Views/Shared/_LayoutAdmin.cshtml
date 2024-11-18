@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using ThienAnFuni.Helpers
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -109,9 +110,11 @@
         <ul class="app-nav">
             <!-- User Menu-->
             <li>
-                <a class="app-nav__item" href="@Url.Action("Index", "Home")">
-                    <i class='bx bx-log-out bx-rotate-180'></i>
-                </a>
+                <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
+                    <button type="submit" class="app-nav__item m-0">
+                        <i class='bx bx-log-out bx-rotate-180'></i>
+                    </button>
+                </form>
             </li>
         </ul>
     </header>
@@ -141,13 +144,16 @@
                     <span class="app-menu__label">Quản lý sản phẩm</span>
                 </a>
             </li>
-            <li>
-                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "SaleStaff" ? "active" : "")"
-                   asp-controller="SaleStaffs" asp-action="Index">
-                    <i class='app-menu__icon bx bx-id-card'></i>
-                    <span class="app-menu__label">Quản lý nhân viên</span>
-                </a>
-            </li>
+            @if (User.IsInRole(ConstHelper.RoleManager))
+                }
+                {
+                <li>
+                    <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "SaleStaff" ? "active" : "")"
+                       asp-controller="SaleStaffs" asp-action="Index">
+                        <i class='app-menu__icon bx bx-id-card'></i>
+                        <span class="app-menu__label">Quản lý nhân viên</span>
+                    </a>
+                </li>
             <li>
                 <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Customer" ? "active" : "")"
                    asp-controller="Customers" asp-action="Index">

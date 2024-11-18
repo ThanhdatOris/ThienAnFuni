@@ -1,0 +1,96 @@
+﻿@using ThienAnFuni.Helpers
+@model ThienAnFuni.ViewModels.CartViewModel
+@using ThienAnFuni.Extensions
+@{
+    ViewData["Title"] = "Tiến hành thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section breadcrumb {
+    <section class="breadcrumb-section set-bg" data-setbg="/customerThienAn/img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Thiên Ân Shop</h2>
+                        <div class="breadcrumb__option">
+                            <a href="./index.html">Home</a>
+                            <span>Shop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="checkout spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h6 class="mb-4"><span class="icon_tag_alt"></span>Bạn có phiếu giảm giá không? <a href="#">Bấm vào đây cũng không có đâu</a>
+                </h6>
+            </div>
+        </div>
+        <div class="checkout__form">
+            <h4>Chi tiết thanh toán</h4>
+            <form asp-action="CheckOutSV" method="POST">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="checkout__input">
+                            <p>Địa chỉ <span>*</span></p>
+                            <textarea class="form-control" name="address" id="address" rows="3" placeholder="Tên đường, Phường/Xã, Quận/Huyện, Tỉnh/Thành phố" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="checkout__order">
+                            <h4>Đơn hàng của bạn:</h4>
+                            <ul>
+                                @if (ViewBag.Cart != null && ((Dictionary<int, CartDetail>)ViewBag.Cart).Count > 0)
+                                {
+                                    var cart = (Dictionary<int, CartDetail>)ViewBag.Cart;
+                                    foreach (var item in cart)
+                                    {
+                                        <li class="d-flex justify-content-between align-items-start">
+                                            <span>@item.Value.Product.Name</span>
+                                            <span class="text-danger">x@(@item.Value.Quantity)</span>
+                                            <span>@((item.Value.Price * item.Value.Quantity).ToString("C0", new System.Globalization.CultureInfo("vi-VN")))</span>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>Không có sản phẩm nào trong giỏ hàng.</li>
+                                }
+                            </ul>
+
+                            <div class="checkout__order__total">
+                                Tổng tiền:
+                                <span>
+                                    @(ViewBag.Total.ToString("C0", new System.Globalization.CultureInfo("vi-VN")))
+                                </span>
+                            </div>
+
+
+                            <div class="form-group d-flex flex-column">
+                                <label for="paymentMethod">Phương thức thanh toán <span class="text-danger d-lg-inline">*</span></label>
+                                <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                                    <option value="@( (int)ConstHelper.PaymentMethod.Cash )">Tiền mặt tại quầy</option>
+                                    <option value="@( (int)ConstHelper.PaymentMethod.Bank_transfer )">Chuyển khoản ngân hàng</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="note">Ghi chú</label>
+                                <textarea class="form-control" name="note" placeholder="Ghi chú về đơn hàng hoặc vận chuyển..."></textarea>
+                            </div>
+
+                            <button type="submit" class="site-btn">Đặt hàng</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>

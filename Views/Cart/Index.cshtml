@@ -1,0 +1,158 @@
+﻿@model ThienAnFuni.ViewModels.CartViewModel
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+@section breadcrumb {
+    <section class="breadcrumb-section set-bg" data-setbg="/customerThienAn/img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Cart Shop</h2>
+                        <div class="breadcrumb__option">
+                            <a href="./index.html">Cart</a>
+                            <span>Shop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ảnh</th>
+                                <th>Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.CartItems.Count > 0)
+                            {
+                                foreach (var item in Model.CartItems)
+                                {
+                                    var id = item.Key;
+                                    var details = item.Value;
+                                    <tr>
+                                        <td class="shoping__cart__item" style="width: 200px;">
+                                            <img src="@Url.Content("~/adminThienAn/image_product/"+ @details.Product.MainImg ?? "~/adminThienAn/image_product/default.png")" alt="@details.Product.Name" style="width: 100px; height: auto;">
+                                        </td>
+                                        <td class="shoping__cart__item" style="width: 300px;">
+                                            <h5>@details.Product.Name</h5>
+                                        </td>
+                                        <td class="shoping__cart__price" style="width: 135px;">
+                                            @details.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))
+                                        </td>
+                                        <td class="h-20">
+                                            <div class="quantity">
+                                                <div class="pro-qty">
+                                                    <input disabled type="number" class="quantity-input" data-id="@id" value="@details.Quantity" min="1" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="shoping__cart__total" id="product-total-@id" style="width: 135px;">
+                                            @((details.Price * details.Quantity).ToString("C0", new System.Globalization.CultureInfo("vi-VN")))
+                                        </td>
+                                        <td>
+                                            <form method="post" asp-action="RemoveProSession" asp-route-id="@id">
+                                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="6" class="text-center">Giỏ hàng của bạn đang trống.</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a asp-controller="Shop" asp-action="Index" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Tổng giỏ hàng</h5>
+                    <ul>
+                        <li>Tổng giá (đã tính VAT): <span id="cart-total">@Model.Total.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span></li>
+                    </ul>
+                    <a asp-controller="Cart" asp-action="CheckOutPro" class="primary-btn w-100">TIẾN HÀNH THANH TOÁN</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shoping Cart Section End -->
+
+@section Scripts {
+
+    <script>
+        $('.pro-qty input').on('change', function () {
+            var id = $(this).data('id'); // Giả sử mỗi input có data-id để xác định sản phẩm
+            var quantity = $(this).val();
+
+            $.ajax({
+                url: `Cart/UpdateCart`,
+                method: 'POST',
+                data: {
+                    id: id,
+                    quantity: quantity
+                },
+                success: function (response) {
+                    if (response.error) {
+                        // Nếu có lỗi từ server (như hết hàng, vượt quá số lượng)
+                        swal({
+                            title: "Lỗi khi thêm sản phẩm",
+                            text: response.error,
+                            icon: "error",
+                            button: "OK",
+                        });
+                    } else {
+                        // Cập nhật tổng giá của sản phẩm và giỏ hàng
+                        $('#product-total-' + id).text(response.productTotal);
+                        $('#cart-total').text(response.total);
+                        $('.span__quantity_cart').text(response.totalQuantity);
+                        $('.header__cart__price').html("Tổng tiền: <span>" + response.total + "</span>");
+
+                        // Hiển thị thông báo thành công
+                        swal({
+                            title: "Cập nhật thành công!",
+                            text: "Giỏ hàng của bạn đã được cập nhật.",
+                            icon: "success",
+                            button: "OK",
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error) {
+                        alert(xhr.responseJSON.error);
+                    } else {
+                        alert('Đã xảy ra lỗi. Vui lòng thử lại!');
+                    }
+                }
+            });
+        });
+    </script>
+}

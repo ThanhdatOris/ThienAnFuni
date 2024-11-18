@@ -236,36 +236,6 @@ namespace ThienAnFuni.Controllers
             return Json(new { exists = customer != null });
         }
 
-        // Phương thức thêm khách hàng mới
-        //[HttpPost]
-        //public async Task<IActionResult> AddNewCustomer(string fullname, string phone)
-        //{
-        //    if (await _context.Users.AnyAsync(u => u.PhoneNumber == phone))
-        //        return Json(new { success = false, message = "Số điện thoại đã tồn tại" });
-
-        //    var customer = new Customer
-        //    {
-        //        FullName = fullname,
-        //        PhoneNumber = phone,
-        //        UserName = phone,
-        //        //Password = Helpers.PasswordHelper.HashPassword(phone)  // mật khẩu mặc định SĐT
-        //    };
-        //    // Tạo tài khoản cho khách hàng với mật khẩu mặc định là số điện thoại
-        //    var result = await _userManager.CreateAsync(customer, phone);
-
-        //    // Kiểm tra xem việc tạo tài khoản có thành công không
-        //    if (!result.Succeeded)
-        //    {
-        //        // Nếu không thành công, trả về lỗi
-        //        return Json(new { success = false, message = "Lỗi khi tạo tài khoản: " + string.Join(", ", result.Errors.Select(e => e.Description)) });
-        //    }
-
-        //    _context.Users.Add(customer);
-        //    await _context.SaveChangesAsync();
-
-        //    return Json(new { success = true, customer });
-        //}
-
         [HttpPost]
         public async Task<IActionResult> AddNewCustomer(string fullname, string phone)
         {

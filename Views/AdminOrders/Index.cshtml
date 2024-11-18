@@ -1,9 +1,9 @@
-﻿@{
+﻿@model ThienAnFuni.ViewModels.AdOrdersViewModel
+@using ThienAnFuni.Helpers
+@{
     ViewData["Title"] = "Quản lý đơn hàng";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-@using ThienAnFuni.Helpers
-
 
 <div class="app-title">
     <ul class="app-breadcrumb breadcrumb side">
@@ -26,25 +26,25 @@
                 <h3 class="text-center bg-warning py-2 mt-5">Đơn hàng chờ duyệt</h3>
                 <table class="table table-hover table-bordered" id="sampleTable">
                     <thead>
-                        <tr>
-                            <th width="20">Mã ĐH</th>
-                            <th width="190">Khách hàng</th>
-                            <th width="250">Địa chỉ</th>
-                            <th width="10" class="text-center">Tổng SL</th>
-                            <th width="220">Thời gian</th>
-                            <th width="100">Tổng giá</th>
-                            <th width="180">Trạng thái</th>
-                            <th width="200">Tính năng</th>
+                        <tr class="text-center">
+                            <th class="text-center" width="20">Mã</th>
+                            <th class="text-center" width="190">Khách hàng</th>
+                            <th class="text-center" width="250">Địa chỉ</th>
+                            <th class="text-center" width="10" class="text-center">SL</th>
+                            <th class="text-center" width="220">Thời gian</th>
+                            <th class="text-center" width="100">Tổng giá</th>
+                            <th class="text-center" width="180">Trạng thái</th>
+                            <th class="text-center" width="200"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (ViewBag.pendingOrders != null)
+                        @if (Model.PendingOrders != null && Model.PendingOrders.Any())
                         {
-                            @foreach (var order in ViewBag.pendingOrders)
+                            @foreach (var order in Model.PendingOrders)
                             {
                                 <tr class="text-center">
                                     <td class="text-center">@order.Id</td>
-                                    <td class="text-center">@order.Customer.FullName</td>
+                                    <td class="text-center">@order.Customer?.FullName</td>
                                     <td>@order.Address</td>
                                     <td class="text-center">@order.TotalQuantity</td>
                                     <td class="text-center">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
@@ -54,17 +54,25 @@
                             order.OrderStatus == (int)ConstHelper.OrderStatus.Pending ? "status-pending" :
                             "status-success"
                                                     )">
-                                        @(
-                                            order.OrderStatus switch
-                                            {
-                                                (int)ConstHelper.OrderStatus.Reject => "Bị từ chối",
-                                                (int)ConstHelper.OrderStatus.Pending => "Đang chờ xử lý",
-                                                (int)ConstHelper.OrderStatus.Success => "Thành công",
-                                                _ => "Không xác định"
-                                            })
+                                        @ConstHelper.GetOrderStatus((ConstHelper.OrderStatus)order.OrderStatus)
+
                                     </td>
-                                    <td class="text-center">
-                                        <a asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id" class="btn btn-primary btn-sm">Chi tiết</a>
+                                    <td class="table-td-center d-flex justify-content-center align-items-stretch gap-x-2">
+                                        @* Sửa thông tin Order *@
+                                        <button class="btn btn-primary btn-sm edit mr-1" type="button" title="Sửa" data-id="@order.Id" data-toggle="modal" data-target="#ModalUP">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        @* Chi tiết *@
+                                        <a class="btn btn-info btn-sm mx-1" asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                        @* Duyệt *@
+                                        <a class="btn text-white btn-success btn-sm mx-1 orderSuccess" data-id="@order.Id">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </a>
+                                        @* Hủy *@
+                                        <a class="btn btn-danger text-white btn-sm ml-1 deleteOrder" data-id="@order.Id">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </a>
+
                                     </td>
                                 </tr>
                             }
@@ -76,31 +84,31 @@
                             </tr>
                         }
                     </tbody>
-                    
+
                 </table>
                 <h3 class="text-center bg-success py-2 mt-5">Đơn hàng đã duyệt</h3>
                 <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
                        id="sampleTableSub">
                     <thead>
                         <tr class="text-center">
-                            <th width="20">Mã ĐH</th>
+                            <th width="20">Mã</th>
                             <th width="190" class="text-center">Khách hàng</th>
                             <th width="250" class="text-center">Địa chỉ</th>
-                            <th width="10" class="text-center">Tổng SL</th>
+                            <th width="10" class="text-center">SL</th>
                             <th width="220" class="text-center">Thời gian</th>
                             <th width="100" class="text-center">Tổng giá</th>
                             <th width="180" class="text-center">Trạng thái</th>
-                            <th width="200" class="text-center">Tính năng</th>
+                            <th width="200" class="text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (ViewBag.SuccessOrders != null)
+                        @if (Model.SuccessOrders != null && Model.SuccessOrders.Any())
                         {
-                            @foreach (var order in ViewBag.SuccessOrders)
+                            @foreach (var order in Model.SuccessOrders)
                             {
                                 <tr class="text-center">
                                     <td class="text-center">@order.Id</td>
-                                    <td class="text-center">@order.Customer.FullName</td>
+                                    <td class="text-center">@order.Customer?.FullName</td>
                                     <td>@order.Address</td>
                                     <td class="text-center">@order.TotalQuantity</td>
                                     <td class="text-center">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
@@ -110,17 +118,11 @@
                             order.OrderStatus == (int)ConstHelper.OrderStatus.Pending ? "status-pending" :
                             "status-success"
                                                     )">
-                                        @(
-                                            order.OrderStatus switch
-                                            {
-                                                (int)ConstHelper.OrderStatus.Reject => "Bị từ chối",
-                                                (int)ConstHelper.OrderStatus.Pending => "Đang chờ xử lý",
-                                                (int)ConstHelper.OrderStatus.Success => "Thành công",
-                                                _ => "Không xác định"
-                                            })
+                                        @ConstHelper.GetOrderStatus((ConstHelper.OrderStatus)order.OrderStatus)
                                     </td>
                                     <td class="text-center">
-                                        <a asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id" class="btn btn-primary btn-sm">Chi tiết</a>
+                                        @* Chi tiết *@
+                                        <a class="btn btn-info btn-sm " asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                                     </td>
                                 </tr>
                             }
@@ -138,8 +140,209 @@
     </div>
 </div>
 
+@* Modal *@
+<div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="true" data-keyboard="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <span class="thong-tin-thanh-toan">
+                            <h5>Chỉnh sửa địa chỉ khách hàng</h5>
+                        </span>
+                    </div>
+                </div>
+                <!-- Form cập nhật địa chỉ -->
+                <form id="updateOrderForm" method="POST">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="orderId" name="orderId">
+
+                    <div class="form-group  col-md-12">
+                        <label class="control-label">Địa chỉ giao hàng <span class="text-danger">*</span></label>
+                        <textarea id="address" name="address" class="form-control" rows="3" placeholder="Địa chỉ đơn hàng" required></textarea>
+                    </div>
+
+                    <div class="form-group  col-md-12">
+                        <label class="control-label">Ghi chú đơn hàng</label>
+                        <textarea id="note" name="note" class="form-control" rows="2" placeholder="Ghi chú thêm đơn hàng"></textarea>
+                    </div>
+
+                    <div class="form-group  col-md-12">
+                        <label class="control-label">Hình thức thanh toán</label>
+                        <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                            <option value="@( (int)ConstHelper.PaymentMethod.Cash )">Tiền mặt tại quầy</option>
+                            <option value="@( (int)ConstHelper.PaymentMethod.Bank_transfer )">Chuyển khoản ngân hàng</option>
+                        </select>
+                    </div>
+
+                    <br>
+                    <button type="submit" class="btn btn-save">Lưu lại</button>
+                    <a class="btn btn-cancel" data-dismiss="modal">Hủy bỏ</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".edit").on("click", function () {
+                var orderId = $(this).data('id');
+
+                $.ajax({
+                    url: '/AdminOrders/GetInfoEdit/' + orderId,
+                    type: 'GET',
+                    success: function (response) {
+                        $('#address').val(response.address);
+                        $('#note').val(response.note);
+                        $('#paymentMethod').val(response.paymentMethod);
+                        $('#orderId').val(orderId);
+
+                        // $('#ModalUP').modal('show');
+                    },
+                    error: function (xhr) {
+                        let errorMessage = "Có lỗi khi thực hiện";
+
+                        if (xhr.status === 404) {
+                            // Lấy thông báo lỗi từ JSON trả về nếu tồn tại
+                            let errorResponse = JSON.parse(xhr.responseText);
+                            errorMessage = errorResponse.error || errorMessage;
+                        }
+                        swal({
+                            title: "Lỗi",
+                            text: errorMessage,
+                            icon: "error",
+                            button: "Đóng",
+                        });
+                    }
+                });
+            });
+
+            $("#updateOrderForm").on("submit", function (e) {
+                e.preventDefault();
+                var orderId = $('#orderId').val();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: '/AdminOrders/Update/' + orderId,
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        swal({
+                            title: "Thành công",
+                            text: "Cập nhật đơn hàng thành công!",
+                            icon: "success",
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+
+                    },
+                    error: function (xhr) {
+                        swal({
+                            title: "Lỗi",
+                            text: "Cập nhật đơn hàng thất bại. Vui lòng thử lại!",
+                            icon: "error",
+                            button: "OK"
+                        });
+                    }
+                });
+            });
+
+
+            $('.orderSuccess').on('click', function () {
+                var orderId = $(this).data('id');
+
+                $.ajax({
+                    url: '/AdminOrders/ApproveOrder/' + orderId,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        orderId: orderId
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            swal({
+                                title: "Thành công",
+                                text: "Đơn hàng đã được cập nhật thành công!",
+                                icon: "success",
+                                button: "OK"
+                            })
+                                location.reload(); 
+                        } else {
+                            swal({
+                                title: "Cập nhật thất bại",
+                                text: response.message || "Có lỗi xảy ra, vui lòng thử lại!",
+                                icon: "error",
+                                button: "OK"
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        swal({
+                            title: "Lỗi",
+                            text: xhr.responseJSON.message || "Lỗi không xác định",
+                            icon: "error",
+                            button: "OK"
+                        });
+                    }
+                });
+            });
+
+
+            $('.deleteOrder').on("click", function () {
+                var orderId = $(this).data('id'); 
+
+                if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) {
+                    $.ajax({
+                        url: '/AdminOrders/CancelOrder/' + orderId,
+                        type: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // CSRF token
+                        },
+                        data: {
+                            orderId: orderId
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                swal({
+                                    title: "Thành công",
+                                    text: "Đơn hàng đã được hủy thành công!",
+                                    icon: "success",
+                                    button: "OK"
+                                });
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                swal({
+                                    title: "Lỗi",
+                                    text: "Hủy đơn hàng thất bại: " + response.message,
+                                    icon: "error",
+                                    button: "OK"
+                                });
+                            }
+                        },
+                        error: function (xhr) {
+                            swal({
+                                title: "Lỗi",
+                                text: "Hủy đơn hàng thất bại: " + xhr.responseJSON.message || 'Lỗi không xác định',
+                                icon: "error",
+                                button: "OK"
+                            });
+                        }
+                    });
+                }
+            });
+
+
+        });
+    </script>
     <style>
         .status-reject {
             color: red;
@@ -154,7 +357,6 @@
         .status-success {
             color: green;
             font-weight: bold;
-
         }
 
     </style>

@@ -66,9 +66,17 @@
                         </div>
                     }
 
+                @{
+                    var returnUrl = ViewData["ReturnUrl"] as string;
+                 }
                     <div class="container-login100-form-btn">
                         <button type="submit" class="btn btn-info w-100">Đăng nhập</button>
                     </div>
+                     @* Nếu có returnUrl, truyền nó vào dưới dạng input ẩn *@
+                        @if (returnUrl != null)
+                        {
+                            <input type="hidden" name="ReturnUrl" value="@returnUrl" />
+                        }
                 </form>
 
                 <div class="text-center p-t-12">

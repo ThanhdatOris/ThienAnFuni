@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Organi Shop</h2>
+                        <h2>FuniShop</h2>
                         <div class="breadcrumb__option">
                             <a href="./index.html">Home</a>
                             <span>Shop</span>
@@ -52,13 +52,18 @@
                         @Html.Raw(Model.Material)
                     </p>
                     <div class="product__details__quantity">
+                        <div class="pro-qty">
+                            <input type="text" value="1">
+                        </div>
+                    </div>
+                   @*  <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
                                 <input type="text" value="1">
                             </div>
                         </div>
-                    </div>
-                    <a href="#" class="primary-btn">Thêm vào giỏ</a>
+                    </div> *@
+                    <a href="#" class="primary-btn add-to-cart" data-id="@Model.Id">Thêm vào giỏ</a>
                     <ul>
                         <li><b>Availability</b> <span>In Stock</span></li>
                         <li><b>Kích thước</b> <span>@Model.Dimension</span></li>
