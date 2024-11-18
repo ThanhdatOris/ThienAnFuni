@@ -123,55 +123,6 @@ namespace ThienAnFuni.Controllers
             }
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Create(Product model, IFormFile ImageUpload)
-        //{
-        //    ViewData["ActiveMenu"] = "Product";
-
-        //    //if (ModelState.IsValid)
-        //    //{
-        //    if (ImageUpload != null && ImageUpload.Length > 0)
-        //    {
-        //        // Đường dẫn thư mục lưu ảnh
-        //        string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product");
-
-        //        // Tạo thư mục nếu chưa tồn tại
-        //        if (!Directory.Exists(uploadDir))
-        //        {
-        //            Directory.CreateDirectory(uploadDir);
-        //        }
-
-        //        // Tạo tên file duy nhất cho ảnh
-        //        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageUpload.FileName);
-
-        //        // Đường dẫn đầy đủ đến file
-        //        string filePath = Path.Combine(uploadDir, fileName);
-
-        //        // Upload file
-        //        using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //        {
-        //            await ImageUpload.CopyToAsync(fileStream);
-        //        }
-
-        //        // Lưu tên file vào thuộc tính MainImg
-        //        model.MainImg = fileName;
-        //    }
-        //    else
-        //    {
-        //        // Nếu không có ảnh tải lên, dùng ảnh mặc định
-        //        model.MainImg = "default.png";
-        //    }
-
-        //    // Thêm sản phẩm vào database
-        //    _context.Products.Add(model);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction("Index");
-        //    //}
-
-        //    return View(model);
-        //}
-
         [HttpPost]
         public async Task<IActionResult> Create(Product model, IFormFile ImageUpload)
         {
@@ -180,7 +131,7 @@ namespace ThienAnFuni.Controllers
             // Đặt giá trị mặc định cho các thuộc tính của sản phẩm mới
             model.IsImport = false;
             model.IsActive = true;
-
+            model.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
             // Kiểm tra và xử lý upload ảnh
             if (ImageUpload != null && ImageUpload.Length > 0)
             {

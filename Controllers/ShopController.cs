@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using ThienAnFuni.Models;
 using X.PagedList.Extensions;
 
@@ -66,15 +67,41 @@ namespace ThienAnFuni.Controllers
         //    return View(products);
         //}
 
+        #region Helper methods
+        private List<int> GetAllCategoryIds(int categoryId)
+        {
+            var categoryIds = new List<int> { categoryId };
+
+            // Lấy các danh mục con trực tiếp
+            var subCategories = _context.Categories
+                .Where(c => c.ParentId == categoryId)
+                .ToList();
+
+            // Đệ quy lấy ID của danh mục con
+            foreach (var subCategory in subCategories)
+            {
+                categoryIds.AddRange(GetAllCategoryIds(subCategory.Id));
+            }
+
+            return categoryIds;
+        }
+        #endregion
+
         public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null, string color = null)
         {
             int pageSize = 2;
 
             // Lấy danh mục nếu có slug
             Category category = null;
+            List<int> categoryIds = new List<int>();
+
             if (!string.IsNullOrEmpty(slug))
             {
                 category = _context.Categories.FirstOrDefault(c => c.Slug == slug);
+                if (category != null)
+                {
+                    categoryIds = GetAllCategoryIds(category.Id); // Lấy danh mục cha và con
+                }
             }
 
             // Lọc sản phẩm
@@ -86,10 +113,11 @@ namespace ThienAnFuni.Controllers
                 productsQuery = productsQuery.Where(p => p.Name.Contains(query));
             }
 
-            if (category != null)
+            if (categoryIds.Any())
             {
-                productsQuery = productsQuery.Where(p => p.CategoryId == category.Id);
+                productsQuery = productsQuery.Where(p => p.CategoryId.HasValue && categoryIds.Contains(p.CategoryId.Value));
             }
+
 
             // Lọc giá
             if (minPrice.HasValue)
@@ -129,8 +157,6 @@ namespace ThienAnFuni.Controllers
 
             return View(products);
         }
-
-
 
         public IActionResult Detail(int id)
         {

@@ -28,6 +28,7 @@ namespace ThienAnFuni.Models
         public string? Description { get; set; }
 
         public string? MainImg { get; set; }
+        public DateOnly? CreatedDate { get; set; }
 
         [Required]
         public bool IsActive { get; set; } = true;
