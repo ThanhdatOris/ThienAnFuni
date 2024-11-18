@@ -27,29 +27,26 @@ namespace ThienAnFuni.Controllers
             ViewData["ActiveMenu"] = "Order";
             ViewBag.Title = "Danh sách đơn hàng";
 
-            //  0 là "pending"
-            var pendingOrders = await _context.Orders
+            // Lấy tất cả các đơn hàng với trạng thái liên quan
+            var orders = await _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.OrderDetails)
                     .ThenInclude(d => d.Product)
-                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending)
+                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending ||
+                            o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
 
-            // Truy vấn đơn hàng có trạng thái  1 là "success"
-            var successOrders = await _context.Orders
-                .Include(o => o.Customer)
-                .Include(o => o.OrderDetails)
-                    .ThenInclude(d => d.Product)
-                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
-                .OrderByDescending(o => o.OrderDate)
-                .ToListAsync();
+            // Phân loại đơn hàng
+            var viewModel = new AdOrdersViewModel
+            {
+                PendingOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending),
+                SuccessOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
+            };
 
-            ViewBag.PendingOrders = pendingOrders;
-            ViewBag.SuccessOrders = successOrders;
-
-            return View();
+            return View(viewModel);
         }
+
 
         public async Task<IActionResult> ListDeleted()
         {

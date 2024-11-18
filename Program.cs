@@ -13,7 +13,7 @@ builder.Configuration
 builder.Services.AddControllersWithViews();
 
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<TAF_DbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -21,10 +21,19 @@ builder.Services.AddDbContext<TAF_DbContext>(options =>
 builder.Services.AddDbContext<TAF_DbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// IdentityRole config
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<TAF_DbContext>()
-    .AddDefaultTokenProviders();
+// Cấu hình Identity và cấu hình lại các yêu cầu mật khẩu
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    // Tắt các yêu cầu mật khẩu mặc định
+    options.Password.RequireDigit = false;  // Không yêu cầu chữ số
+    options.Password.RequireLowercase = false;  // Không yêu cầu chữ cái viết thường
+    options.Password.RequireUppercase = false;  // Không yêu cầu chữ cái viết hoa
+    options.Password.RequireNonAlphanumeric = false;  // Không yêu cầu ký tự không phải chữ cái
+    options.Password.RequiredLength = 6;  // Độ dài mật khẩu tối thiểu
+    options.Password.RequiredUniqueChars = 1;  // Số ký tự duy nhất tối thiểu
+})
+.AddEntityFrameworkStores<TAF_DbContext>()  // Thay <TAF_DbContext> bằng DbContext của bạn
+.AddDefaultTokenProviders();
 
 // Không có quyền thì bị đá vào Controller Account - Action:AccessDenied
 builder.Services.ConfigureApplicationCookie(options =>
@@ -93,7 +102,7 @@ app.Run();
 
 async Task SeedRolesAndUsers(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
 {
-    // Tạo các roles nếu chưa có
+    // Tạo các roles nếu chưa có (TEst lại hong cần thì bỏ)
     if (!await roleManager.RoleExistsAsync(ConstHelper.RoleManager))
     {
         await roleManager.CreateAsync(new IdentityRole(ConstHelper.RoleManager));
@@ -102,6 +111,10 @@ async Task SeedRolesAndUsers(UserManager<User> userManager, RoleManager<Identity
     {
         await roleManager.CreateAsync(new IdentityRole(ConstHelper.RoleSaleStaff));
     }
+    if (!await roleManager.RoleExistsAsync(ConstHelper.RoleCustomer))
+    {
+        await roleManager.CreateAsync(new IdentityRole(ConstHelper.RoleCustomer));
+    }
 
     // Tạo người dùng và gán roles
     var managerUser = await userManager.FindByNameAsync("sinoo");
@@ -109,20 +122,31 @@ async Task SeedRolesAndUsers(UserManager<User> userManager, RoleManager<Identity
     {
         managerUser = new User { UserName = "sinoo", FullName = "Sinoo" };
         var createResult = await userManager.CreateAsync(managerUser, "123456");
-        if (createResult.Succeeded)
-        {
-        }
     }
-            await userManager.AddToRoleAsync(managerUser, ConstHelper.RoleManager);
+    await userManager.AddToRoleAsync(managerUser, ConstHelper.RoleManager);
+
+    var customerUser = await userManager.FindByNameAsync("teoemcus");
+    //if (customerUser == null)
+    //{
+    //    customerUser = new User { UserName = "teoemcus", FullName = "Sinoo" };
+    //    var createResult = await userManager.CreateAsync(customerUser, "123456");
+    //}
+    await userManager.AddToRoleAsync(customerUser, ConstHelper.RoleCustomer);
+
+    var customerUser2 = await userManager.FindByNameAsync("hongdaocus");
+    await userManager.AddToRoleAsync(customerUser2, ConstHelper.RoleCustomer);  
+    
+    var customerUser3 = await userManager.FindByNameAsync("teoemcus");
+    await userManager.AddToRoleAsync(customerUser3, ConstHelper.RoleCustomer);
 
     var saleStaffUser = await userManager.FindByNameAsync("tramanh");
-    if (saleStaffUser == null)
-    {
-        saleStaffUser = new User { UserName = "tramanh", FullName = "Huynh Thị Trâm Anh" };
-        var createResult = await userManager.CreateAsync(saleStaffUser, "123456");
-        if (createResult.Succeeded)
-        {
-        }
-    }
-            await userManager.AddToRoleAsync(saleStaffUser, ConstHelper.RoleSaleStaff);
+    //if (saleStaffUser == null)
+    //{
+    //    saleStaffUser = new User { UserName = "tramanh", FullName = "Huynh Thị Trâm Anh" };
+    //    var createResult = await userManager.CreateAsync(saleStaffUser, "123456");
+    //}
+    await userManager.AddToRoleAsync(saleStaffUser, ConstHelper.RoleSaleStaff);
+
+    var saleStaffUser2 = await userManager.FindByNameAsync("vanminh");
+    await userManager.AddToRoleAsync(saleStaffUser2, ConstHelper.RoleSaleStaff);
 }

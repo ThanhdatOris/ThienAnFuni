@@ -111,6 +111,13 @@ namespace ThienAnFuni.Controllers
                         return View(model);
                     }
 
+                    // Kiểm tra nếu người dùng bị khóa
+                    if (user is SaleStaff && !((SaleStaff)user).IsActive) // Kiểm tra SaleStaff có IsActive là false không
+                    {
+                        ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa.");
+                        return View(model);
+                    }
+
                     var roles = await _userManager.GetRolesAsync(user); // Lấy tất cả vai trò của người dùng
 
                     // Tạo các claims cho người dùng

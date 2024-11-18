@@ -1,7 +1,7 @@
 ﻿@model List<Category>
 
 
-<ul class="category-list category">
+@* <ul class="category-list category boder-shadow-cate">
     @foreach (var category in Model)
     {
         <li>
@@ -20,5 +20,25 @@
         </li>
     }
 </ul>
+ *@
 
+<ul class="category-list category boder-shadow-cate px-3">
+    @foreach (var category in Model)
+    {
+        <li>
+            <a class="pl-3 @(category.Slug == ViewBag.ActiveSlug ? "activeSlug" : "")" asp-controller="Shop" asp-action="Index" asp-route-slug="@category.Slug">@category.Name</a>
+            @if (category.SubCategories != null && category.SubCategories.Any())
+            {
+                <ul class="subcategories">
+                    @foreach (var subCategory in category.SubCategories)
+                    {
+                        <li>
+                            <a class="pl-5 @(subCategory.Slug == ViewBag.ActiveSlug ? "activeSlug" : "")" asp-controller="Shop" asp-action="Index" asp-route-slug="@subCategory.Slug">@subCategory.Name</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>
 

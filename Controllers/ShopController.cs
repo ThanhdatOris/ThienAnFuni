@@ -15,40 +15,121 @@ namespace ThienAnFuni.Controllers
             _logger = logger;
             _context = context;
         }
-        //public IActionResult Index(int? page)
+
+
+        //public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null)
         //{
-        //    int pageSize = 2; // Số sản phẩm trên mỗi trang
-        //    int pageNumber = page ?? 1;
+        //    int pageSize = 2;
 
-        //    var products = _context.Products
-        //        .Where(p => p.IsActive == true && p.IsImport == true)
-        //        .OrderBy(p => p.Name) // Thêm sắp xếp nếu cần
-        //        .ToPagedList(pageNumber, pageSize);
+        //    // Lấy danh mục nếu có slug
+        //    Category category = null;
+        //    if (!string.IsNullOrEmpty(slug))
+        //    {
+        //        category = _context.Categories.FirstOrDefault(c => c.Slug == slug);
+        //    }
 
-        //    var count = _context.Products
-        //        .Where(p => p.IsActive == true && p.IsImport == true)
-        //        .Count();
+        //    // Lọc sản phẩm
+        //    var productsQuery = _context.Products
+        //        .Where(p => p.IsActive == true && p.IsImport == true);
 
-        //    ViewBag.Count = count;
+        //    if (!string.IsNullOrEmpty(query))
+        //    {
+        //        productsQuery = productsQuery.Where(p => p.Name.Contains(query));
+        //    }
+
+        //    if (category != null)
+        //    {
+        //        productsQuery = productsQuery.Where(p => p.CategoryId == category.Id);
+        //    }
+
+        //    // Lọc giá
+        //    if (minPrice.HasValue)
+        //    {
+        //        productsQuery = productsQuery.Where(p => p.Price >= (double)minPrice.Value);
+        //    }
+
+        //    if (maxPrice.HasValue)
+        //    {
+        //        productsQuery = productsQuery.Where(p => p.Price <= (double)maxPrice.Value);
+        //    }
+
+        //    // Phân trang
+        //    var products = productsQuery.ToPagedList(page, pageSize);
+
+        //    // Truyền thêm thông tin vào View
+        //    ViewBag.SortOrder = sortOrder;
+        //    ViewBag.Count = products.TotalItemCount;
+        //    ViewBag.CategoryName = category?.Name;
+        //    ViewBag.MinPrice = minPrice ?? 1000000; // Giá trị mặc định
+        //    ViewBag.MaxPrice = maxPrice ?? 30000000; // Giá trị mặc định
 
         //    return View(products);
         //}
-        public IActionResult Index(string query, int page = 1)
+
+        public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null, string color = null)
         {
             int pageSize = 2;
 
-            // Lấy danh sách sản phẩm và lọc theo từ khóa nếu có
-            var products = _context.Products
-                .Where(p => p.IsActive == true && p.IsImport == true &&
-                            (string.IsNullOrEmpty(query) || p.Name.Contains(query)))
-                .OrderBy(p => p.Name)
-                .ToPagedList(page, pageSize);
+            // Lấy danh mục nếu có slug
+            Category category = null;
+            if (!string.IsNullOrEmpty(slug))
+            {
+                category = _context.Categories.FirstOrDefault(c => c.Slug == slug);
+            }
 
-            // Đếm số lượng sản phẩm phù hợp
+            // Lọc sản phẩm
+            var productsQuery = _context.Products
+                .Where(p => p.IsActive == true && p.IsImport == true);
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                productsQuery = productsQuery.Where(p => p.Name.Contains(query));
+            }
+
+            if (category != null)
+            {
+                productsQuery = productsQuery.Where(p => p.CategoryId == category.Id);
+            }
+
+            // Lọc giá
+            if (minPrice.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.Price >= (double)minPrice.Value);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.Price <= (double)maxPrice.Value);
+            }
+
+            // Lọc theo màu sắc
+            if (!string.IsNullOrEmpty(color))
+            {
+                if (color == "Tự nhiên")
+                {
+                    // Nếu là màu tự nhiên, lấy cả sản phẩm màu nâu
+                    productsQuery = productsQuery.Where(p => p.Color == "Nâu" || p.Color == "Tự nhiên");
+                }
+                else
+                {
+                    productsQuery = productsQuery.Where(p => p.Color == color);
+                }
+            }
+
+            // Phân trang
+            var products = productsQuery.ToPagedList(page, pageSize);
+
+            // Truyền thêm thông tin vào View
+            ViewBag.SortOrder = sortOrder;
             ViewBag.Count = products.TotalItemCount;
+            ViewBag.CategoryName = category?.Name;
+            ViewBag.MinPrice = minPrice ?? 1000000; // Giá trị mặc định
+            ViewBag.MaxPrice = maxPrice ?? 30000000; // Giá trị mặc định
+            ViewBag.SelectedColor = color; // Lưu màu được chọn để hiển thị lại
 
             return View(products);
         }
+
 
 
         public IActionResult Detail(int id)
@@ -64,6 +145,31 @@ namespace ThienAnFuni.Controllers
 
             return View(product);
         }
+
+        public async Task<IActionResult> ProductsByCategory(string slug)
+        {
+            if (string.IsNullOrEmpty(slug))
+            {
+                return NotFound("Danh mục không hợp lệ.");
+            }
+
+            // Tìm danh mục theo slug
+            var category = await _context.Categories
+                .Include(c => c.Products)
+                .Where(c => c.IsActive)
+                .FirstOrDefaultAsync(c => c.Slug == slug);
+
+            if (category == null)
+            {
+                return NotFound("Danh mục không tồn tại.");
+            }
+
+            // Lấy danh sách sản phẩm
+            var products = category.Products;
+
+            return View(products);
+        }
+
 
     }
 }

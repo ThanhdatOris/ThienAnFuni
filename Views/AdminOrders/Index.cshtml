@@ -1,9 +1,9 @@
-﻿@{
+﻿@model ThienAnFuni.ViewModels.AdOrdersViewModel
+@using ThienAnFuni.Helpers
+@{
     ViewData["Title"] = "Quản lý đơn hàng";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-@using ThienAnFuni.Helpers
-
 
 <div class="app-title">
     <ul class="app-breadcrumb breadcrumb side">
@@ -38,13 +38,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (ViewBag.pendingOrders != null)
+                        @if (Model.PendingOrders != null && Model.PendingOrders.Any())
                         {
-                            @foreach (var order in ViewBag.pendingOrders)
+                            @foreach (var order in Model.PendingOrders)
                             {
                                 <tr class="text-center">
                                     <td class="text-center">@order.Id</td>
-                                    <td class="text-center">@order.Customer.FullName</td>
+                                    <td class="text-center">@order.Customer?.FullName</td>
                                     <td>@order.Address</td>
                                     <td class="text-center">@order.TotalQuantity</td>
                                     <td class="text-center">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
@@ -102,13 +102,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (ViewBag.SuccessOrders != null)
+                        @if (Model.SuccessOrders != null && Model.SuccessOrders.Any())
                         {
-                            @foreach (var order in ViewBag.SuccessOrders)
+                            @foreach (var order in Model.SuccessOrders)
                             {
                                 <tr class="text-center">
                                     <td class="text-center">@order.Id</td>
-                                    <td class="text-center">@order.Customer.FullName</td>
+                                    <td class="text-center">@order.Customer?.FullName</td>
                                     <td>@order.Address</td>
                                     <td class="text-center">@order.TotalQuantity</td>
                                     <td class="text-center">@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>

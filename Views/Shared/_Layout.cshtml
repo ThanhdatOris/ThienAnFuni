@@ -35,7 +35,8 @@
         </div>
         <div class="humberger__menu__cart">
             <ul>
-                <li><a asp-controller="Cart" asp-action="Index"><i class="fa fa-shopping-bag"></i> <span>3</span></a>
+                <li>
+                    <a asp-controller="Cart" asp-action="Index"><i class="fa fa-shopping-bag"></i> <span>3</span></a>
                 </li>
             </ul>
             <div class="header__cart__price">Tổng tiền: <span>$150.00</span></div>
@@ -86,10 +87,10 @@
                 <li><a asp-controller="Shop" asp-action="Index">Shop</a></li>
                 <li><a href="./shop-grid.html">Đơn hàng</a></li>
                 @*     <li>
-                    <a href="#">Danh mục</a>
-                    <ul class="header__menu__dropdown pl-3">
-                        <li><a href="./shop-details.html">Shop</a></li>
-                    </ul>
+                <a href="#">Danh mục</a>
+                <ul class="header__menu__dropdown pl-3">
+                <li><a href="./shop-details.html">Shop</a></li>
+                </ul>
                 </li> *@
 
                 <li><a asp-controller="adminProducts" asp-action="Index">Liên hệ</a></li>
@@ -114,7 +115,7 @@
     <header class="header">
         <div class="header__top">
             <div class="container">
-                <div class="row">
+                <div class="row justify-content-center align-items-center">
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
@@ -124,7 +125,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <div class="header__top__right">
+                        <div class="header__top__right d-flex align-items-center justify-content-around">
                             <div class="header__top__right__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -140,16 +141,16 @@
                                 </ul>
                             </div>
 
-                            <div class="header__top__right__auth">
+                            <div class="header__top__right__auth d-flex justify-content-center align-items-center">
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <span>Hi, @User.Identity.Name</span>
 
+                                    <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Manager hoặc SaleStaff -->
                                     @if (User.IsInRole(ConstHelper.RoleManager) || User.IsInRole(ConstHelper.RoleSaleStaff))
                                     {
-                                        <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Manager hoặc SaleStaff -->
-                                        <a href="@Url.Action("Index", "AdminProducts")" class="btn btn-primary">
-                                            <i class="fa fa-cogs"></i> Admin Dashboard
+                                        <a href="@Url.Action("Index", "AdminProducts")" class="btn btn-primary ml-2 btn-sm text-white">
+                                            <i class="fa fa-cogs m-0"></i>
                                         </a>
                                     }
 
@@ -175,25 +176,29 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="@Url.ActionLink("Index","Home")"><img src="/customerThienAn/img/logo.png"
-                                alt="Logo FuniShop"></a>
+                        <a href="@Url.ActionLink("Index","Home")">
+                            <img src="/customerThienAn/img/logo.png"
+                                 alt="Logo FuniShop">
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         @* Bê thằng ở trên xuống *@
                         <ul>
-                            <li
-                                class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
+                            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
                                 <a href="@Url.Action("Index", "Home")">Trang chủ</a>
                             </li>
-                            <li
-                                class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Shop"  ? "active" : "")">
+                            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Shop"  ? "active" : "")">
                                 <a asp-controller="Shop" asp-action="Index">Shop</a>
                             </li>
-                            <li><a asp-controller="Orders" asp-action="Index"
-                                    class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Shop"  ? "active" : "")">Đơn
-                                    hàng</a></li>
+                            <li>
+                                <a asp-controller="Orders" asp-action="Index"
+                                   class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Shop"  ? "active" : "")">
+                                    Đơn
+                                    hàng
+                                </a>
+                            </li>
                             <li><a href="./contact.html">Liên hệ</a></li>
 
                             <li><a asp-controller="adminProducts" asp-action="Index">Admin</a></li>
@@ -254,7 +259,7 @@
                             <form action="@Url.Action("Index", "Shop")" method="get">
                                 @* <input type="text" name="query" placeholder="Bạn muốn tìm gì?" value=""> *@
                                 <input type="text" name="query" placeholder="Bạn muốn tìm gì?"
-                                    value="@ViewContext.HttpContext.Request.Query["query"]">
+                                       value="@ViewContext.HttpContext.Request.Query["query"]">
                                 <button type="submit" class="site-btn">Tìm kiếm</button>
                             </form>
 
@@ -276,12 +281,11 @@
         </div>
     </section>
     <!-- Hero Section End -->
-
     @RenderSection("breadcrumb", required: false)
     @RenderBody()
     @* <div class="container">
-        <main role="main" class="pb-3">
-        </main>
+    <main role="main" class="pb-3">
+    </main>
     </div> *@
 
     <!-- Footer Section Begin -->
@@ -323,7 +327,8 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="footer__widget">
                         <h6>Liên hệ</h6>
-                        <p>Nhận thông tin cập nhật qua Email về cửa hàng mới nhất của chúng tôi và các ưu đãi đặc biệt.
+                        <p>
+                            Nhận thông tin cập nhật qua Email về cửa hàng mới nhất của chúng tôi và các ưu đãi đặc biệt.
                         </p>
                         <form action="#">
                             <input type="text" placeholder="Địa chỉ mail của bạn">
@@ -348,7 +353,8 @@
                                 FuniTeam
                             </p>
                         </div>
-                        <div class="footer__copyright__payment"><img src="/customerThienAn/img/payment-item.png" alt="">
+                        <div class="footer__copyright__payment">
+                            <img src="/customerThienAn/img/payment-item.png" alt="">
                         </div>
                     </div>
                 </div>
@@ -372,6 +378,7 @@
     <script src="/customerThienAn/js/main.js"></script>
     <script src="/customerThienAn/js/addToCart.js"></script>
     <script src="/customerThienAn/js/incQuantitySession.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

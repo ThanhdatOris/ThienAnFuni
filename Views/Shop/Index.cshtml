@@ -36,92 +36,77 @@
                         <li class="list-unstyled font-weight-bold ">
                             <a asp-action="shop" class="text-info">Tất cả sản phẩm</a>
                         </li>
+                        @* Hiển thị category *@
                         @await Component.InvokeAsync("CategoryHero")
-
                     </div>
+                    @* Lọc giá *@
                     <div class="sidebar__item">
-                        <h4>Price</h4>
+                        <h4>Giá</h4>
                         <div class="price-range-wrap">
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                 data-min="10" data-max="540">
+                                 data-min="1000000" data-max="30000000">
                                 <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                             </div>
+
                             <div class="range-slider">
-                                <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
+                                <div class="price-input d-flex justify-content-between">
+                                    <input type="text" id="minamount" readonly>
+                                    <input type="text" id="maxamount" readonly>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @* Lọc màu sắc *@
+                    @*  <div class="sidebar__item sidebar__item__color--option">
+                    <h4>Màu sắc</h4>
+                    <div class="sidebar__item__color sidebar__item__color--white">
+                    <label for="white">
+                    Trắng
+                    <input type="radio" id="white">
+                    </label>
+                    </div>
+                    <div class="sidebar__item__color sidebar__item__color--brown">
+                    <label for="brown">
+                    Nâu
+                    <input type="radio" id="brown">
+                    </label>
+                    </div>
+                    </div> *@
                     <div class="sidebar__item sidebar__item__color--option">
-                        <h4>Colors</h4>
-                        <div class="sidebar__item__color sidebar__item__color--white">
-                            <label for="white">
-                                White
-                                <input type="radio" id="white">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__color sidebar__item__color--gray">
-                            <label for="gray">
-                                Gray
-                                <input type="radio" id="gray">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__color sidebar__item__color--red">
-                            <label for="red">
-                                Red
-                                <input type="radio" id="red">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__color sidebar__item__color--black">
-                            <label for="black">
-                                Black
-                                <input type="radio" id="black">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__color sidebar__item__color--blue">
-                            <label for="blue">
-                                Blue
-                                <input type="radio" id="blue">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__color sidebar__item__color--green">
-                            <label for="green">
-                                Green
-                                <input type="radio" id="green">
-                            </label>
-                        </div>
+                        <h4>Màu sắc</h4>
+                        <form method="get" id="colorFilterForm">
+                            <div class="sidebar__item__color sidebar__item__color--white">
+                                <label for="white">
+                                    Trắng
+                                    <input type="radio" name="color" value="Trắng" id="white"
+                                           onchange="submitColorFilter()"
+                                           checked="@(ViewBag.SelectedColor == "Trắng" ? "true" : "false")">
+                                </label>
+                            </div>
+                            <div class="sidebar__item__color sidebar__item__color--brown">
+                                <label for="brown">
+                                    Nâu
+                                    <input type="radio" name="color" value="Nâu" id="brown"
+                                           onchange="submitColorFilter()"
+                                           checked="@(ViewBag.SelectedColor == "Nâu" ? "true" : "false")">
+                                </label>
+                            </div>
+                            <div class="sidebar__item__color sidebar__item__color--natural">
+                                <label for="natural">
+                                    Màu tự nhiên
+                                    <input type="radio" name="color" value="Tự nhiên" id="natural"
+                                           onchange="submitColorFilter()"
+                                           checked="@(ViewBag.SelectedColor == "Màu tự nhiên" ? "true" : "false")">
+                                </label>
+                            </div>
+                        </form>
                     </div>
-                    <div class="sidebar__item">
-                        <h4>Popular Size</h4>
-                        <div class="sidebar__item__size">
-                            <label for="large">
-                                Large
-                                <input type="radio" id="large">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__size">
-                            <label for="medium">
-                                Medium
-                                <input type="radio" id="medium">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__size">
-                            <label for="small">
-                                Small
-                                <input type="radio" id="small">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__size">
-                            <label for="tiny">
-                                Tiny
-                                <input type="radio" id="tiny">
-                            </label>
-                        </div>
-                    </div>
+
+
+
+                    @* Sản phẩm mới nhất *@
                     <div class="sidebar__item">
                         <div class="latest-product__text">
                             <h4>Latest Products</h4>
@@ -194,11 +179,24 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-5">
                             <div class="filter__sort">
-                                <span>Sort By</span>
-                                <select>
-                                    <option value="0">Default</option>
-                                    <option value="0">Default</option>
+                                @* <span>Sắp sếp theo</span> *@
+                                @*       <select>
+                                <option value="0">Sản phẩm mới nhất</option>
+                                <option value="0">Giá giảm dần</option>
+                                <option value="0">Giá tăng dần</option>
+                                </select> *@
+
+                                <select id="sortOrder" onchange="changeSortOrder()">
+                                    <option value="" selected="@((ViewBag.SortOrder == null) ? true : "")">Sản phẩm mới nhất</option>
+                                    <option value="price_desc"
+                                            selected="@((ViewBag.SortOrder == "price_desc") ? true : false)">Giá giảm dần</option>
+
+                                    <option value="price_asc"
+                                            selected="@((ViewBag.SortOrder == "price_asc") ? true : false)">Giá tăng dần</option>
                                 </select>
+
+
+
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4">
@@ -236,7 +234,6 @@
 
                 </div>
                 @* Pagination *@
-
                 <div class="product__pagination">
                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
                              new PagedListRenderOptions
@@ -254,15 +251,83 @@
                     })
                 </div>
 
-
-           @*      <div class="product__pagination">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                @*      <div class="product__pagination">
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#"><i class="fa fa-long-arrow-right"></i></a>
                 </div> *@
             </div>
         </div>
     </div>
 </section>
 <!-- Product Section End -->
+@section Scripts {
+    <script>
+        function changeSortOrder() {
+            const sortOrder = document.getElementById('sortOrder').value;
+
+            // Lấy URL hiện tại
+            const currentUrl = new URL(window.location.href);
+
+            // Cập nhật tham số "sortOrder"
+            currentUrl.searchParams.set('sortOrder', sortOrder);
+
+            // Chuyển hướng tới URL mới
+            window.location.href = currentUrl.toString();
+        }
+
+        // Price slider - Trượt giá từ 1 củ đến 30 củ
+        let debounceTimer;
+
+        $(function () {
+            let minPrice = 1000000;
+            let maxPrice = 30000000;
+
+            $(".price-range").slider({
+                range: true,
+                min: minPrice,
+                max: maxPrice,
+                step: 100000, // Bước nhảy 100k
+                values: [minPrice, maxPrice],
+                slide: function (event, ui) {
+                    $("#minamount").val(ui.values[0].toLocaleString("vi-VN") + "đ");
+                    $("#maxamount").val(ui.values[1].toLocaleString("vi-VN") + "đ");
+
+                    // Gửi AJAX với debounce
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => {
+                        filterProducts(ui.values[0], ui.values[1]);
+                    }, 300); // Delay 300ms
+                }
+            });
+
+            // Hiển thị giá trị mặc định
+            $("#minamount").val($(".price-range").slider("values", 0).toLocaleString("vi-VN") + "đ");
+            $("#maxamount").val($(".price-range").slider("values", 1).toLocaleString("vi-VN") + "đ");
+
+            // Hàm gửi yêu cầu AJAX
+            function filterProducts(minPrice, maxPrice) {
+                const url = `/Shop/Index?minPrice=${minPrice}&maxPrice=${maxPrice}`;
+                window.location.href = url; // Chuyển trang bằng URL
+            }
+        });
+
+
+        $(function () {
+            let minPrice = @ViewBag.MinPrice;
+            let maxPrice = @ViewBag.MaxPrice;
+
+            $(".price-range").slider("values", [minPrice, maxPrice]);
+            $("#minamount").val(minPrice.toLocaleString("vi-VN") + "đ");
+            $("#maxamount").val(maxPrice.toLocaleString("vi-VN") + "đ");
+        });
+
+
+        // Màu sắc
+        function submitColorFilter() {
+            document.getElementById("colorFilterForm").submit();
+        }
+    </script>
+
+}
