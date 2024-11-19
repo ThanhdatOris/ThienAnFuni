@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<ThienAnFuni.Models.Order>
-
+@using ThienAnFuni.Helpers
 @{
     ViewData["Title"] = "Đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -39,28 +39,34 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody> 
-                            <tr>
-                                <td>#1</td>
-                                <td>14/11/2024</td>
-                                <td>30.000.000đ</td>
-                                <td class="font-weight-bold  text-warning">Đang xử lý</td>
-                                <td class="shoping__cart__item__close d-flex justify-content-center align-items-center">
-                                    <a class="btn btn-info" href="{{ route('customer.order.show', $order->id) }}">Chi tiết</a>
-                                </td>
-                            </tr>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+                                    <td>#@order.Id</td>
+                                    <td>@order.OrderDate</td>
+                                    <td>@string.Format("{0:0,0}đ", order.TotalPrice)</td>
+
+                                    <td class="font-weight-bold text-warning">@ConstHelper.GetOrderStatus((ConstHelper.OrderStatus)order.OrderStatus)</td>
+                                    <td class="shoping__cart__item__close d-flex justify-content-center align-items-center">
+                                        <a class="btn btn-info" asp-action="Details" asp-route-id="@order.Id">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="shoping__cart__btns">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
                     <a asp-controller="Shop" asp-action="Index" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </section>
 <!-- Shoping Cart Section End -->

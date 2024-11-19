@@ -194,12 +194,14 @@
                             </li>
                             <li>
                                 <a asp-controller="Orders" asp-action="Index"
-                                   class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Shop"  ? "active" : "")">
-                                    Đơn
-                                    hàng
+                                   class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Orders"  ? "active" : "")">
+                                    Đơn hàng
                                 </a>
                             </li>
-                            <li><a href="./contact.html">Liên hệ</a></li>
+                            <li>
+                                <a asp-controller="Contact" asp-action="Index"
+                                   class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Contact"  ? "active" : "")">Liên hệ</a>
+                            </li>
 
                             <li><a asp-controller="adminProducts" asp-action="Index">Admin</a></li>
 

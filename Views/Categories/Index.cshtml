@@ -34,7 +34,7 @@
                 <table class="table table-hover table-bordered" id="sampleTable">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(model => model.ParentId)</th>
+                            <th class="d-none">@Html.DisplayNameFor(model => model.ParentId)</th>
                             <th>@Html.DisplayNameFor(model => model.Name)</th>
                             <th>@Html.DisplayNameFor(model => model.IsActive)</th>
                             <th></th>
@@ -47,7 +47,7 @@
                             if (item.ParentId == null)
                             {
                                 <tr>
-                                    <td></td> <!-- Không có ParentId cho danh mục cha -->
+                                    @* <td></td> <!-- Không có ParentId cho danh mục cha --> *@
                                     <td><strong>@Html.DisplayFor(modelItem => item.Name)</strong></td>
                                     <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
                                     <td>
@@ -55,9 +55,11 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
 
-                                        <a class="btn btn-danger btn-sm" title="Xóa" asp-action="Delete" asp-route-id="@item.Id">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </a>
+                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Xóa">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
 
@@ -65,7 +67,7 @@
                                 @foreach (var subItem in Model.Where(sub => sub.ParentId == item.Id))
                                 {
                                     <tr>
-                                        <td></td> <!-- Không có ParentId hiển thị cho danh mục con -->
+                                        @* <td></td> <!-- Không có ParentId hiển thị cho danh mục con --> *@
                                         <td style="padding-left: 20px;">&mdash; @Html.DisplayFor(modelItem => subItem.Name)</td>
                                         <td>@Html.DisplayFor(modelItem => subItem.IsActive)</td>
                                         <td>
@@ -89,6 +91,8 @@
                     </tbody>
 
                 </table>
+
+
             </div>
         </div>
     </div>

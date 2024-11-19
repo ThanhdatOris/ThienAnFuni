@@ -117,8 +117,7 @@ namespace ThienAnFuni.Controllers
             {
                 productsQuery = productsQuery.Where(p => p.CategoryId.HasValue && categoryIds.Contains(p.CategoryId.Value));
             }
-
-
+             
             // Lọc giá
             if (minPrice.HasValue)
             {
