@@ -13,15 +13,23 @@ namespace ThienAnFuni.Models
         public double TotalPrice { get; set; }
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải là số")]
+        [Display(Name = "Tổng số lượng")]
         public int TotalQuantity { get; set; }
+        [Display(Name = "Ghi chú")]
         public string? Note { get; set; }
+        [Display(Name = "Địa chỉ")]
         public string Address { get; set; } = string.Empty;
-
+        [Display(Name = "Ngày đặt hàng")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
+        [Display(Name = "Trạng thái")]
         public int? OrderStatus { get; set; }
+        [Display(Name = "Phương thức thanh toán")]
         public int? PaymentMethod { get; set; }
+        [Display(Name = "Trạng thái thanh toán")]
         public int? PaymentStatus { get; set; }
+        [Display(Name = "Số hóa đơn")]
         public string? InvoiceNumber { get; set; }
+        [Display(Name = "Ngày xuất hóa đơn")]
         public DateTime? InvoiceDate { get; set; }
 
         public string? CustomerId { get; set; }
