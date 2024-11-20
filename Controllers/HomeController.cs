@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using ThienAnFuni.Models;
 
@@ -14,11 +15,12 @@ namespace ThienAnFuni.Controllers
             _logger = logger;
             _context = context;
         }
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await _context.Products.ToListAsync();
+            return View(products);
         }
+
         public IActionResult Privacy()
         {
             return View();
