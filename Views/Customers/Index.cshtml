@@ -1,0 +1,143 @@
+﻿@model IEnumerable<ThienAnFuni.Models.Customer>
+
+@{
+    ViewData["Title"] = "Quản lý khách hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách khách hàng</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+
+<!-- Bảng danh sách khách hàng -->
+<div class="row" id="customerTable">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <table class="table table-hover table-bordered" id="sampleTable">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Id)</th>
+                            <th>@Html.DisplayNameFor(model => model.FullName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Address)</th>
+                            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                            <th>@Html.DisplayNameFor(model => model.Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.DateOfBirth)</th>
+                            <th>@Html.DisplayNameFor(model => model.Gender)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm editBtn"
+                                            title="Sửa"
+                                            data-id="@item.Id"
+                                            data-fullname="@item.FullName"
+                                            data-address="@item.Address"
+                                            data-phonenumber="@item.PhoneNumber"
+                                            data-email="@item.Email"
+                                            data-dob="@item.DateOfBirth"
+                                            data-gender="@item.Gender">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form chỉnh sửa thông tin khách hàng (ẩn ban đầu) -->
+<div id="editForm" style="display:none;">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <h3>Chỉnh sửa thông tin khách hàng</h3>
+                <form id="customerEditForm" method="post" action="@Url.Action("Edit", "Customers")">
+                    <input type="hidden" id="CustomerId" name="Id" />
+                    <div class="form-group">
+                        <label for="FullName">Họ và tên</label>
+                        <input type="text" class="form-control" id="FullName" name="FullName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Address">Địa chỉ</label>
+                        <input type="text" class="form-control" id="Address" name="Address" />
+                    </div>
+                    <div class="form-group">
+                        <label for="PhoneNumber">Số điện thoại</label>
+                        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <input type="email" class="form-control" id="Email" name="Email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="DateOfBirth">Ngày sinh</label>
+                        <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Gender">Giới tính</label>
+                        <select class="form-control" id="Gender" name="Gender">
+                            <option value="Male">Nam</option>
+                            <option value="Female">Nữ</option>
+                            <option value="Other">Khác</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                    <button type="button" class="btn btn-danger" id="cancelEdit">Hủy</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Khi nhấn nút Sửa
+        $(".editBtn").click(function () {
+            var id = $(this).data("id");
+            var fullname = $(this).data("fullname");
+            var address = $(this).data("address");
+            var phone = $(this).data("phonenumber");
+            var email = $(this).data("email");
+            var dob = $(this).data("dob");
+            var gender = $(this).data("gender");
+
+            // Điền dữ liệu vào form
+            $("#CustomerId").val(id);
+            $("#FullName").val(fullname);
+            $("#Address").val(address);
+            $("#PhoneNumber").val(phone);
+            $("#Email").val(email);
+            $("#DateOfBirth").val(dob);
+            $("#Gender").val(gender);
+
+            // Ẩn bảng và hiển thị form chỉnh sửa
+            $("#customerTable").hide();
+            $("#editForm").show();
+        });
+
+        // Khi nhấn Hủy
+        $("#cancelEdit").click(function () {
+            // Hiển thị lại bảng và ẩn form chỉnh sửa
+            $("#editForm").hide();
+            $("#customerTable").show();
+        });
+    </script>
+}

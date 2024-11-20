@@ -129,7 +129,7 @@ ol {
             right: 0;
             height: 4px;
             width: 80px;
-            background: rgb(235, 71, 61);
+            background: rgb(190,163,101);
             content: "";
             margin: 0 auto;
         }
@@ -167,7 +167,7 @@ ol {
     color: #ffffff;
     text-transform: uppercase;
     font-weight: 700;
-    background: rgb(235, 71, 61);
+    background: rgb(190,163,101);
     letter-spacing: 2px;
 }
 
@@ -178,7 +178,7 @@ ol {
     text-transform: uppercase;
     display: inline-block;
     padding: 13px 30px 12px;
-    background: rgb(235, 71, 61);
+    background: rgb(190,163,101);
     border: none;
 }
 
@@ -453,7 +453,7 @@ ol {
             }
 
                 .header__menu ul li .header__menu__dropdown li:hover > a {
-                    color: rgb(235, 71, 61);
+                    color: rgb(190,163,101);
                 }
 
                 .header__menu ul li .header__menu__dropdown li a {
@@ -464,7 +464,7 @@ ol {
                 }
 
         .header__menu ul li.active a {
-            color: rgb(235, 71, 61);
+            color: rgb(190,163,101);
         }
 
         .header__menu ul li:hover .header__menu__dropdown {
@@ -474,7 +474,7 @@ ol {
         }
 
         .header__menu ul li:hover > a {
-            color: rgb(235, 71, 61);
+            color: rgb(190,163,101);
         }
 
         .header__menu ul li:last-child {
@@ -528,7 +528,7 @@ ol {
                 .header__cart ul li a span {
                     height: 13px;
                     width: 13px;
-                    background: rgb(235, 71, 61);
+                    background: rgb(190,163,101);
                     font-size: 10px;
                     color: #ffffff;
                     line-height: 13px;
@@ -591,7 +591,7 @@ ol {
         }
 
 .hero__categories__all {
-    background: rgb(235, 71, 61);
+    background: rgb(190,163,101);
     position: relative;
     padding: 10px 25px 10px 40px;
     cursor: pointer;
@@ -704,7 +704,7 @@ ol {
 
 .hero__search__phone__icon {
     font-size: 18px;
-    color: rgb(235, 71, 61);
+    color: rgb(190,163,101);
     height: 50px;
     width: 50px;
     background: #f5f5f5;
@@ -742,7 +742,7 @@ ol {
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 4px;
-    color: rgb(235, 71, 61);
+    color: rgb(190,163,101);
 }
 
 .hero__text h2 {
@@ -844,7 +844,7 @@ ol {
             bottom: -2px;
             width: 100%;
             height: 2px;
-            background: rgb(235, 71, 61);
+            background: rgb(190,163,101);
             content: "";
             opacity: 0;
         }
@@ -892,8 +892,8 @@ ol {
         }
 
         .featured__item__pic__hover li:hover a {
-            background: rgb(235, 71, 61);
-            border-color: rgb(235, 71, 61);
+            background: rgb(190,163,101);
+            border-color: rgb(190,163,101);
         }
 
             .featured__item__pic__hover li:hover a i {
@@ -1342,8 +1342,8 @@ ol {
         }
 
         .product__item__pic__hover li:hover a {
-            background: rgb(235, 71, 61);
-            border-color: rgb(235, 71, 61);
+            background: rgb(190,163,101);
+            border-color: rgb(190,163,101);
         }
 
             .product__item__pic__hover li:hover a i {
@@ -1541,7 +1541,7 @@ ol {
         }
 
         .filter__option span:hover {
-            color: rgb(235, 71, 61);
+            color: rgb(190,163,101);
         }
 
 .product__item {
@@ -1582,8 +1582,8 @@ ol {
         }
 
         .product__item__pic__hover li:hover a {
-            background: rgb(235, 71, 61);
-            border-color: rgb(235, 71, 61);
+            background: rgb(190,163,101);
+            border-color: rgb(190,163,101);
         }
 
             .product__item__pic__hover li:hover a i {
@@ -1663,8 +1663,8 @@ ol {
 
         .product__pagination a:hover,
         .blog__pagination a:hover {
-            background: rgb(235, 71, 61);
-            border-color: rgb(235, 71, 61);
+            background: rgb(190,163,101);
+            border-color: rgb(190,163,101);
             color: #ffffff;
         }
 
@@ -1999,7 +1999,7 @@ ol {
     .primary-btn.cart-btn:hover {
         color: #fff;
         padding: 14px 30px 12px;
-        background: rgb(235, 71, 61);
+        background: rgb(190,163,101);
     }
 
     .primary-btn.cart-btn span {
@@ -2179,8 +2179,8 @@ ol {
         }
 
             .checkout__input__checkbox label input:checked ~ .checkmark {
-                background: rgb(235, 71, 61);
-                border-color: rgb(235, 71, 61);
+                background: rgb(190,163,101);
+                border-color: rgb(190,163,101);
             }
 
                 .checkout__input__checkbox label input:checked ~ .checkmark:after {
@@ -2407,7 +2407,7 @@ ol {
         }
 
             .blog__sidebar__item ul li a:hover {
-                color: rgb(235, 71, 61);
+                color: rgb(190,163,101);
             }
 
 .blog__sidebar__search {
@@ -2627,7 +2627,7 @@ ol {
 }
 
     .blog__details__widget .blog__details__social a:hover {
-        color: rgb(235, 71, 61);
+        color: rgb(190,163,101);
     }
 
     .blog__details__widget .blog__details__social a:last-child {
@@ -2745,7 +2745,7 @@ ol {
         }
 
         .footer__widget .footer__widget__social a:hover {
-            background: rgb(235, 71, 61);
+            background: rgb(190,163,101);
             color: #ffffff;
             border-color: #ffffff;
         }
@@ -2783,7 +2783,7 @@ ol {
 
     .contact__widget span {
         font-size: 36px;
-        color: rgb(235, 71, 61);
+        color: rgb(190,163,101);
     }
 
     .contact__widget h4 {
@@ -2822,7 +2822,7 @@ ol {
 
         .map .map-inside i {
             font-size: 48px;
-            color: rgb(235, 71, 61);
+            color: rgb(190,163,101);
             position: absolute;
             bottom: -75px;
             left: 50%;
@@ -3110,7 +3110,7 @@ ol {
                 .humberger__menu__cart ul li a span {
                     height: 13px;
                     width: 13px;
-                    background: rgb(235, 71, 61);
+                    background: rgb(190,163,101);
                     font-size: 10px;
                     color: #ffffff;
                     line-height: 13px;
@@ -3190,7 +3190,7 @@ ol {
             -webkit-border-radius: 0;
             border-radius: 0;
             background: transparent;
-            color: rgb(235, 71, 61);
+            color: rgb(190,163,101);
         }
 
     .humberger__menu__wrapper .slicknav_nav .slicknav_row,
@@ -3423,7 +3423,7 @@ ol {
                 .humberger__menu__cart ul li a span {
                     height: 13px;
                     width: 13px;
-                    background: rgb(235, 71, 61);
+                    background: rgb(190,163,101);
                     font-size: 10px;
                     color: #ffffff;
                     line-height: 13px;
@@ -3503,7 +3503,7 @@ ol {
             -webkit-border-radius: 0;
             border-radius: 0;
             background: transparent;
-            color: rgb(235, 71, 61);
+            color: rgb(190,163,101);
         }
 
     .humberger__menu__wrapper .slicknav_nav .slicknav_row,
@@ -3615,7 +3615,7 @@ ol {
 /* My config */
 
 .price_active {
-    border: 4px solid rgb(235, 71, 61);
+    border: 4px solid rgb(190,163,101);
     border-radius: 5px;
 }
 
@@ -3645,7 +3645,7 @@ ol {
 
             .category-list > li > a:hover {
                 background-color: #f8f9fa;
-                color: rgb(235 71 61);
+                color: rgb(190,163,101);
                 border-radius: 4px;
             }
 
@@ -3669,7 +3669,7 @@ ol {
 
         .subcategories li a:hover {
             background-color: #e9ecef;
-            color: rgb(235 71 61);
+            color: rgb(190,163,101);
         }
 
 
@@ -3681,6 +3681,6 @@ ol {
 
 .activeSlug {
     background-color: #e9ecef !important;
-    color: rgb(235 71 61) !important;
+    color: rgb(190,163,101) !important;
     font-weight: 700;
 }

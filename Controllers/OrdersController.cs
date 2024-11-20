@@ -39,6 +39,7 @@ namespace ThienAnFuni.Controllers
             var order = await _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.SaleStaff)
+                .Include(o => o.OrderDetails)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
