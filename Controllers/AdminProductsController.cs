@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ThienAnFuni.Helpers;
 using ThienAnFuni.Models;
 
 namespace ThienAnFuni.Controllers
 {
-    //[Authorize(Roles = "Manager")]
+    [Authorize(Roles = $"{ConstHelper.RoleManager},{ConstHelper.RoleSaleStaff}")]
+
     public class AdminProductsController : Controller
     {
         private readonly TAF_DbContext _context;
