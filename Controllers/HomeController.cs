@@ -17,6 +17,11 @@ namespace ThienAnFuni.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            var categories = await _context.Categories
+            .Where(c => c.ParentId == null && c.IsActive)
+            .ToListAsync();
+
+            ViewBag.Categories = categories;
             var products = await _context.Products.ToListAsync();
             return View(products);
         }
