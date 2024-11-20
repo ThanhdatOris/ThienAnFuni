@@ -1,3 +1,12 @@
+# Account:
+- `Admin`: 
+  - `Username`: `sinoo`
+  - `Password`: `123456`
+
+- `SaleStaff 1`:
+  - `Username`: `tramanh`
+  - `Password`: `123456`
+
 # Lần pull đầu tiên
 ```
 - Tạo database thienanFuni

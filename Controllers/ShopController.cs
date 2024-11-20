@@ -89,7 +89,7 @@ namespace ThienAnFuni.Controllers
 
         public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null, string color = null)
         {
-            int pageSize = 2;
+            int pageSize = 9;
 
             // Lấy danh mục nếu có slug
             Category category = null;
@@ -117,7 +117,6 @@ namespace ThienAnFuni.Controllers
             {
                 productsQuery = productsQuery.Where(p => p.CategoryId.HasValue && categoryIds.Contains(p.CategoryId.Value));
             }
-
 
             // Lọc giá
             if (minPrice.HasValue)

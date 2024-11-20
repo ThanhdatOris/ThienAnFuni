@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ThienAnFuni.Helpers;
 using ThienAnFuni.Models;
 
 namespace ThienAnFuni.Controllers
 {
+    [Authorize(Roles = ConstHelper.RoleManager)]
     public class ShipmentsController : Controller
     {
         private const string ShipmentSessionKey = "Shipment";

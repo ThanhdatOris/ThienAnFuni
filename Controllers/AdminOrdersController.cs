@@ -10,9 +10,11 @@ using ThienAnFuni.Models;
 using ThienAnFuni.Helpers;
 using ThienAnFuni.ViewModels;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThienAnFuni.Controllers
 {
+    [Authorize(Roles = $"{ConstHelper.RoleManager},{ConstHelper.RoleSaleStaff}")]
     public class AdminOrdersController : Controller
     {
         private readonly TAF_DbContext _context;
