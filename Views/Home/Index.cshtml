@@ -64,7 +64,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">@product.Name</a></h6>
+                            <h6><a asp-controller="Shop" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a></h6>
                             <h5>@product.Price.ToString("C")</h5>
                         </div>
                     </div>

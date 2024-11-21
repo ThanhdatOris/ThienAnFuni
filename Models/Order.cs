@@ -7,6 +7,7 @@ namespace ThienAnFuni.Models
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Số điện thoại khách hàng bắt buộc phải có.")]
+        [Display(Name = "Số điện thoại")]
         public string CustomerPhoneNumber { get; set; } = string.Empty;
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Tổng tiền phải là số")]
