@@ -6,7 +6,6 @@ namespace ThienAnFuni.Models
 {
     public class Category
     {
-
         public int Id { get; set; }
         [Display(Name = "Danh mục cha")]
         public int? ParentId { get; set; }
@@ -16,10 +15,15 @@ namespace ThienAnFuni.Models
         [Display(Name = "Tên danh mục")]
         public string Name { get; set; }
 
+        [Display(Name = "Ảnh danh mục")]
+        public string? Image { get; set; }
+
         public string Slug { get; set; }
+
         [Display(Name = "Trạng thái")]
         public bool IsActive { get; set; }
-        // Navigation parent cate and product 
+
+        // "Navigation" ParentId của cate và product 
         [ForeignKey("ParentId")]
         public virtual Category? ParentCategory { get; set; }
         public virtual List<Category>? SubCategories { get; set; }
