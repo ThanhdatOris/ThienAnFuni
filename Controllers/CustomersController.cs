@@ -23,6 +23,6 @@ namespace ThienAnFuni.Controllers
 
             return View(await _context.Customers.Where(s => s.IsActive == true).ToListAsync());
         }
-
+        // Dữ liệu để lưu
     }
 }

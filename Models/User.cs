@@ -14,7 +14,6 @@ namespace ThienAnFuni.Models
         //[Display(Name = "Tên")]
         //public string Username { get; set; }
 
-
         [Required(ErrorMessage = "Số điện thoại không được để trống")]
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         [Display(Name ="Số điện thoại")]

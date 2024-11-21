@@ -69,35 +69,35 @@
                         </select>
                     </div>
                     @* <div class="form-group col-md-3">
-                        <label for="supplierSelect" class="control-label">Nhà cung cấp</label>
-                        <select class="form-control" id="supplierSelect" name="Supplier">
-                            <option value="">-- Chọn nhà cung cấp --</option>
-                            @if (ViewBag.Categories != null)
-                            {
-                                foreach (var supplier in ViewBag.Suppliers)
-                                {
-                                    <option value="@supplier.Id">@supplier.DisplayName</option>
-                                }
-                            }
-                            else
-                            {
-                                <option value="">Không có danh mục nào</option>
-                            }
-                        </select>
+                    <label for="supplierSelect" class="control-label">Nhà cung cấp</label>
+                    <select class="form-control" id="supplierSelect" name="Supplier">
+                    <option value="">-- Chọn nhà cung cấp --</option>
+                    @if (ViewBag.Categories != null)
+                    {
+                    foreach (var supplier in ViewBag.Suppliers)
+                    {
+                    <option value="@supplier.Id">@supplier.DisplayName</option>
+                    }
+                    }
+                    else
+                    {
+                    <option value="">Không có danh mục nào</option>
+                    }
+                    </select>
                     </div> *@
-                                 <div class="form-group col-md-3">
-                    <label class="control-label">Giá bán</label>
-                    <input class="form-control" type="text" name="Price" placeholder="Nhập giá bán">
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Giá bán</label>
+                        <input class="form-control" type="text" name="Price" placeholder="Nhập giá bán">
                     </div>
-          @*           <div class="form-group col-md-3">
-                        <label class="control-label">Giá nhập</label>
-                        <input class="form-control" type="text" name="CostPrice" placeholder="Giá nhập" disabled>
+                    @*           <div class="form-group col-md-3">
+                    <label class="control-label">Giá nhập</label>
+                    <input class="form-control" type="text" name="CostPrice" placeholder="Giá nhập" disabled>
                     </div> *@
                     <div class="form-group col-md-3">
                         <label class="control-label">Đơn vị</label>
                         <input class="form-control" type="text" name="Unit" placeholder="Nhập đơn vị">
                     </div>
-             
+
                     <div class="form-group col-md-3">
                         <label class="control-label">Kích thước</label>
                         <input class="form-control" type="text" name="Dimension" placeholder="Nhập kích thước">
@@ -110,10 +110,6 @@
                         <label class="control-label">Màu sắc</label>
                         <input class="form-control" type="text" name="Color" placeholder="Nhập màu sắc">
                     </div>
-          @*           <div class="form-group col-md-3">
-                        <label class="control-label">Loại</label>
-                        <input class="form-control" type="text" name="Type" placeholder="Nhập loại">
-                    </div> *@
                     <div class="form-group col-md-3">
                         <label class="control-label">Thương hiệu</label>
                         <input class="form-control" type="text" name="Brand" placeholder="Nhập thương hiệu">
@@ -130,6 +126,7 @@
                             <option value="false">Không</option>
                         </select>
                     </div>
+                    @* Upload Main IMG *@
                     <div class="form-group col-md-12">
                         <label class="control-label">Ảnh sản phẩm</label>
                         <div id="myfileupload">
@@ -147,16 +144,48 @@
                             <p style="clear:both"></p>
                         </div>
                     </div>
+                    @* Upload Multi *@
                     <div class="form-group col-md-12">
+                        <label class="control-label" for="productImages">Thêm nhiều ảnh</label>
+                        <input type="file"
+                               id="productImages"
+                               name="ImageUploadSub"
+                               multiple
+                               class="form-control"
+                               onchange="previewMultipleImages(this);" />
+                        <div id="imagePreviewContainer" class="mt-3" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <!-- Các ảnh sẽ hiển thị ở đây -->
+                        </div>
+                        <button type="button"
+                                id="clearImagesButton"
+                                class="btn btn-danger mt-3"
+                                onclick="clearAllImages()"
+                                style="display: none;">
+                            Xóa tất cả ảnh
+                        </button>
+                    </div>
+
+
+                  @*   <div class="form-group col-md-12">
                         <label class="control-label">Chất liệu</label>
-                        <textarea class="form-control ckeditor" name="Material" 
+                        <textarea class="form-control ckeditor" name="Material"
                                   placeholder="Nhập chất liệu"></textarea>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="control-label">Mô tả sản phẩm</label>
                         <textarea class="form-control ckeditor" name="Description"
                                   placeholder="Nhập mô tả sản phẩm"></textarea>
+                    </div> *@
+
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Chất liệu</label>
+                        <textarea id="MaterialEditor" class="form-control ckeditor" name="Material" placeholder="Nhập chất liệu"></textarea>
                     </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Mô tả sản phẩm</label>
+                        <textarea id="DescriptionEditor" class="form-control ckeditor" name="Description" placeholder="Nhập mô tả sản phẩm"></textarea>
+                    </div>
+
 
                     <button class="btn btn-save" type="submit">Lưu lại</button>
                     <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
@@ -169,9 +198,82 @@
 
 @section Scripts {
     <script>
-        document.querySelectorAll('.ckeditor').forEach((el) => {
-            CKEDITOR.replace(el);
-        });
+        // document.querySelectorAll('.ckeditor').forEach((el) => {
+        //     CKEDITOR.replace(el);
+        // });
+
+        // // Xóa tất cả các instances của CKEditor trước khi khởi tạo lại
+        // Object.keys(CKEDITOR.instances).forEach(function (editor) {
+        //     CKEDITOR.instances[editor].destroy(true);
+        // });
+
+        // // Kiểm tra và khởi tạo CKEditor chỉ nếu chưa được khởi tạo
+        // document.querySelectorAll('.ckeditor').forEach((el) => {
+        //     if (!el.getAttribute('ckeditor-initialized')) {
+        //         CKEDITOR.replace(el);
+        //         el.setAttribute('ckeditor-initialized', 'true');
+        //     }
+        // });
+
+
     </script>
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+
+
+    <script>
+        function previewMultipleImages(input) {
+            const previewContainer = document.getElementById("imagePreviewContainer");
+            const clearButton = document.getElementById("clearImagesButton");
+
+            // Xóa các ảnh cũ trước khi hiển thị ảnh mới
+            previewContainer.innerHTML = "";
+
+            if (input.files && input.files.length > 0) {
+                Array.from(input.files).forEach(file => {
+                    if (!file.type.startsWith("image/")) {
+                        alert("Vui lòng chỉ chọn file ảnh!");
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const imageWrapper = document.createElement("div");
+                        imageWrapper.style.position = "relative";
+                        imageWrapper.style.display = "inline-block";
+
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.alt = "Preview";
+                        img.style.width = "100px";
+                        img.style.height = "100px";
+                        img.style.objectFit = "cover";
+                        img.style.border = "1px solid #ccc";
+                        img.style.borderRadius = "4px";
+
+                        imageWrapper.appendChild(img);
+                        previewContainer.appendChild(imageWrapper);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                // Hiển thị nút xóa nếu có ảnh
+                clearButton.style.display = "block";
+            } else {
+                clearButton.style.display = "none";
+            }
+        }
+
+        function clearAllImages() {
+            const previewContainer = document.getElementById("imagePreviewContainer");
+            const clearButton = document.getElementById("clearImagesButton");
+            const inputFile = document.getElementById("productImages");
+
+            // Xóa toàn bộ ảnh và làm trống input
+            previewContainer.innerHTML = "";
+            inputFile.value = "";
+            clearButton.style.display = "none";
+        }
+    </script>
+
+
 }

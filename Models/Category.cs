@@ -8,6 +8,7 @@ namespace ThienAnFuni.Models
     {
 
         public int Id { get; set; }
+        [Display(Name = "Danh mục cha")]
         public int? ParentId { get; set; }
 
         [Required(ErrorMessage = "Tên danh mục là bắt buộc.")]

@@ -118,6 +118,44 @@
                                 <p style="clear:both"></p>
                             </div>
                         </div>
+                        @* Duyệt ảnh phụ *@
+                        <div class="form-group col-md-12">
+                            <label class="control-label" for="productImages">Ảnh phụ</label>
+                            <div id="imagePreviewContainer" class="mt-3" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                @foreach (var img in Model.ProductImages)
+                                {
+                                    <div class="image-item" style="position: relative; display: inline-block; margin: 10px;">
+                                        <img src="~/adminThienAn/image_product/@img.ImgURL"
+                                             style="width: 130px; height: 130px; border: 1px solid #ccc; border-radius: 4px;"
+                                             alt="Image">
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                                style="position: absolute; top: 0; right: 0;"
+                                                onclick="deleteImage(@img.Id)">
+                                            X
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+ 
+               @*          <div class="form-group col-md-12">
+                            <label class="control-label" for="ImageUploadSub">Thêm nhiều ảnh</label>
+                            <input type="file" id="ImageUploadSub" name="ImageUploadSub" multiple class="form-control"
+                                   onchange="previewSelectedImages(this)" />
+                        </div> *@
+
+                        <div class="form-group col-md-12">
+                            <label class="control-label" for="ImageUploadSub">Thêm nhiều ảnh</label>
+                            <input type="file" id="ImageUploadSub" name="ImageUploadSub" multiple class="form-control"
+                                   onchange="previewSelectedImages(this)" />
+                            <div id="imagePreviewContainer" class="mt-3" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                <!-- Preview ảnh -->
+                            </div>
+                            <button type="button" class="btn btn-danger mt-3" onclick="clearAllImages()">
+                                Xóa tất cả ảnh
+                            </button>
+                        </div>
+
 
                         <div class="form-group col-md-12">
                             <label class="control-label">Chất liệu</label>
@@ -143,9 +181,79 @@
 
 @section Scripts {
     <script>
-        document.querySelectorAll('.ckeditor').forEach((el) => {
-            CKEDITOR.replace(el);
-        });
+        // document.querySelectorAll('.ckeditor').forEach((el) => {
+        //     CKEDITOR.replace(el);
+        // });
     </script>
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+
+    <script>
+        function deleteImage(imageId) {
+            if (confirm("Bạn có chắc chắn muốn xóa ảnh này không?")) {
+                fetch(`/AdminProducts/DeleteImage/${imageId}`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload(); // Reload trang sau khi xóa thành công
+                        } else {
+                            alert("Xóa ảnh thất bại!");
+                        }
+                    });
+            }
+        }
+
+        function previewSelectedImages(input) {
+            const previewContainer = document.getElementById("imagePreviewContainer");
+
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const imageWrapper = document.createElement("div");
+                        imageWrapper.className = "image-item";
+                        imageWrapper.style.position = "relative";
+                        imageWrapper.style.display = "inline-block";
+                        imageWrapper.style.margin = "10px";
+
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.style.width = "130px";
+                        img.style.height = "130px";
+                        img.style.border = "1px solid #ccc";
+                        img.style.borderRadius = "4px";
+
+                        // const removeButton = document.createElement("button");
+                        // removeButton.type = "button";
+                        // removeButton.innerText = "X";
+                        // removeButton.className = "btn btn-danger btn-sm";
+                        // removeButton.style.position = "absolute";
+                        // removeButton.style.top = "0";
+                        // removeButton.style.right = "0";
+                        // removeButton.onclick = () => {
+                        //     imageWrapper.remove();
+                        // };
+
+                        imageWrapper.appendChild(img);
+                        // imageWrapper.appendChild(removeButton);
+                        previewContainer.appendChild(imageWrapper);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        function clearAllImages() {
+            const fileInput = document.getElementById("ImageUploadSub");
+            const previewContainer = document.getElementById("imagePreviewContainer");
+
+            fileInput.value = ""; // Làm rỗng input file
+            previewContainer.innerHTML = ""; // Xóa toàn bộ ảnh trong giao diện
+        }
+
+    </script>
+
 }

@@ -1,10 +1,8 @@
-﻿@* @model IEnumerable<ThienAnFuni.Models.Product> *@
-@model IEnumerable<dynamic>
+﻿@model IEnumerable<dynamic>
 @{
     ViewData["Title"] = "Quản lý sản phẩm";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-
 
 <div class="app-title">
     <ul class="app-breadcrumb breadcrumb side">
@@ -29,11 +27,11 @@
                             Sản phẩm ngừng bán
                         </a>
                     </div>
-                    <div class="col-sm-2">
+                  @*   <div class="col-sm-2">
                         <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)">
                             <i class="fas fa-file-pdf"></i> Xuất PDF
                         </a>
-                    </div>
+                    </div> *@
 
                 </div>
                 <table class="table table-hover table-bordered" id="sampleTable">
