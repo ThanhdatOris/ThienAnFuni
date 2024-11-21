@@ -20,7 +20,7 @@
                 <table class="table table-hover table-bordered" id="sampleTable">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(model => model.Id)</th>
+                            <th>Mã KH@* @Html.DisplayNameFor(model => model.Id) *@</th>
                             <th>@Html.DisplayNameFor(model => model.FullName)</th>
                             <th>@Html.DisplayNameFor(model => model.Address)</th>
                             <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
@@ -53,7 +53,11 @@
                                             data-gender="@item.Gender">
                                         <i class="fas fa-edit"></i>
                                     </button> *@
-                                    <a class="btn btn-primary btn-sm edit" asp-action="Edit" asp-controller="Customers" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
+                                    <a class="btn btn-primary btn-sm edit" title="Sửa" asp-action="Edit" asp-controller="Customers" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
+
+                                    <a class="btn btn-info btn-sm" title="Chi tiết" asp-action="Details" asp-controller="Customers" asp-route-id="@item.Id">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -66,36 +70,5 @@
 
 
 @section Scripts {
-    <script>
-        // // Khi nhấn nút Sửa
-        // // $(".editBtn").click(function () {
-        //     var id = $(this).data("id");
-        //     var fullname = $(this).data("fullname");
-        //     var address = $(this).data("address");
-        //     var phone = $(this).data("phonenumber");
-        //     var email = $(this).data("email");
-        //     var dob = $(this).data("dob");
-        //     var gender = $(this).data("gender");
-
-        //     // Điền dữ liệu vào form
-        //     $("#CustomerId").val(id);
-        //     $("#FullName").val(fullname);
-        //     $("#Address").val(address);
-        //     $("#PhoneNumber").val(phone);
-        //     $("#Email").val(email);
-        //     $("#DateOfBirth").val(dob);
-        //     $("#Gender").val(gender);
-
-        //     // Ẩn bảng và hiển thị form chỉnh sửa
-        //     $("#customerTable").hide();
-        //     $("#editForm").show();
-        // });
-
-        // // Khi nhấn Hủy
-        // // $("#cancelEdit").click(function () {
-        // //     // Hiển thị lại bảng và ẩn form chỉnh sửa
-        // //     $("#editForm").hide();
-        // //     $("#customerTable").show();
-        // // });
-    </script>
+              <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
 }

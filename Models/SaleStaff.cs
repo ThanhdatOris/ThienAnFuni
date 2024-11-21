@@ -12,6 +12,7 @@ namespace ThienAnFuni.Models
         public string IssuingPlace { get; set; } = string.Empty;
         [Display(Name = "Ngày bắt đầu làm việc")]
         public DateTime StartDate { get; set; } = DateTime.Now;
+        [Display(Name = "Ngày nghỉ việc")]
         public DateTime? EndDate { get; set; }
         [Display(Name = "Trình độ")] 
         public string? Degree { get; set; } = string.Empty;

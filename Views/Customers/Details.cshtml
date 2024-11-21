@@ -1,37 +1,35 @@
-﻿@model ThienAnFuni.Models.SaleStaff
-
+﻿@model ThienAnFuni.Models.Customer
 @{
-    ViewData["Title"] = "Quản lý nhân viên";
+    ViewData["Title"] = "Quản lý khách hàng";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
 }
-
 <div class="app-title">
     <ul class="app-breadcrumb breadcrumb side">
-        <li class="breadcrumb-item active"><a href="#"><b>Quản lý nhân viên</b></a></li>
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách khách hàng</b></a></li>
     </ul>
     <div id="clock"></div>
 </div>
-
 
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
             <div class="tile-body">
-                <div class="row element-button">
-                    <div class="col-sm-2">
+               @*  <div class="row element-button"> *@
+                 @*    <div class="col-sm-2">
                         <a class="btn btn-add btn-sm" asp-action="Create" title="Thêm nhân viên mới">
                             <i class="fas fa-plus"></i>
                             Thêm nhân viên mới
                         </a>
-                    </div>
-                    <div class="col-sm-2">
+                    </div> *@
+                 @*    <div class="col-sm-2">
                         <a class="btn btn-danger btn-sm" asp-action="ListDeleted" title="DS nhân viên nghĩ việc">
                             <i class="fa fa-trash"></i>
                             DS nhân viên nghĩ việc
                         </a>
-                    </div>
-                        @if(Model.IsActive == true){
+                    </div> *@
+            @*         @if (Model.IsActive == true)
+                    {
                         <div class="col-sm-2">
                             <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@Model?.Id" title="Cập nhật thông tin nhân viên hiện tại">
                                 <i class="fa fa-edit"></i>
@@ -39,8 +37,8 @@
                             </a>
                         </div>
                     }
-                </div>
-                @{
+                </div> *@
+           @*      @{
                     var errorMessage = TempData["ErrorMessage"] as string;
                     if (!string.IsNullOrEmpty(errorMessage))
                     {
@@ -48,50 +46,17 @@
                             @errorMessage
                         </div>
                     }
-                }
-                <h3 class="text-center">Thông tin nhân viên</h3>
+                } *@
+                <h3 class="text-center">Thông tin khách hàng</h3>
                 <dl class="row">
                     <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.CitizenId)
+                        Mã KH
+                       @*  @Html.DisplayNameFor(model => model.Id) *@  <!-- Hiển thị nhãn: "Id" -->
                     </dt>
                     <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.CitizenId)
+                        @Html.DisplayFor(model => model.Id)  <!-- Hiển thị giá trị của "Id" -->
                     </dd>
 
-                    <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.IssuingDate)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.IssuingDate)
-                    </dd>
-
-                    <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.IssuingPlace)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.IssuingPlace)
-                    </dd>
-
-                    <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.StartDate)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.StartDate)
-                    </dd>
-
-                    <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.EndDate)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.EndDate)
-                    </dd>
-
-                    <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.Degree)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.Degree)
-                    </dd>
 
                     <dt class="col-sm-3 font-weight-bold">
                         @Html.DisplayNameFor(model => model.FullName)
@@ -100,19 +65,15 @@
                         @Html.DisplayFor(model => model.FullName)
                     </dd>
 
+                    
                     <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.UserName)
+                        Tên tài khoản
+                       @*  @Html.DisplayNameFor(model => model.UserName) *@
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.UserName)
                     </dd>
 
-                    <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.PhoneNumber)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.PhoneNumber)
-                    </dd>
 
                     <dt class="col-sm-3 font-weight-bold">
                         @Html.DisplayNameFor(model => model.Address)
@@ -121,12 +82,22 @@
                         @Html.DisplayFor(model => model.Address)
                     </dd>
 
+
                     <dt class="col-sm-3 font-weight-bold">
-                        @Html.DisplayNameFor(model => model.Gender)
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
                     </dt>
                     <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.Gender)
+                        @Html.DisplayFor(model => model.PhoneNumber)
                     </dd>
+
+
+                    <dt class="col-sm-3 font-weight-bold">
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+
 
                     <dt class="col-sm-3 font-weight-bold">
                         @Html.DisplayNameFor(model => model.DateOfBirth)
@@ -135,20 +106,32 @@
                         @Html.DisplayFor(model => model.DateOfBirth)
                     </dd>
 
+
                     <dt class="col-sm-3 font-weight-bold">
+                        @Html.DisplayNameFor(model => model.Gender)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Gender)
+                    </dd>
+
+                  @*   <dt class="col-sm-3 font-weight-bold">
                         Mật khẩu
                     </dt>
                     <dd class="col-sm-9">
                         ******************
-                    </dd>
+                    </dd> *@
                 </dl>
-
-
             </div>
         </div>
     </div>
 </div>
 
+
+
+
 @section Scripts {
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

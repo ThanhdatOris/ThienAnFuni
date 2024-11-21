@@ -33,6 +33,26 @@ namespace ThienAnFuni.Controllers
             return View(await _context.Customers.Where(s => s.IsActive == true).ToListAsync());
         }
 
+        // GET: SaleStaffs/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            ViewData["ActiveMenu"] = "Customer";
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return View(customer);
+        }
+
         // GET: Customers/Edit/5
         // phương thức này nhận 1 Id và trả về trang form chỉnh sửa với thông tin của khách hàng 
         public async Task<IActionResult> Edit(string? id)
