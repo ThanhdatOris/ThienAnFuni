@@ -200,6 +200,32 @@ namespace ThienAnFuni.Controllers
         }
 
 
+        //[HttpPost]
+        //public IActionResult RemoveFromShipment(int productId)
+        //{
+        //    var shipment = GetShipment();
+        //    var goodsItem = shipment?.Goods?.FirstOrDefault(g => g.ProductId == productId);
+
+        //    if (goodsItem != null)
+        //    {
+        //        shipment?.Goods?.Remove(goodsItem);
+        //        SaveShipmentSession(shipment);
+
+        //        // Trả về danh sách hàng hóa đã cập nhật với thông tin đầy đủ về sản phẩm
+        //        return Json(shipment.Goods.Select(g => new
+        //        {
+        //            g.ProductId,
+        //            ProductName = g.Product?.Name ?? "N/A", // Lấy tên sản phẩm
+        //            ProductImage = $"/adminThienAn/image_product/{g.Product?.MainImg ?? "default.png"}", // Lấy hình ảnh sản phẩm
+        //            g.Quantity,
+        //            Category = g.Product?.Category?.Name ?? "N/A", // Lấy tên danh mục
+        //            g.ImportPrice
+        //        }));
+        //    }
+
+        //    return NotFound("Không tìm thấy sản phẩm trong đơn hàng");
+        //}
+
         [HttpPost]
         public IActionResult RemoveFromShipment(int productId)
         {
@@ -211,20 +237,27 @@ namespace ThienAnFuni.Controllers
                 shipment?.Goods?.Remove(goodsItem);
                 SaveShipmentSession(shipment);
 
-                // Trả về danh sách hàng hóa đã cập nhật với thông tin đầy đủ về sản phẩm
+                // Nếu danh sách hàng hóa trống, trả về danh sách rỗng
+                if (!shipment.Goods.Any())
+                {
+                    return Json(new List<object>());
+                }
+
+                // Trả về danh sách hàng hóa đã cập nhật
                 return Json(shipment.Goods.Select(g => new
                 {
                     g.ProductId,
-                    ProductName = g.Product?.Name ?? "N/A", // Lấy tên sản phẩm
-                    ProductImage = $"/adminThienAn/image_product/{g.Product?.MainImg ?? "default.png"}", // Lấy hình ảnh sản phẩm
+                    ProductName = g.Product?.Name ?? "N/A",
+                    ProductImage = $"/adminThienAn/image_product/{g.Product?.MainImg ?? "default.png"}",
                     g.Quantity,
-                    Category = g.Product?.Category?.Name ?? "N/A", // Lấy tên danh mục
+                    Category = g.Product?.Category?.Name ?? "N/A",
                     g.ImportPrice
                 }));
             }
 
             return NotFound("Không tìm thấy sản phẩm trong đơn hàng");
         }
+
 
         [HttpGet]
         public IActionResult GetShipmentGoods()

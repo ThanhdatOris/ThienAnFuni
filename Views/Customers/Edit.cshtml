@@ -1,0 +1,70 @@
+﻿@model ThienAnFuni.Models.Customer
+@{
+    ViewData["Title"] = "Quản lý khách hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách khách hàng</b></a></li>
+    </ul>
+    <div id="clock"></div>
+</div>
+
+<!-- Form chỉnh sửa thông tin khách hàng (ẩn ban đầu) -->
+<div id="editForm">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <h3>Chỉnh sửa thông tin khách hàng</h3>
+                <form id="customerEditForm" method="post" action="@Url.Action("Edit", "Customers")">
+                    @Html.AntiForgeryToken()  <!-- Đảm bảo bạn có AntiForgery Token -->
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="form-group">
+                        <label for="FullName">Họ và tên</label>
+                        <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="Address">Địa chỉ</label>
+                        <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="PhoneNumber">Số điện thoại</label>
+                        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email"/>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="DateOfBirth">Ngày sinh</label>
+                        <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth"
+                               value="@Model.DateOfBirth?.ToString("yyyy-MM-dd")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Gender">Giới tính</label>
+                        <select class="form-control" id="Gender" name="Gender" >
+                            <option value="Nam" selected="@((Model.Gender == "Nam") ? true : false)">Nam</option>
+                            <option value="Nữ" selected="@((Model.Gender == "Nữ") ? true : false)">Nữ</option>
+                            <option value="Khác" selected="@((Model.Gender == "Khác") ? true : false)">Khác</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                    <a class="btn btn-dark" id="cancelEdit" asp-action="Index" asp-controller="Customers">Hủy</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

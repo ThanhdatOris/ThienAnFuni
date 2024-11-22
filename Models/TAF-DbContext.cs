@@ -24,6 +24,7 @@ namespace ThienAnFuni.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<SaleStaff> SaleStaffs { get; set; }
         public DbSet<Manager> Managers { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -425,6 +426,192 @@ namespace ThienAnFuni.Models
             // Ghế văn phòng 20 21
 
             );
+
+            // Seed Order
+            modelBuilder.Entity<Order>().HasData(
+                new Order
+                {
+                    Id = 1,
+                    CustomerPhoneNumber = "0123456789",
+                    TotalPrice = 17980000,
+                    TotalQuantity = 5,
+                    Note = "Khách yêu cầu giao hàng nhanh.",
+                    Address = "123 Đường ABC, Quận XYZ, TP.HCM",
+                    OrderDate = DateTime.Now.AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0001",
+                    InvoiceDate = DateTime.Now.AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 2,
+                    CustomerPhoneNumber = "0987654321",
+                    TotalPrice = 24380000,
+                    TotalQuantity = 7,
+                    Note = "Khách yêu cầu giao hàng vào buổi tối.",
+                    Address = "456 Đường XYZ, Quận ABC, TP.HCM",
+                    OrderDate = DateTime.Now.AddDays(-1),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Bank_transfer,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0002",
+                    InvoiceDate = DateTime.Now,
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 3,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 41800000,
+                    TotalQuantity = 9,
+                    Note = "Khách yêu cầu giao hàng vào cuối tuần.",
+                    Address = "789 Đường DEF, Quận LMN, TP.HCM",
+                    OrderDate = DateTime.Now.AddDays(-3),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0003",
+                    InvoiceDate = DateTime.Now.AddDays(1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                }
+            );
+            // Seed Order Detail
+            modelBuilder.Entity<OrderDetail>().HasData(
+                new OrderDetail
+                {
+                    Id = 1,
+                    OrderId = 1,
+                    ProductId = 1,
+                    Quantity = 2,
+                    PriceAtOrder = 3990000
+                },
+                new OrderDetail
+                {
+                    Id = 2,
+                    OrderId = 1, // Liên kết với Order Id
+                    ProductId = 2, // Ví dụ: ID của sản phẩm khác
+                    Quantity = 3,
+                    PriceAtOrder = 13990000
+                },
+
+                // Seed OrderDetail for Order 2
+                new OrderDetail
+                {
+                    Id = 3,
+                    OrderId = 2,
+                    ProductId = 11, // Ví dụ sản phẩm khác
+                    Quantity = 4,
+                    PriceAtOrder = 12490000
+                },
+                new OrderDetail
+                {
+                    Id = 4,
+                    OrderId = 2,
+                    ProductId = 12, // Ví dụ sản phẩm khác
+                    Quantity = 3,
+                    PriceAtOrder = 11890000
+                },
+
+                // Seed OrderDetail for Order 3
+                new OrderDetail
+                {
+                    Id = 5,
+                    OrderId = 3,
+                    ProductId = 3,
+                    Quantity = 6,
+                    PriceAtOrder = 1990000
+                },
+                new OrderDetail
+                {
+                    Id = 6,
+                    OrderId = 3,
+                    ProductId = 4, 
+                    Quantity = 3,
+                    PriceAtOrder = 2190000
+                }
+            );
+
+            // Seeder cho bảng Shipment
+            modelBuilder.Entity<Shipment>().HasData(
+                new Shipment
+                {
+                    Id = 1,
+                    ReceiptDate = new DateTime(2024, 11, 18),
+                    TotalPrice = 340000000, // Tổng tiền của lô hàng
+                    TotalQuantity = 60, // Tổng số lượng
+                    Note = "Phiếu nhập hàng đợt 1",
+                    SupplierId = 1, // Mã nhà cung cấp
+                    ManagerId = "1" // Mã của Manager
+                }
+            );
+
+            // Seeder cho bảng Goods
+            modelBuilder.Entity<Goods>().HasData(
+                new Goods
+                {
+                    Id = 1,
+                    Quantity = 10,
+                    ImportPrice = 1000000,
+                    TotalPrice = 10000000,
+                    ProductId = 3, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 1
+                },
+                new Goods
+                {
+                    Id = 2,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 11, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 1
+                },
+                new Goods
+                {
+                    Id = 3,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 2, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                }, 
+                new Goods
+                {
+                    Id = 4,
+                    Quantity = 10,
+                    ImportPrice = 1000000,
+                    TotalPrice = 10000000,
+                    ProductId = 4, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                }, 
+                new Goods
+                {
+                    Id = 5,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 12, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                }, 
+                new Goods
+                {
+                    Id = 6,
+                    Quantity = 10,
+                    ImportPrice = 2000000,
+                    TotalPrice = 20000000,
+                    ProductId = 1, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                }
+            );
+
         }
     }
 }

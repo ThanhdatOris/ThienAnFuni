@@ -79,6 +79,7 @@ app.UseSession(); // Session
 
 app.UseAuthorization();
 
+app.UseWebSockets(); //  UseWebSockets
 
 // Role sẽ được tạo khi app nó chạy nha bà con
 using (var scope = app.Services.CreateScope())
@@ -134,8 +135,8 @@ async Task SeedRolesAndUsers(UserManager<User> userManager, RoleManager<Identity
     await userManager.AddToRoleAsync(customerUser, ConstHelper.RoleCustomer);
 
     var customerUser2 = await userManager.FindByNameAsync("hongdaocus");
-    await userManager.AddToRoleAsync(customerUser2, ConstHelper.RoleCustomer);  
-    
+    await userManager.AddToRoleAsync(customerUser2, ConstHelper.RoleCustomer);
+
     var customerUser3 = await userManager.FindByNameAsync("teoemcus");
     await userManager.AddToRoleAsync(customerUser3, ConstHelper.RoleCustomer);
 

@@ -108,9 +108,9 @@
                             <!-- Sản phẩm sẽ thêm vào đây -->
                         </tbody>
                     </table>
-                    <h3 class="w-100 text-center text-danger">Tổng tiền: <span id="totalPriceMain" class="text-dark font-weight-bold">0</span></h3>
-                    <div>
-                        <button type="submit" name="save" class="btn btn-success">Nhập hàng</button>
+                    <h3 class="w-100 text-center ">Tổng tiền: <span id="totalPriceMain" class="text-danger font-weight-bold">0đ</span></h3>
+                    <div class="d-flex justify-content-center align-content-center w-100">
+                        <button type="submit" name="save" class="btn btn-success mr-2">Nhập hàng</button>
                         <button type="reset" name="close" class="btn btn-secondary">Hủy</button>
                     </div>
                 </form>
@@ -244,26 +244,35 @@
                     productListResult.empty();
 
                     if (goodsItems && goodsItems.length > 0) {
+                        let totalPriceMainRe = 0;
+
                         goodsItems.forEach(function (item) {
+                            totalPriceMainRe += item.quantity * item.importPrice;
+
                             productListResult.append(`
-                                                         <tr>
-                                                   <td>#${item.productId}</td>
-                                                   <td>${item.productName}</td>
-                                                   <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
-                                                   <td>${item.quantity}</td>
-                                                   <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                                                   <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                                                   <td class="text-center">
-                                                   <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
-                                                      </tr>`);
+                        <tr>
+                            <td>#${item.productId}</td>
+                            <td>${item.productName}</td>
+                            <td><img src="${item.productImage}" alt="${item.productName}" width="50"></td>
+                            <td>${item.quantity}</td>
+                            <td>${item.importPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                            <td>${(item.quantity * item.importPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button>
+                            </td>
+                        </tr>`);
                         });
+                        $('#totalPriceMain').text(totalPriceMainRe.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
                     } else {
                         productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
+                        $('#totalPriceMain').text('0đ');
                     }
                 }).fail(function () {
                     alert('Không thể xóa sản phẩm khỏi lô hàng.');
                 });
+
             });
+
         });
     </script>
 

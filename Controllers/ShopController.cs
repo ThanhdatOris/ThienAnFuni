@@ -89,7 +89,7 @@ namespace ThienAnFuni.Controllers
 
         public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null, string color = null)
         {
-            int pageSize = 2;
+            int pageSize = 9;
 
             // Lấy danh mục nếu có slug
             Category category = null;
@@ -117,7 +117,7 @@ namespace ThienAnFuni.Controllers
             {
                 productsQuery = productsQuery.Where(p => p.CategoryId.HasValue && categoryIds.Contains(p.CategoryId.Value));
             }
-             
+
             // Lọc giá
             if (minPrice.HasValue)
             {
@@ -150,6 +150,7 @@ namespace ThienAnFuni.Controllers
             ViewBag.SortOrder = sortOrder;
             ViewBag.Count = products.TotalItemCount;
             ViewBag.CategoryName = category?.Name;
+            ViewBag.ActiveSlug = category?.Slug;
             ViewBag.MinPrice = minPrice ?? 1000000; // Giá trị mặc định
             ViewBag.MaxPrice = maxPrice ?? 30000000; // Giá trị mặc định
             ViewBag.SelectedColor = color; // Lưu màu được chọn để hiển thị lại
@@ -159,15 +160,32 @@ namespace ThienAnFuni.Controllers
 
         public IActionResult Detail(int id)
         {
+            // Tìm sản phẩm từ cơ sở dữ liệu
             var product = _context.Products
-                .Include(p => p.Category)
+                .Include(p => p.Category)  // Nếu cần lấy thông tin danh mục
                 .FirstOrDefault(p => p.Id == id);
 
             if (product == null)
             {
-                RedirectToAction("Index");
+                return RedirectToAction("Index");  // Nếu không tìm thấy sản phẩm, chuyển về trang chính
             }
 
+            // Tính tổng số lượng đã bán của sản phẩm này
+            int soldQuantity = _context.OrderDetails
+                .Where(od => od.ProductId == id)  // Lọc theo sản phẩm này
+                .Sum(od => od.Quantity);  // Cộng dồn số lượng đã bán từ các đơn hàng
+
+            // Lấy tổng số lượng nhập của sản phẩm này từ bảng Goods
+            int totalQuantityInStock = _context.Goods
+                .Where(g => g.ProductId == id)  // Lọc theo sản phẩm này
+                .Sum(g => (int?)g.Quantity) ?? 0;  // Tổng số lượng nhập từ kho
+
+
+            // Tính số lượng còn lại trong kho bằng cách trừ số lượng đã bán từ tổng số lượng nhập
+            int availableQuantity = totalQuantityInStock - soldQuantity;
+            // Truyền số lượng sản phẩm còn lại vào ViewBag
+            ViewBag.AvailableQuantity = availableQuantity;
+            // Trả về view với sản phẩm
             return View(product);
         }
 
@@ -178,7 +196,6 @@ namespace ThienAnFuni.Controllers
                 return NotFound("Danh mục không hợp lệ.");
             }
 
-            // Tìm danh mục theo slug
             var category = await _context.Categories
                 .Include(c => c.Products)
                 .Where(c => c.IsActive)
@@ -189,12 +206,14 @@ namespace ThienAnFuni.Controllers
                 return NotFound("Danh mục không tồn tại.");
             }
 
-            // Lấy danh sách sản phẩm
             var products = category.Products;
+
+            if (products == null || !products.Any())
+            {
+                ViewBag.Message = "Không có sản phẩm nào trong danh mục này.";
+            }
 
             return View(products);
         }
-
-
     }
 }

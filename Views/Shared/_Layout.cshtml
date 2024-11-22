@@ -36,10 +36,23 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li>
-                    <a asp-controller="Cart" asp-action="Index"><i class="fa fa-shopping-bag"></i> <span>3</span></a>
+                    <a asp-controller="Cart" asp-action="Index">
+                        <i class="fa fa-shopping-bag"></i>
+                        <span class="span__quantity_cart">
+                            @Context.Session.GetCustomInt32("totalQuantity")
+                        </span>
+                    </a>
                 </li>
             </ul>
-            <div class="header__cart__price">Tổng tiền: <span>$150.00</span></div>
+
+            <div class="header__cart__price">
+                Tổng tiền:
+                <span>
+                    @Context.Session.GetDecimal("total").ToString("N0", new
+                             System.Globalization.CultureInfo("vi-VN"))đ
+                </span>
+            </div>
+
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
@@ -79,21 +92,21 @@
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                @* Thêm Action*@
-
-                <li class="active">
-                    <a class="app-nav__item" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Home")">Trang chủ</a>
                 </li>
-                <li><a asp-controller="Shop" asp-action="Index">Shop</a></li>
-                <li><a href="./shop-grid.html">Đơn hàng</a></li>
-                @*     <li>
-                <a href="#">Danh mục</a>
-                <ul class="header__menu__dropdown pl-3">
-                <li><a href="./shop-details.html">Shop</a></li>
-                </ul>
-                </li> *@
+                <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Shop"  ? "active" : "")">
+                    <a asp-controller="Shop" asp-action="Index">Shop</a>
+                </li>
+                <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Orders"  ? "active" : "")">
+                    <a asp-controller="Orders" asp-action="Index">
+                        Đơn hàng
+                    </a>
+                </li>
+                <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Contact"  ? "active" : "")">
+                    <a asp-controller="Contact" asp-action="Index">Liên hệ</a>
+                </li>
 
-                <li><a asp-controller="adminProducts" asp-action="Index">Liên hệ</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -192,15 +205,13 @@
                             <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Shop"  ? "active" : "")">
                                 <a asp-controller="Shop" asp-action="Index">Shop</a>
                             </li>
-                            <li>
-                                <a asp-controller="Orders" asp-action="Index"
-                                   class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Orders"  ? "active" : "")">
+                            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Orders"  ? "active" : "")">
+                                <a asp-controller="Orders" asp-action="Index">
                                     Đơn hàng
                                 </a>
                             </li>
-                            <li>
-                                <a asp-controller="Contact" asp-action="Index"
-                                   class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Contact"  ? "active" : "")">Liên hệ</a>
+                            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Contact"  ? "active" : "")">
+                                <a asp-controller="Contact" asp-action="Index">Liên hệ</a>
                             </li>
 
 

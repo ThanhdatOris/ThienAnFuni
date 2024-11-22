@@ -57,36 +57,6 @@ namespace ThienAnFuni.Controllers
             return View(products);
         }
 
-        [HttpPost]
-        public IActionResult DeleteImage(string imageName)
-        {
-            try
-            {
-                // Kiểm tra tên file hợp lệ
-                if (string.IsNullOrEmpty(imageName))
-                {
-                    return Json(new { success = false, message = "Tên file không hợp lệ." });
-                }
-
-                // Xác định đường dẫn tuyệt đối của file trong thư mục wwwroot
-                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product", imageName);
-
-                if (System.IO.File.Exists(filePath))
-                {
-                    System.IO.File.Delete(filePath);
-                    return Json(new { success = true });
-                }
-                else
-                {
-                    return Json(new { success = false, message = "File không tồn tại." });
-                }
-            }
-            catch
-            {
-                return Json(new { success = false, message = "Xóa ảnh thất bại." });
-            }
-        }
-
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -126,38 +96,98 @@ namespace ThienAnFuni.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Product model, IFormFile ImageUpload)
+        //public async Task<IActionResult> Create(Product model, IFormFile ImageUpload)
+        //{
+        //    ViewData["ActiveMenu"] = "Product";
+
+        //    // Đặt giá trị mặc định cho các thuộc tính của sản phẩm mới
+        //    model.IsImport = false;
+        //    model.IsActive = true;
+        //    model.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+        //    // Kiểm tra và xử lý upload ảnh
+        //    if (ImageUpload != null && ImageUpload.Length > 0)
+        //    {
+        //        string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product");
+
+        //        // Tạo thư mục nếu chưa tồn tại
+        //        Directory.CreateDirectory(uploadDir);
+
+        //        string fileName = $"{Guid.NewGuid()}{Path.GetExtension(ImageUpload.FileName)}";
+        //        string filePath = Path.Combine(uploadDir, fileName);
+
+        //        // Upload file
+        //        using var fileStream = new FileStream(filePath, FileMode.Create);
+        //        await ImageUpload.CopyToAsync(fileStream);
+
+        //        model.MainImg = fileName;
+        //    }
+        //    else
+        //    {
+        //        model.MainImg = "default.png"; // Ảnh mặc định nếu không upload ảnh
+        //    }
+
+        //    _context.Products.Add(model);
+        //    await _context.SaveChangesAsync();
+
+        //    return RedirectToAction("Index");
+        //}
+        public async Task<IActionResult> Create(Product model, IFormFile MainImage, List<IFormFile> ImageUploadSub)
         {
             ViewData["ActiveMenu"] = "Product";
 
-            // Đặt giá trị mặc định cho các thuộc tính của sản phẩm mới
+            // Đặt giá trị mặc định cho sản phẩm
             model.IsImport = false;
             model.IsActive = true;
             model.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
-            // Kiểm tra và xử lý upload ảnh
-            if (ImageUpload != null && ImageUpload.Length > 0)
+
+            // Xử lý ảnh chính
+            if (MainImage != null && MainImage.Length > 0)
             {
                 string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product");
-
-                // Tạo thư mục nếu chưa tồn tại
                 Directory.CreateDirectory(uploadDir);
 
-                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(ImageUpload.FileName)}";
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(MainImage.FileName)}";
                 string filePath = Path.Combine(uploadDir, fileName);
 
-                // Upload file
                 using var fileStream = new FileStream(filePath, FileMode.Create);
-                await ImageUpload.CopyToAsync(fileStream);
+                await MainImage.CopyToAsync(fileStream);
 
                 model.MainImg = fileName;
             }
             else
             {
-                model.MainImg = "default.png"; // Ảnh mặc định nếu không upload ảnh
+                model.MainImg = "default.png";
             }
 
             _context.Products.Add(model);
             await _context.SaveChangesAsync();
+
+            // Xử lý ảnh phụ
+            if (ImageUploadSub != null && ImageUploadSub.Count > 0)
+            {
+                foreach (var image in ImageUploadSub)
+                {
+                    if (image.Length > 0)
+                    {
+                        string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "adminThienAn/image_product");
+                        Directory.CreateDirectory(uploadDir);
+
+                        string fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+                        string filePath = Path.Combine(uploadDir, fileName);
+
+                        using var fileStream = new FileStream(filePath, FileMode.Create);
+                        await image.CopyToAsync(fileStream);
+
+                        // Lưu vào ProductImage
+                        _context.ProductImages.Add(new ProductImage
+                        {
+                            ProductId = model.Id,
+                            ImgURL = fileName
+                        });
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction("Index");
         }
@@ -169,7 +199,9 @@ namespace ThienAnFuni.Controllers
         {
             ViewData["ActiveMenu"] = "Product";
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products
+               .Include(p => p.ProductImages)
+               .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
             {
@@ -183,9 +215,77 @@ namespace ThienAnFuni.Controllers
         }
 
         // POST: AdminProducts/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, Product updatedProduct, IFormFile ImageUpload)
+        //{
+        //    ViewData["ActiveMenu"] = "Product";
+
+        //    if (id != updatedProduct.Id)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    // Lấy sản phẩm hiện tại từ cơ sở dữ liệu
+        //    var product = await _context.Products.FindAsync(id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // Cập nhật các thông tin khác của sản phẩm
+        //    product.Name = updatedProduct.Name;
+        //    product.Price = updatedProduct.Price;
+        //    product.Unit = updatedProduct.Unit;
+        //    product.Material = updatedProduct.Material;
+        //    product.Dimension = updatedProduct.Dimension;
+        //    product.Standard = updatedProduct.Standard;
+        //    product.Color = updatedProduct.Color;
+        //    product.Brand = updatedProduct.Brand;
+        //    product.WarrantyPeriod = updatedProduct.WarrantyPeriod;
+        //    product.IsActive = updatedProduct.IsActive;
+        //    product.Description = updatedProduct.Description;
+        //    product.CategoryId = updatedProduct.CategoryId;
+
+        //    // Xử lý upload ảnh nếu có ảnh mới
+        //    if (ImageUpload != null && ImageUpload.Length > 0)
+        //    {
+        //        var fileName = Path.GetFileName(ImageUpload.FileName);
+
+        //        // Xóa hình ảnh cũ nếu có và không phải là "default.png"
+        //        if (!string.IsNullOrEmpty(product.MainImg) && product.MainImg != "default.png")
+        //        {
+        //            var oldImagePath = Path.Combine("wwwroot/adminThienAn/image_product", product.MainImg);
+        //            if (System.IO.File.Exists(oldImagePath))
+        //            {
+        //                System.IO.File.Delete(oldImagePath);
+        //            }
+        //        }
+
+        //        // Lưu hình ảnh mới
+        //        var filePath = Path.Combine("wwwroot/adminThienAn/image_product", fileName);
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            await ImageUpload.CopyToAsync(stream);
+        //        }
+
+        //        // Cập nhật tên hình ảnh mới vào product
+        //        product.MainImg = fileName;
+        //    }
+        //    else if (string.IsNullOrEmpty(product.MainImg))
+        //    {
+        //        // Nếu không có hình ảnh tải lên và sản phẩm chưa có hình ảnh, đặt thành "default.png"
+        //        product.MainImg = "default.png";
+        //    }
+
+        //    _context.Update(product);
+        //    await _context.SaveChangesAsync();
+
+        //    return RedirectToAction(nameof(Index));
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Product updatedProduct, IFormFile ImageUpload)
+        public async Task<IActionResult> Edit(int id, Product updatedProduct, IFormFile ImageUpload, List<IFormFile> ImageUploadSub)
         {
             ViewData["ActiveMenu"] = "Product";
 
@@ -194,14 +294,17 @@ namespace ThienAnFuni.Controllers
                 return BadRequest();
             }
 
-            // Lấy sản phẩm hiện tại từ cơ sở dữ liệu
-            var product = await _context.Products.FindAsync(id);
+            // Lấy sản phẩm hiện tại
+            var product = await _context.Products
+                .Include(p => p.ProductImages) // Bao gồm danh sách ảnh phụ
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (product == null)
             {
                 return NotFound();
             }
 
-            // Cập nhật các thông tin khác của sản phẩm
+            // Cập nhật thông tin sản phẩm
             product.Name = updatedProduct.Name;
             product.Price = updatedProduct.Price;
             product.Unit = updatedProduct.Unit;
@@ -215,41 +318,83 @@ namespace ThienAnFuni.Controllers
             product.Description = updatedProduct.Description;
             product.CategoryId = updatedProduct.CategoryId;
 
-            // Xử lý upload ảnh nếu có ảnh mới
+            // Cập nhật ảnh chính
             if (ImageUpload != null && ImageUpload.Length > 0)
             {
-                var fileName = Path.GetFileName(ImageUpload.FileName);
+                string uploadDir = Path.Combine("wwwroot/adminThienAn/image_product");
+                Directory.CreateDirectory(uploadDir);
 
-                // Xóa hình ảnh cũ nếu có và không phải là "default.png"
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(ImageUpload.FileName)}";
+                string filePath = Path.Combine(uploadDir, fileName);
+
+                // Xóa ảnh cũ (nếu cần)
                 if (!string.IsNullOrEmpty(product.MainImg) && product.MainImg != "default.png")
                 {
-                    var oldImagePath = Path.Combine("wwwroot/adminThienAn/image_product", product.MainImg);
-                    if (System.IO.File.Exists(oldImagePath))
+                    var oldPath = Path.Combine(uploadDir, product.MainImg);
+                    if (System.IO.File.Exists(oldPath))
                     {
-                        System.IO.File.Delete(oldImagePath);
+                        System.IO.File.Delete(oldPath);
                     }
                 }
 
-                // Lưu hình ảnh mới
-                var filePath = Path.Combine("wwwroot/adminThienAn/image_product", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await ImageUpload.CopyToAsync(stream);
-                }
+                // Lưu ảnh mới
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await ImageUpload.CopyToAsync(stream);
 
-                // Cập nhật tên hình ảnh mới vào product
                 product.MainImg = fileName;
             }
-            else if (string.IsNullOrEmpty(product.MainImg))
+
+            // Xử lý ảnh phụ
+            if (ImageUploadSub != null && ImageUploadSub.Count > 0)
             {
-                // Nếu không có hình ảnh tải lên và sản phẩm chưa có hình ảnh, đặt thành "default.png"
-                product.MainImg = "default.png";
+                string uploadDir = Path.Combine("wwwroot/adminThienAn/image_product");
+                Directory.CreateDirectory(uploadDir);
+
+                foreach (var file in ImageUploadSub)
+                {
+                    string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                    string filePath = Path.Combine(uploadDir, fileName);
+
+                    using var stream = new FileStream(filePath, FileMode.Create);
+                    await file.CopyToAsync(stream);
+
+                    var productImage = new ProductImage
+                    {
+                        ImgURL = fileName,
+                        ProductId = product.Id
+                    };
+
+                    _context.ProductImages.Add(productImage);
+                }
             }
 
             _context.Update(product);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteImage(int id)
+        {
+            var image = await _context.ProductImages.FindAsync(id);
+            if (image == null)
+            {
+                return NotFound();
+            }
+
+            // Xóa file trên server
+            var filePath = Path.Combine("wwwroot/adminThienAn/image_product", image.ImgURL);
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+
+            // Xóa khỏi database
+            _context.ProductImages.Remove(image);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
 

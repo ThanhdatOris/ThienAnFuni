@@ -1,4 +1,4 @@
-﻿@model ThienAnFuni.Models.Product
+﻿           @model ThienAnFuni.Models.Product
 @{
     ViewData["Title"] = "Shop";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,6 +21,8 @@
         </div>
     </section>
 }
+
+
 
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
@@ -51,11 +53,35 @@
                     <p>
                         @Html.Raw(Model.Material)
                     </p>
+
                     <div class="product__details__quantity">
                         <div class="pro-qty">
                             <input type="text" value="1">
                         </div>
                     </div>
+
+                    <!-- Thêm vào giỏ hàng hoặc thông báo hết hàng -->
+                    <a href="#" class="primary-btn add-to-cart" data-id="@Model.Id"
+                       style="@(ViewBag.AvailableQuantity < 1 ? "pointer-events: none; opacity: 0.5;" : "")">
+                        Thêm vào giỏ
+                    </a>
+
+                    @if (ViewBag.AvailableQuantity < 1)
+                    {
+                        <h6 style="color: red">Sản phẩm hết hàng.</h6>
+                    }
+                    else
+                    {
+                        <!-- Không hiển thị số lượng còn lại nữa -->
+                    }
+
+                    <li>
+                        <b>Availability</b>
+                        <span>@(ViewBag.AvailableQuantity > 0 ? "In Stock" : "Out of Stock")</span>
+                    </li>
+                    <li><b>Kích thước</b> <span>@Model.Dimension</span></li>
+
+
                    @*  <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
@@ -63,10 +89,22 @@
                             </div>
                         </div>
                     </div> *@
-                    <a href="#" class="primary-btn add-to-cart" data-id="@Model.Id">Thêm vào giỏ</a>
+
+                @*     <a href="#" class="primary-btn add-to-cart" data-id="@Model.Id" @if (Model.Quantity < 1)
+                    {
+                        <text>style="pointer-events: none; opacity: 0.5;"</text>
+                    }>Thêm vào giỏ</a>
+
+                    @if (Model.Quantity < 1)
+                    {
+                        <h6 style="color: red">Sản phẩm hết hàng.</h6>
+                    } *@
                     <ul>
-                        <li><b>Availability</b> <span>In Stock</span></li>
-                        <li><b>Kích thước</b> <span>@Model.Dimension</span></li>
+                       @*  <li><b>Availability</b> <span>In Stock</span></li>
+                        <li><b>Kích thước</b> <span>@Model.Dimension</span></li> *@
+            @*             <li><b>Availability</b> <span>@(ViewBag.AvailableQuantity > 0 ? "In Stock" : "Out of Stock")</span></li>
+                        <li><b>Kích thước</b> <span>@Model.Dimension</span></li> *@
+
                         <li>
                             <b>Chia sẽ</b>
                             <div class="share">
