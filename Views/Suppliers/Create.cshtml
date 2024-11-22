@@ -64,13 +64,14 @@
                                 <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
                             </label>
                         </div>
-                        <div class="row col-12">
-                            <div class="form-group col-1">
-                                <input type="submit" value="Create" class="btn btn-success" />
-                            </div>
-                            <div>
-                                <a class="btn btn-dark" asp-action="Index"> Trở về</a>
-                            </div>
+                        <div class=" form-group row col-12 d-flex ml-2">
+
+                                <div class="form-group mr-2">
+                                    <input type="submit" value="Tạo" class="btn btn-success" />
+                                </div>
+                                <div>
+                                    <a class="btn btn-dark" asp-action="Index"> Trở về</a>
+                                </div>
                         </div>
                     </div>
                 </form>

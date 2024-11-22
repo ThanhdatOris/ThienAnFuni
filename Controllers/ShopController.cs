@@ -150,6 +150,7 @@ namespace ThienAnFuni.Controllers
             ViewBag.SortOrder = sortOrder;
             ViewBag.Count = products.TotalItemCount;
             ViewBag.CategoryName = category?.Name;
+            ViewBag.ActiveSlug = category?.Slug;
             ViewBag.MinPrice = minPrice ?? 1000000; // Giá trị mặc định
             ViewBag.MaxPrice = maxPrice ?? 30000000; // Giá trị mặc định
             ViewBag.SelectedColor = color; // Lưu màu được chọn để hiển thị lại

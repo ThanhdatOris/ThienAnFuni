@@ -540,6 +540,78 @@ namespace ThienAnFuni.Models
                 }
             );
 
+            // Seeder cho bảng Shipment
+            modelBuilder.Entity<Shipment>().HasData(
+                new Shipment
+                {
+                    Id = 1,
+                    ReceiptDate = new DateTime(2024, 11, 18),
+                    TotalPrice = 340000000, // Tổng tiền của lô hàng
+                    TotalQuantity = 60, // Tổng số lượng
+                    Note = "Phiếu nhập hàng đợt 1",
+                    SupplierId = 1, // Mã nhà cung cấp
+                    ManagerId = "1" // Mã của Manager
+                }
+            );
+
+            // Seeder cho bảng Goods
+            modelBuilder.Entity<Goods>().HasData(
+                new Goods
+                {
+                    Id = 1,
+                    Quantity = 10,
+                    ImportPrice = 1000000,
+                    TotalPrice = 10000000,
+                    ProductId = 3, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 1
+                },
+                new Goods
+                {
+                    Id = 2,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 11, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 1
+                },
+                new Goods
+                {
+                    Id = 3,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 2, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                }, 
+                new Goods
+                {
+                    Id = 4,
+                    Quantity = 10,
+                    ImportPrice = 1000000,
+                    TotalPrice = 10000000,
+                    ProductId = 4, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                }, 
+                new Goods
+                {
+                    Id = 5,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 12, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                }, 
+                new Goods
+                {
+                    Id = 6,
+                    Quantity = 10,
+                    ImportPrice = 2000000,
+                    TotalPrice = 20000000,
+                    ProductId = 1, // Mã sản phẩm
+                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                }
+            );
+
         }
     }
 }
