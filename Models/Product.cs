@@ -32,7 +32,6 @@ namespace ThienAnFuni.Models
         public string? MainImg { get; set; }
         [Display(Name = "Ngày tạo")]
         public DateOnly? CreatedDate { get; set; }
-
         [Required]
         [Display(Name = "Trạng thái")]
         public bool IsActive { get; set; } = true;

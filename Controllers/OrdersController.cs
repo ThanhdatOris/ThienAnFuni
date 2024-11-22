@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ThienAnFuni.Controllers
 {
