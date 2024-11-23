@@ -49,15 +49,28 @@ $(document).ready(function () {
                         $('.filename').text(""); // Xóa tên tệp
                         $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer'); // Đặt lại nút chọn tệp
                     } else {
-                        alert('Xóa ảnh thất bại: ' + response.message);
+                        swal({
+                            title: "Xóa ảnh thất bại",
+                            text: response.message,
+                            icon: "error",
+                            button: "OK",
+                        });
                     }
                 },
                 error: function () {
-                    alert('Có lỗi xảy ra khi xóa ảnh.');
+                    swal({
+                        title: 'Đã xảy ra lỗi khi xóa ảnh',
+                        icon: "error",
+                        button: "OK",
+                    });
                 }
             });
         } else {
-            alert('Không có tên file để xóa.');
+            swal({
+                title: 'Không có tên file để xóa.',
+                icon: "error",
+                button: "OK",
+            });
         }
     });
 });

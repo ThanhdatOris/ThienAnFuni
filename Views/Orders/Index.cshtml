@@ -47,7 +47,7 @@
                                     <td>@order.OrderDate</td>
                                     <td>@string.Format("{0:0,0}đ", order.TotalPrice)</td>
 
-                                    <td class="font-weight-bold text-warning">@ConstHelper.GetOrderStatus((ConstHelper.OrderStatus)order.OrderStatus)</td>
+                                    <td class="font-weight-bold @OrderStatusHelper.ReturnCssStatus(order.OrderStatus.ToString())">@ConstHelper.GetOrderStatus((ConstHelper.OrderStatus)order.OrderStatus)</td>
                                     <td class="shoping__cart__item__close d-flex justify-content-center align-items-center">
                                         <a class="btn btn-info" asp-action="Details" asp-route-id="@order.Id">
                                             <i class="fa fa-search" aria-hidden="true"></i>

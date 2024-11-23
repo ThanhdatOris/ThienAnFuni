@@ -23,9 +23,14 @@ namespace ThienAnFuni.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var tAF_DbContext = _context.Orders.Include(o => o.Customer).Include(o => o.SaleStaff);
-            return View(await tAF_DbContext.ToListAsync());
+            var tAF_DbContext = _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.SaleStaff)
+                .OrderByDescending(o => o.Id);  // Sắp xếp theo OrderDate ngược lại
+
+            return View(await tAF_DbContext.ToListAsync());  // Trả về danh sách đã sắp xếp
         }
+
 
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)

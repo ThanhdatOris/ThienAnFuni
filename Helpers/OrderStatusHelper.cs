@@ -2,7 +2,7 @@
 {
     public class OrderStatusHelper
     {
-        //public static string ReturnStatus(string status)
+        //public static string ReturnStatusSN(string status)
         //{
         //    return status switch
         //    {
@@ -13,7 +13,7 @@
         //    };
         //}
 
-        //public static string ReturnCssStatus(string status)
+        //public static string ReturnCssStatusSN(string status)
         //{
         //    status = status.ToLower();
 

@@ -11,6 +11,8 @@ namespace ThienAnFuni.Models
         public string CustomerPhoneNumber { get; set; } = string.Empty;
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Tổng tiền phải là số")]
+        [Display(Name = "Tổng tiền")]
+
         public double TotalPrice { get; set; }
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải là số")]
@@ -34,9 +36,12 @@ namespace ThienAnFuni.Models
         public DateTime? InvoiceDate { get; set; }
 
         public string? CustomerId { get; set; }
+
+        [Display(Name = "Khách hàng")]
         public virtual Customer? Customer { get; set; }
 
         public string? SaleStaffId { get; set; }
+        [Display(Name = "Nhân viên")]
         public virtual SaleStaff? SaleStaff { get; set; }
         public string? ManagerId { get; set; }
         public virtual Manager? Manager { get; set; }

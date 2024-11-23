@@ -352,7 +352,7 @@ namespace ThienAnFuni.Controllers
 
                     // Thông báo thành công
                     TempData["SuccessMessage"] = "Thanh toán thành công! Đơn hàng của bạn đang được xử lý.";
-                    return RedirectToAction("Order", new { orderId = order.Id });
+                    return RedirectToAction("Details", "Orders", new { id = order.Id });
                 }
                 catch (Exception ex)
                 {
