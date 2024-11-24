@@ -1,4 +1,4 @@
-﻿           @model ThienAnFuni.Models.Product
+﻿@model ThienAnFuni.Models.Product
 @{
     ViewData["Title"] = "Shop";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -22,8 +22,6 @@
     </section>
 }
 
-
-
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
@@ -35,14 +33,14 @@
                              src="/adminThienAn/image_product/@Model.MainImg" alt="@Model.Name">
                     </div>
                     <div class="product__details__pic__slider owl-carousel">
-                        <img data-imgbigurl="img/product/details/product-details-2.jpg"
-                             src="/customerThienAn/img/product/details/thumb-1.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-3.jpg"
-                             src="/customerThienAn/img/product/details/thumb-2.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-5.jpg"
-                             src="/customerThienAn/img/product/details/thumb-3.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-4.jpg"
-                             src="/customerThienAn/img/product/details/thumb-4.jpg" alt="">
+                        @* <img data-imgbigurl="img/product/details/product-details-2.jpg"
+                        src="/customerThienAn/img/product/details/thumb-1.jpg" alt=""> *@
+                        @foreach (var img in Model.ProductImages)
+                        {
+                            <img data-imgbigurl="/adminThienAn/image_product/@img.ImgURL"
+                                 src="~/adminThienAn/image_product/@img.ImgURL" alt="Ảnh phụ">
+                        }
+
                     </div>
                 </div>
             </div>
@@ -70,40 +68,25 @@
                     {
                         <h6 style="color: red">Sản phẩm hết hàng.</h6>
                     }
-                    else
-                    {
-                        <!-- Không hiển thị số lượng còn lại nữa -->
-                    }
-
-                    <li>
-                        <b>Availability</b>
-                        <span>@(ViewBag.AvailableQuantity > 0 ? "In Stock" : "Out of Stock")</span>
-                    </li>
-                    <li><b>Kích thước</b> <span>@Model.Dimension</span></li>
 
 
-                   @*  <div class="product__details__quantity">
-                        <div class="quantity">
-                            <div class="pro-qty">
-                                <input type="text" value="1">
-                            </div>
-                        </div>
+                    @*  <div class="product__details__quantity">
+                    <div class="quantity">
+                    <div class="pro-qty">
+                    <input type="text" value="1">
+                    </div>
+                    </div>
                     </div> *@
 
-                @*     <a href="#" class="primary-btn add-to-cart" data-id="@Model.Id" @if (Model.Quantity < 1)
-                    {
-                        <text>style="pointer-events: none; opacity: 0.5;"</text>
-                    }>Thêm vào giỏ</a>
 
-                    @if (Model.Quantity < 1)
-                    {
-                        <h6 style="color: red">Sản phẩm hết hàng.</h6>
-                    } *@
                     <ul>
-                       @*  <li><b>Availability</b> <span>In Stock</span></li>
-                        <li><b>Kích thước</b> <span>@Model.Dimension</span></li> *@
-            @*             <li><b>Availability</b> <span>@(ViewBag.AvailableQuantity > 0 ? "In Stock" : "Out of Stock")</span></li>
-                        <li><b>Kích thước</b> <span>@Model.Dimension</span></li> *@
+                        <li><b>Danh mục</b> <span>@(Model.Category?.Name ?? "")</span></li>
+
+                        <li><b>Tiêu chuẩn</b> <span>@Model.Standard</span></li>
+                        <li><b>Màu sắc</b> <span>@Model.Color</span></li>
+                        <li><b>Thời hạn bảo hành</b> <span>@Model.WarrantyPeriod</span></li>
+
+                        <li><b>Kích thước</b> <span>@Model.Dimension</span></li>
 
                         <li>
                             <b>Chia sẽ</b>
@@ -135,7 +118,7 @@
 
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -149,69 +132,28 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title related__product__title">
-                    <h2>Related Product</h2>
+                    <h2>Sản phẩm liên quan</h2>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="/customerThienAn/img/product/product-1.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="/customerThienAn/img/product/product-2.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
+            @foreach (var product in ViewBag.RelatedProducts)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="/adminThienAn/image_product/@product.MainImg">
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#" class="add-to-cart" data-id="@product.Id"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">@product.Name</a></h6>
+                            <h5>@product.Price</h5>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="/customerThienAn/img/product/product-3.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="/customerThienAn/img/product/product-7.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
+            }
+
         </div>
     </div>
 </section>

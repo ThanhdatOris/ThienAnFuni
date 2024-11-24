@@ -427,6 +427,47 @@ namespace ThienAnFuni.Models
 
             );
 
+            // Seed ProductImage
+            modelBuilder.Entity<ProductImage>().HasData(
+                new ProductImage
+                {
+                    Id = 1,
+                    ProductId = 1,
+                    ImgURL = "ae6e83fd-ee61-4762-9d90-0730ce25aad8.jpg"
+                },
+                new ProductImage
+                {
+                    Id = 2,
+                    ProductId = 1,
+                    ImgURL = "69ea8d94-4cca-4d08-88c5-9484c92a74e6.jpg"
+                },
+                new ProductImage
+                {
+                    Id = 3,
+                    ProductId = 1,
+                    ImgURL = "df5d0b56-abda-4e23-b13d-0993b643e5d7.jpg"
+                },
+                new ProductImage
+                {
+                    Id = 4,
+                    ProductId = 1,
+                    ImgURL = "deb1b150-83d9-4185-82de-2e7a06e317d2.jpg"
+                },
+                new ProductImage
+                {
+                    Id = 5,
+                    ProductId = 1,
+                    ImgURL = "5b24a4e5-22f4-4048-b7b7-7c07760443c5.jpg"
+                },
+                new ProductImage
+                {
+                    Id = 6,
+                    ProductId = 1,
+                    ImgURL = "12c850b8-97a2-4d43-9cd0-3d79c782f611.jpg"
+                }
+
+                );
+
             // Seed Order
             modelBuilder.Entity<Order>().HasData(
                 new Order
@@ -534,7 +575,7 @@ namespace ThienAnFuni.Models
                 {
                     Id = 6,
                     OrderId = 3,
-                    ProductId = 4, 
+                    ProductId = 4,
                     Quantity = 3,
                     PriceAtOrder = 2190000
                 }
@@ -582,7 +623,7 @@ namespace ThienAnFuni.Models
                     TotalPrice = 100000000,
                     ProductId = 2, // Mã sản phẩm
                     ShipmentId = 1 // Liên kết tới lô hàng 2
-                }, 
+                },
                 new Goods
                 {
                     Id = 4,
@@ -591,7 +632,7 @@ namespace ThienAnFuni.Models
                     TotalPrice = 10000000,
                     ProductId = 4, // Mã sản phẩm
                     ShipmentId = 1 // Liên kết tới lô hàng 2
-                }, 
+                },
                 new Goods
                 {
                     Id = 5,
@@ -600,7 +641,7 @@ namespace ThienAnFuni.Models
                     TotalPrice = 100000000,
                     ProductId = 12, // Mã sản phẩm
                     ShipmentId = 1 // Liên kết tới lô hàng 2
-                }, 
+                },
                 new Goods
                 {
                     Id = 6,
