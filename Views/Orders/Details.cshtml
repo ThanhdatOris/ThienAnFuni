@@ -10,10 +10,11 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Order Shop</h2>
+                        <h2>Thiên Ân Shop</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Order</a>
-                            <span>Shop</span>
+                            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            <a asp-controller="Orders" asp-action="Index">Đơn hàng</a>
+                            <span>Đơn hàng #@Model.Id</span>
                         </div>
                     </div>
                 </div>
@@ -21,7 +22,6 @@
         </div>
     </section>
 }
-
 
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
