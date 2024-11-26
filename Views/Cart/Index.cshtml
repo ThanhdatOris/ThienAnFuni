@@ -48,7 +48,8 @@
                                     var details = item.Value;
                                     <tr>
                                         <td class="shoping__cart__item" style="width: 200px;">
-                                            <img src="@Url.Content("~/adminThienAn/image_product/"+ @details.Product.MainImg ?? "~/adminThienAn/image_product/default.png")" alt="@details.Product.Name" style="width: 100px; height: auto;">
+                                            <img src="@Url.Content("~/adminThienAn/image_product/"+ @details.Product.MainImg ?? "~/adminThienAn/image_product/default.png")"
+                                                alt="@details.Product.Name" style="width: 100px; height: auto;">
                                         </td>
                                         <td class="shoping__cart__item" style="width: 300px;">
                                             <h5>@details.Product.Name</h5>
@@ -59,12 +60,14 @@
                                         <td class="h-20">
                                             <div class="quantity">
                                                 <div class="pro-qty">
-                                                    <input disabled type="number" class="quantity-input" data-id="@id" value="@details.Quantity" min="1" />
+                                                    <input disabled type="number" class="quantity-input" data-id="@id"
+                                                        value="@details.Quantity" min="1" />
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="shoping__cart__total" id="product-total-@id" style="width: 135px;">
-                                            @((details.Price * details.Quantity).ToString("C0", new System.Globalization.CultureInfo("vi-VN")))
+                                            @((details.Price * details.Quantity).ToString("C0", new
+                                                System.Globalization.CultureInfo("vi-VN")))
                                         </td>
                                         <td>
                                             <form method="post" asp-action="RemoveProSession" asp-route-id="@id">
@@ -92,16 +95,21 @@
                     <a asp-controller="Shop" asp-action="Index" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
                 </div>
             </div>
+               @if (Model != null && Model.CartItems.Count > 0)
+            { 
             <div class="col-lg-6">
                 <div class="shoping__checkout">
                     <h5>Tổng giỏ hàng</h5>
                     <ul>
-                        <li>Tổng giá (đã tính VAT): <span id="cart-total">@Model.Total.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span></li>
+                        <li>Tổng giá (đã tính VAT): <span id="cart-total">@Model.Total.ToString("C0", new
+                                System.Globalization.CultureInfo("vi-VN"))</span></li>
                     </ul>
                     <a asp-controller="Cart" asp-action="CheckOutPro" class="primary-btn w-100">TIẾN HÀNH THANH TOÁN</a>
                 </div>
             </div>
+            }
         </div>
+
     </div>
 </section>
 <!-- Shoping Cart Section End -->
@@ -147,9 +155,19 @@
                 },
                 error: function (xhr) {
                     if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error) {
-                        alert(xhr.responseJSON.error);
+                        // alert(xhr.responseJSON.error);
+                        swal({
+                            title: xhr.responseJSON.error,
+                            icon: "error",
+                            button: "OK",
+                        });
                     } else {
-                        alert('Đã xảy ra lỗi. Vui lòng thử lại!');
+                        swal({
+                            title: 'Đã xảy ra lỗi. Vui lòng thử lại!',
+                            icon: "error",
+                            button: "OK",
+                        });
+                        // alert('Đã xảy ra lỗi. Vui lòng thử lại!');
                     }
                 }
             });

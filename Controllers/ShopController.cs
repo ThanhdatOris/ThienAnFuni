@@ -17,56 +17,6 @@ namespace ThienAnFuni.Controllers
             _context = context;
         }
 
-
-        //public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null)
-        //{
-        //    int pageSize = 2;
-
-        //    // Lấy danh mục nếu có slug
-        //    Category category = null;
-        //    if (!string.IsNullOrEmpty(slug))
-        //    {
-        //        category = _context.Categories.FirstOrDefault(c => c.Slug == slug);
-        //    }
-
-        //    // Lọc sản phẩm
-        //    var productsQuery = _context.Products
-        //        .Where(p => p.IsActive == true && p.IsImport == true);
-
-        //    if (!string.IsNullOrEmpty(query))
-        //    {
-        //        productsQuery = productsQuery.Where(p => p.Name.Contains(query));
-        //    }
-
-        //    if (category != null)
-        //    {
-        //        productsQuery = productsQuery.Where(p => p.CategoryId == category.Id);
-        //    }
-
-        //    // Lọc giá
-        //    if (minPrice.HasValue)
-        //    {
-        //        productsQuery = productsQuery.Where(p => p.Price >= (double)minPrice.Value);
-        //    }
-
-        //    if (maxPrice.HasValue)
-        //    {
-        //        productsQuery = productsQuery.Where(p => p.Price <= (double)maxPrice.Value);
-        //    }
-
-        //    // Phân trang
-        //    var products = productsQuery.ToPagedList(page, pageSize);
-
-        //    // Truyền thêm thông tin vào View
-        //    ViewBag.SortOrder = sortOrder;
-        //    ViewBag.Count = products.TotalItemCount;
-        //    ViewBag.CategoryName = category?.Name;
-        //    ViewBag.MinPrice = minPrice ?? 1000000; // Giá trị mặc định
-        //    ViewBag.MaxPrice = maxPrice ?? 30000000; // Giá trị mặc định
-
-        //    return View(products);
-        //}
-
         #region Helper methods
         private List<int> GetAllCategoryIds(int categoryId)
         {
@@ -89,7 +39,7 @@ namespace ThienAnFuni.Controllers
 
         public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null, string color = null)
         {
-            int pageSize = 9;
+            int pageSize = 4;
 
             // Lấy danh mục nếu có slug
             Category category = null;
@@ -160,32 +110,38 @@ namespace ThienAnFuni.Controllers
 
         public IActionResult Detail(int id)
         {
-            // Tìm sản phẩm từ cơ sở dữ liệu
             var product = _context.Products
-                .Include(p => p.Category)  // Nếu cần lấy thông tin danh mục
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
                 .FirstOrDefault(p => p.Id == id);
+
+            // Lấy 4 sp liên quan trừ sp hiện tại đang xem
+            var relatedProducts = _context.Products
+                .Where(p => p.CategoryId == product.CategoryId && p.Id != id)
+                .Take(4)
+                .ToList();
 
             if (product == null)
             {
-                return RedirectToAction("Index");  // Nếu không tìm thấy sản phẩm, chuyển về trang chính
+                return RedirectToAction("Index");  
             }
 
-            // Tính tổng số lượng đã bán của sản phẩm này
+            // Tính tổng SL đã bán
             int soldQuantity = _context.OrderDetails
-                .Where(od => od.ProductId == id)  // Lọc theo sản phẩm này
-                .Sum(od => od.Quantity);  // Cộng dồn số lượng đã bán từ các đơn hàng
+                .Where(od => od.ProductId == id)  // ... của sp này
+                .Sum(od => od.Quantity);  
 
-            // Lấy tổng số lượng nhập của sản phẩm này từ bảng Goods
+            // Lấy tổng SL nhập
             int totalQuantityInStock = _context.Goods
-                .Where(g => g.ProductId == id)  // Lọc theo sản phẩm này
-                .Sum(g => (int?)g.Quantity) ?? 0;  // Tổng số lượng nhập từ kho
+                .Where(g => g.ProductId == id)  // ... của sp này
+                .Sum(g => (int?)g.Quantity) ?? 0;  
 
-
-            // Tính số lượng còn lại trong kho bằng cách trừ số lượng đã bán từ tổng số lượng nhập
+            // Tính SL tồn
             int availableQuantity = totalQuantityInStock - soldQuantity;
-            // Truyền số lượng sản phẩm còn lại vào ViewBag
+
             ViewBag.AvailableQuantity = availableQuantity;
-            // Trả về view với sản phẩm
+            ViewBag.RelatedProducts = relatedProducts;
+            
             return View(product);
         }
 

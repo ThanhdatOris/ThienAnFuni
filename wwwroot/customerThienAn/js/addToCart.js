@@ -10,20 +10,32 @@ $(document).on('click', '.add-to-cart', function (e) {
         method: 'POST',
         data: {
             //_token: $('meta[name="csrf-token"]').attr('content'), // CSRF token
-            id: productId, 
+            id: productId,
             quantity: quantity // Gửi số lượng lên server
         },
         success: function (response) {
-            alert('Sản phẩm đã được thêm vào giỏ hàng!');
+            swal({
+                title: "Sản phẩm đã được thêm vào giỏ hàng!",
+                icon: "success",
+                button: "OK",
+            });
             // Cập nhật tổng tiền và số lượng giỏ hàng
             $('.header__cart__price span').text(response.total);
             $('.span__quantity_cart').text(response.totalQuantity);
         },
         error: function (xhr) {
             if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error) {
-                alert(xhr.responseJSON.error);
+                swal({
+                    title: xhr.responseJSON.error,
+                    icon: "error",
+                    button: "OK",
+                });
             } else {
-                alert('Đã xảy ra lỗi. Vui lòng thử lại!');
+                swal({
+                    title: 'Đã xảy ra lỗi. Vui lòng thử lại!',
+                    icon: "error",
+                    button: "OK",
+                });
             }
         }
     });

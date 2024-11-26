@@ -10,10 +10,11 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Order Shop</h2>
+                        <h2>Thiên Ân Shop</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Order</a>
-                            <span>Shop</span>
+                            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            <a asp-controller="Orders" asp-action="Index">Đơn hàng</a>
+                            <span>Đơn hàng #@Model.Id</span>
                         </div>
                     </div>
                 </div>
@@ -21,7 +22,6 @@
         </div>
     </section>
 }
-
 
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
@@ -65,20 +65,25 @@
 </section>
 <!-- Shoping Cart Section End -->
 
-<div class="container mt-5">
+<div class="container">
     <div class="col-lg-12 text-center set-bg bg-info">
-            <h3 class="text-center font-weight-bold text-light pt-1 pb-1">CHI TIẾT ĐƠN HÀNG</h3>
+        <h3 class="text-center font-weight-bold text-light pt-1 pb-1">CHI TIẾT ĐƠN HÀNG</h3>
     </div>
 
     <table class="table table-striped table-bordered">
         <tbody>
             <tr>
+                <th>@Html.DisplayNameFor(model => model.Customer)</th>
+                <td>@(Model.Customer?.FullName ?? "Chưa cập nhật khách hàng")</td>
+            </tr>
+            <tr>
                 <th>@Html.DisplayNameFor(model => model.CustomerPhoneNumber)</th>
                 <td>@Html.DisplayFor(model => model.CustomerPhoneNumber)</td>
             </tr>
+
             <tr>
                 <th>@Html.DisplayNameFor(model => model.TotalPrice)</th>
-                <td>@Html.DisplayFor(model => model.TotalPrice)</td>
+                <td>@Model.TotalPrice.ToString("n0")đ</td>
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.TotalQuantity)</th>
@@ -86,7 +91,7 @@
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Note)</th>
-                <td>@Html.DisplayFor(model => model.Note)</td>
+                <td>@(Model.Note ?? "Không có ghi chú")</td>
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Address)</th>
@@ -98,36 +103,62 @@
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.OrderStatus)</th>
-                <td>@Html.DisplayFor(model => model.OrderStatus)</td>
+                <td class="font-weight-bold @OrderStatusHelper.ReturnCssStatus(Model.OrderStatus.ToString())">@ConstHelper.GetOrderStatus((ConstHelper.OrderStatus)Model.OrderStatus)</td>
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.PaymentMethod)</th>
-                <td>@Html.DisplayFor(model => model.PaymentMethod)</td>
+                <td>@ConstHelper.GetPaymentMethod((ConstHelper.PaymentMethod)Model.PaymentMethod)</td>
+
             </tr>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.PaymentStatus)</th>
-                <td>@Html.DisplayFor(model => model.PaymentStatus)</td>
+                <td colspan="2">
+                    <h4 class="w-100 text-center font-weight-bold text-light pt-1 pb-1 bg-info">Thông tin hóa đơn</h4>
+                </td>
             </tr>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.InvoiceNumber)</th>
-                <td>@Html.DisplayFor(model => model.InvoiceNumber)</td>
-            </tr>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.InvoiceDate)</th>
-                <td>@Html.DisplayFor(model => model.InvoiceDate)</th>
-            </tr>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.Customer)</th>
-                <td>@Html.DisplayFor(model => model.Customer.Id)</td>
-            </tr>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.SaleStaff)</th>
-                <td>@Html.DisplayFor(model => model.SaleStaff.Id)</td>
-            </tr>
+            @* Đây là thông tin khi có hóa đơn, lúc này hàng dc duyệt và đã được giao thành công *@
+            @if (Model.InvoiceNumber != null)
+            {
+
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.InvoiceNumber)</th>
+                    <td>@(Model.InvoiceNumber ?? "Chưa có hóa đơn")</td>
+                    @* <td>@Html.DisplayFor(model => model.InvoiceNumber)</td> *@
+                </tr>
+
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PaymentStatus)</th>
+                    @* <td>@ConstHelper.GetPaymentStatus((ConstHelper.PaymentStatus)Model.PaymentStatus)</td> *@
+                    <td>
+                        @ConstHelper.GetPaymentStatus((ConstHelper.PaymentStatus)(Model.PaymentStatus ?? -3))
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.InvoiceDate)</th>
+                    @* <td>@(Model.InvoiceDate ?? "Không có ghi chú")</td> *@
+                    <td>@Html.Raw(Model.InvoiceDate?.ToString("dd/MM/yyyy") ?? "Không có ngày hóa đơn")</td>
+
+                    @* <td>@Html.DisplayFor(model => model.InvoiceDate)</th> *@
+                </tr>
+
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SaleStaff)</th>
+                    <td>@(Model.SaleStaff?.FullName ?? Model.Manager?.FullName ?? "Chưa cập nhật nhân viên")</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2">
+                        <h4 class="w-100 text-center font-italic text-info pt-1 pb-1">Chưa xuất hóa đơn</h4>
+                    </td>
+                </tr>
+            }
+
         </tbody>
     </table>
 </div>
-<div class="container mt-3 mb-3 text-center">
+@* <div class="container mt-3 mb-3 text-center">
     <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-warning">Chỉnh sửa</a> |
     <a asp-action="Index" class="btn btn-outline-danger">Quay lại</a>
-</div>
+</div> *@

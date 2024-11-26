@@ -10,7 +10,7 @@ using ThienAnFuni.Models;
 
 namespace ThienAnFuni.Controllers
 {
-        [Authorize] //Yêu cầu người dùng phải đăng nhập mới có quyền truy cập
+    [Authorize] //Yêu cầu người dùng phải đăng nhập mới có quyền truy cập
     public class OrdersController : Controller
     {
         private readonly TAF_DbContext _context;
@@ -23,9 +23,14 @@ namespace ThienAnFuni.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var tAF_DbContext = _context.Orders.Include(o => o.Customer).Include(o => o.SaleStaff);
-            return View(await tAF_DbContext.ToListAsync());
+            var tAF_DbContext = _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.SaleStaff)
+                .OrderByDescending(o => o.Id);  // Sắp xếp theo OrderDate ngược lại
+
+            return View(await tAF_DbContext.ToListAsync());  // Trả về danh sách đã sắp xếp
         }
+
 
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)

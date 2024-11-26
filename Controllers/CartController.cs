@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpLogging;
 using System.Security.Claims;
 using ThienAnFuni.Helpers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThienAnFuni.Controllers
 {
@@ -79,7 +80,7 @@ namespace ThienAnFuni.Controllers
             var cart = HttpContext.Session.GetObjectFromJson<Dictionary<int, CartDetail>>("cart") ?? new Dictionary<int, CartDetail>();
 
             // Kiểm tra xem tổng số lượng muốn thêm có vượt quá tồn kho không
-            if (product.QuantityInStock < cart.GetValueOrDefault(id)?.Quantity + quantity)
+            if (product.QuantityInStock < (cart.GetValueOrDefault(id)?.Quantity ?? 0) + quantity)
             {
                 //return Json(new { error = "Thêm sản phẩm quá số lượng trong kho!" });
                 return BadRequest(new { error = "Thêm sản phẩm quá số lượng trong kho!" });
@@ -221,6 +222,23 @@ namespace ThienAnFuni.Controllers
             // Quay lại trang giỏ hàng sau khi xóa
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = $"{ConstHelper.RoleCustomer}")]
+
+        //public IActionResult CheckOutPro()
+        //{
+        //    // Lấy giỏ hàng từ session
+        //    var cart = HttpContext.Session.GetObjectFromJson<Dictionary<int, CartDetail>>("cart") ?? new Dictionary<int, CartDetail>();
+
+        //    // Lấy tổng tiền từ session
+        //    var total = HttpContext.Session.GetDecimal("total");
+
+        //    // Tạo model hoặc sử dụng ViewBag để truyền dữ liệu
+        //    ViewBag.Cart = cart;
+        //    ViewBag.Total = total;
+
+        //    return View();
+        //}
         public IActionResult CheckOutPro()
         {
             // Lấy giỏ hàng từ session
@@ -229,12 +247,23 @@ namespace ThienAnFuni.Controllers
             // Lấy tổng tiền từ session
             var total = HttpContext.Session.GetDecimal("total");
 
-            // Tạo model hoặc sử dụng ViewBag để truyền dữ liệu
+            // Giả sử UserId là khóa ngoại trong bảng Orders
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Lấy ID người dùng hiện tại
+            var lastOrder = _context.Orders
+                                    .Where(o => o.CustomerId == userId)
+                                    .OrderByDescending(o => o.OrderDate) // Lấy đơn hàng mới nhất
+                                    .FirstOrDefault();
+
+            var lastAddress = lastOrder?.Address ?? ""; // Lấy địa chỉ từ đơn hàng hoặc để trống
+
+            // Truyền dữ liệu qua ViewBag hoặc thêm vào model
+            ViewBag.LastAddress = lastAddress;
             ViewBag.Cart = cart;
             ViewBag.Total = total;
 
             return View();
         }
+
 
 
         [HttpPost]
@@ -352,7 +381,7 @@ namespace ThienAnFuni.Controllers
 
                     // Thông báo thành công
                     TempData["SuccessMessage"] = "Thanh toán thành công! Đơn hàng của bạn đang được xử lý.";
-                    return RedirectToAction("Order", new { orderId = order.Id });
+                    return RedirectToAction("Details", "Orders", new { id = order.Id });
                 }
                 catch (Exception ex)
                 {

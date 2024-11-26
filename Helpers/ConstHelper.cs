@@ -35,7 +35,7 @@ namespace ThienAnFuni.Helpers
             {
                 PaymentStatus.Unpaid => "Chưa thanh toán",
                 PaymentStatus.Paid => "Đã thanh toán",
-                _ => "Trạng thái thanh toán không xác định"
+                _ => "Chưa xác định"
             };
         }
 
