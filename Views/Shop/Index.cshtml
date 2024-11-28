@@ -234,6 +234,7 @@
 
                 </div>
                 @* Pagination *@
+                @* old: product__pagination *@
                 <div class="pagination justify-content-center">
                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
                              new PagedListRenderOptions
