@@ -234,7 +234,7 @@
 
                 </div>
                 @* Pagination *@
-                <div class="product__pagination">
+                <div class="pagination justify-content-center">
                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
                              new PagedListRenderOptions
                     {
@@ -247,9 +247,14 @@
                         DisplayLinkToNextPage = PagedListDisplayMode.Always,
                         Display = PagedListDisplayMode.IfNeeded,
                         DisplayEllipsesWhenNotShowingAllPageNumbers = false,
-                        LinkToIndividualPageFormat = "{0}"
+                        LinkToIndividualPageFormat = "{0}",
+                        UlElementClasses = new[] { "pagination", "justify-content-center" },
+                        LiElementClasses = new[] { "page-item" },
+                        PageClasses = new[] { "page-link" }
                     })
                 </div>
+                @* #baa46d *@
+
 
                 @*      <div class="product__pagination">
                 <a href="#">1</a>
