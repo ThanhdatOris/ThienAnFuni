@@ -156,8 +156,11 @@
 
                             <div class="header__top__right__auth d-flex justify-content-center align-items-center">
                                 @if (User.Identity.IsAuthenticated)
-                                {
-                                    <span>Hi, @User.Identity.Name</span>
+                                    {
+                                    <a asp-controller="Account" asp-action="Profile">
+                                        <span>Hi, @User.Identity.Name</span>
+                                    </a>
+
 
                                     <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Manager hoặc SaleStaff -->
                                     @if (User.IsInRole(ConstHelper.RoleManager) || User.IsInRole(ConstHelper.RoleSaleStaff))

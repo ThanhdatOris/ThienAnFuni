@@ -10,10 +10,11 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Order Shop</h2>
+                        <h2>Thien An Shop</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Order</a>
-                            <span>Shop</span>
+                            <a asp-action="Index" asp-controller="Home">Trang chủ</a>
+                            <a asp-action="Index" asp-controller="Orders">Đơn hàng</a>
+                            <span>Chi tiết đơn hàng #@Model.Id</span>
                         </div>
                     </div>
                 </div>
@@ -32,7 +33,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th class="shoping__product text-center">Mã ĐH</th>
+                                <th class="shoping__product text-center">Mã SP</th>
                                 <th>Ngày đặt</th>
                                 <th>Tổng tiền</th>
                                 <th>Trạng thái</th>
