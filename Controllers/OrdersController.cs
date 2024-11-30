@@ -10,7 +10,7 @@ using ThienAnFuni.Models;
 
 namespace ThienAnFuni.Controllers
 {
-        [Authorize] //Yêu cầu người dùng phải đăng nhập mới có quyền truy cập
+    [Authorize] //Yêu cầu người dùng phải đăng nhập mới có quyền truy cập
     public class OrdersController : Controller
     {
         private readonly TAF_DbContext _context;

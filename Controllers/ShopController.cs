@@ -39,7 +39,7 @@ namespace ThienAnFuni.Controllers
 
         public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null, string color = null)
         {
-            int pageSize = 9;
+            int pageSize = 4;
 
             // Lấy danh mục nếu có slug
             Category category = null;

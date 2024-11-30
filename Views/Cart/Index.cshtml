@@ -95,6 +95,8 @@
                     <a asp-controller="Shop" asp-action="Index" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
                 </div>
             </div>
+               @if (Model != null && Model.CartItems.Count > 0)
+            { 
             <div class="col-lg-6">
                 <div class="shoping__checkout">
                     <h5>Tổng giỏ hàng</h5>
@@ -105,7 +107,9 @@
                     <a asp-controller="Cart" asp-action="CheckOutPro" class="primary-btn w-100">TIẾN HÀNH THANH TOÁN</a>
                 </div>
             </div>
+            }
         </div>
+
     </div>
 </section>
 <!-- Shoping Cart Section End -->

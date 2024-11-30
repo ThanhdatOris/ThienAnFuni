@@ -2,8 +2,29 @@
     ViewData["Title"] = "Access Denied";
 }
 
-<div class="alert alert-danger">
-    <h3>Xin lỗi, bạn không có quyền truy cập vào trang này.</h3>
-    <p>Vui lòng liên hệ với quản trị viên để biết thêm chi tiết.</p>
-    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay về trang chủ</a>
+@section breadcrumb {
+    <section class="breadcrumb-section set-bg" data-setbg="/customerThienAn/img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Thiên Ân Shop</h2>
+                        <div class="breadcrumb__option">
+                            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            <span>Không có quyền truy cập</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<div class="alert alert-danger text-center p-5 mt-5">
+    <img src="~/customerThienAn/img/accessDenied/accessDenied.png" alt="Access Denied" class="mb-4 img-fluid w-25">
+    <h3 class="alert-heading mb-3">Xin lỗi, bạn không có quyền truy cập vào trang này.</h3>
+    <p class="mb-4">Vui lòng liên hệ với quản trị viên để biết thêm chi tiết.</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg px-4">
+        <i class="fa fa-home" aria-hidden="true"></i> Quay về trang chủ
+    </a>
 </div>
