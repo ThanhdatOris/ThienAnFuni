@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Trang chủ";
+    ViewData["Title"] = "Đăng kí tài khoản";
     Layout = null;
 }
 
@@ -104,7 +104,7 @@
 
                     @if (!ViewData.ModelState.IsValid)
                     {
-                        <div class="alert alert-danger text-danger font-weight-bold">
+                        <div class="alert alert-danger text-danger font-weight-bold text-left">
                             @Html.ValidationSummary(false)
                         </div>
                     }
@@ -114,19 +114,19 @@
                     </div>
 
                     <!-- Return Button -->
-                    <div class="container-login100-form-btn mt-2">
-                        <a href="javascript:history.back()" class="btn btn-dark w-100">Trở lại</a>
+                    <div class="container-login100-form-btn">
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-dark w-100">Trở lại</a>
                     </div>
 
                 </form>
                 <div class="text-center p-t-70 txt2 d-flex flex-col">
-                    <span>Phần mềm quản lý bán hàng ClapShop</span>
+                    <span>Website bán hàng nội thất ThienAn Shop</span>
                     <div>
                         <i class="far fa-copyright" aria-hidden="true"></i>
                         <script type="text/javascript">
                             document.write(new Date().getFullYear());
                         </script>
-                        <a class="txt2" href="#"> Five Hero Team </a>
+                        <a class="txt2" href="#"> ThienAn Team </a>
                     </div>
                 </div>
             </div>

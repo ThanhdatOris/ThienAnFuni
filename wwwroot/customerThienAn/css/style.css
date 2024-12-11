@@ -3343,7 +3343,7 @@ ol {
     }
 
     .humberger__open {
-        display: block;
+        /*display: block;
         font-size: 22px;
         color: #1c1c1c;
         height: 35px;
@@ -3354,7 +3354,22 @@ ol {
         cursor: pointer;
         position: absolute;
         right: 15px;
+        top: 22px;*/
+
+        display: block;
+        font-size: 22px;
+        color: rgb(136 116 70);
+        height: 35px;
+        width: 35px;
+        line-height: 33px;
+        text-align: center;
+        border: 2px solid rgb(190, 163, 101);
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
         top: 22px;
+        border-radius: 9px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     }
 
     .header .container {
