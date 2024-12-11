@@ -34,9 +34,12 @@
                         <thead>
                             <tr>
                                 <th class="shoping__product text-center">Mã SP</th>
-                                <th>Ngày đặt</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Hình ảnh</th>
+                                @* <th>Ngày đặt</th> *@
+                                <th>Số lượng</th>
                                 <th>Tổng tiền</th>
-                                <th>Trạng thái</th>
+                                @* <th>Trạng thái</th> *@
                                 <th></th>
                             </tr>
                         </thead>
@@ -44,11 +47,23 @@
                             @foreach (var order in Model.OrderDetails)
                             {
                                 <tr>
-                                    <td>#@order.Id</td>
-                                    <td>@order.Order.OrderDate</td>
-                                    <td>@string.Format("{0:0,0}đ", order.PriceAtOrder)</td>
-                                    <td class="font-weight-bold text-warning">@OrderStatusHelper.ReturnStatus(order.Order.OrderStatus.ToString())</td>
-                                </tr>
+                                    <td>@order.Id</td>
+                                    <td>@order.Product?.Name</td>
+                                    <td>
+                                        @if (order.Product?.ProductImages != null && order.Product.ProductImages.Any())
+                                        {
+                                            <img src="@order.Product.ProductImages.FirstOrDefault()?.ImgURL" alt="@order.Product?.Name" style="width: 50px;" />
+                                        }
+                                        else
+                                        {
+                                            <span>Không có hình ảnh</span>
+                                        }
+                                    </td>
+                                    <td>@order.Quantity</td>
+@*                                     <td>@order.Order.OrderDate</td>
+ *@                                 <td>@string.Format("{0:0,0}đ", order.PriceAtOrder)</td>
+@*                                     <td class="font-weight-bold text-warning">@OrderStatusHelper.ReturnStatus(order.Order.OrderStatus.ToString())</td>
+ *@                                </tr>
                             }
                         </tbody>
                     </table>
