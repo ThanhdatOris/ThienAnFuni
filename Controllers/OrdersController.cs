@@ -50,6 +50,8 @@ namespace ThienAnFuni.Controllers
                 .Include(o => o.Customer)
                 .Include(o => o.SaleStaff)
                 .Include(o => o.OrderDetails)
+                    .ThenInclude(o => o.Product)
+                        .ThenInclude(p => p.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {

@@ -52,7 +52,7 @@
                                     <td>
                                         @if (order.Product?.ProductImages != null && order.Product.ProductImages.Any())
                                         {
-                                            <img src="@order.Product.ProductImages.FirstOrDefault()?.ImgURL" alt="@order.Product?.Name" style="width: 50px;" />
+                                            <img src="/adminThienAn/image_product/@order.Product.ProductImages.FirstOrDefault()?.ImgURL" alt="@order.Product?.Name" style="width: 100px;" />
                                         }
                                         else
                                         {
