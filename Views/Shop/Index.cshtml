@@ -234,22 +234,68 @@
 
                 </div>
                 @* Pagination *@
-                <div class="product__pagination">
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
-                             new PagedListRenderOptions
+                @* <div class="product__pagination"> *@
+                @*     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), *@
+                @*              new PagedListRenderOptions *@
+                @*     { *@
+                @*         LinkToPreviousPageFormat = "<i class='fa fa-long-arrow-left'></i>", *@
+                @*         LinkToNextPageFormat = "<i class='fa fa-long-arrow-right'></i>", *@
+                @*         MaximumPageNumbersToDisplay = 3, *@
+                @*         DisplayLinkToFirstPage = PagedListDisplayMode.Never, *@
+                @*         DisplayLinkToLastPage = PagedListDisplayMode.Never, *@
+                @*         DisplayLinkToPreviousPage = PagedListDisplayMode.Always, *@
+                @*         DisplayLinkToNextPage = PagedListDisplayMode.Always, *@
+                @*         Display = PagedListDisplayMode.IfNeeded, *@
+                @*         DisplayEllipsesWhenNotShowingAllPageNumbers = false, *@
+                @*         LinkToIndividualPageFormat = "{0}", *@
+
+                @*         // Add CSS classes for <li> and <a> *@
+                @*         LiElementClasses = new[] { "product__pagination__item" }, *@
+                @*         PageClasses = new[] { "product__pagination__item" }, *@
+                @*         ActiveLiElementClass = "active", *@
+
+                @*         // Force the current page to use <a> tag *@
+                @*         FunctionToTransformEachPageLink = (liTag, aTag) => *@
+                @*         { *@
+                @*             if (liTag.Attributes.ContainsKey("class") && liTag.Attributes["class"]?.Contains("active") == true) *@
+                @*             { *@
+                @*                 aTag.AddCssClass("active"); *@
+                @*             } *@
+                @*             return aTag; *@
+                @*         } *@
+                @*     }) *@
+                @* </div> *@
+
+                <div class="product__pagination d-flex justify-content-center align-items-center">
+                    @if (Model.HasPreviousPage)
                     {
-                        LinkToPreviousPageFormat = "<i class='fa fa-long-arrow-left'></i>",
-                        LinkToNextPageFormat = "<i class='fa fa-long-arrow-right'></i>",
-                        MaximumPageNumbersToDisplay = 3,
-                        DisplayLinkToFirstPage = PagedListDisplayMode.Never,
-                        DisplayLinkToLastPage = PagedListDisplayMode.Never,
-                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                        Display = PagedListDisplayMode.IfNeeded,
-                        DisplayEllipsesWhenNotShowingAllPageNumbers = false,
-                        LinkToIndividualPageFormat = "{0}"
-                    })
+                        <a href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" class="product__pagination__item">
+                            <i class="fa fa-long-arrow-left"></i>
+                        </a>
+                    }
+
+                    @for (var i = 1; i <= Model.PageCount; i++)
+                    {
+                        if (i == Model.PageNumber)
+                        {
+                            <!-- Đánh dấu trạng thái active -->
+                            <a href="@Url.Action("Index", new { page = i })" class="product__pagination__item active">@i</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", new { page = i })" class="product__pagination__item">@i</a>
+                        }
+                    }
+
+                    @if (Model.HasNextPage)
+                    {
+                        <a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" class="product__pagination__item">
+                            <i class="fa fa-long-arrow-right"></i>
+                        </a>
+                    }
                 </div>
+
+
 
                 @*      <div class="product__pagination">
                 <a href="#">1</a>
