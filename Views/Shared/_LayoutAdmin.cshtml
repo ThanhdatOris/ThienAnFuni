@@ -140,19 +140,21 @@
             </li>
 
             <li>
+                <a class="app-menu__item haha @(ViewData["ActiveMenu"].ToString() == "Dashboard" ? "active" : "")"
+                    asp-controller="Dashboard" asp-action="Index">
+                    <i class='app-menu__icon bx bx-id-card'></i>
+                    <span class="app-menu__label">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
                 <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Customer" ? "active" : "")"
                     asp-controller="Customers" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý khách hàng</span>
                 </a>
             </li>
-            <li>
-                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Dashboard" ? "active" : "")"
-                    asp-controller="Dashboard" asp-action="Index">
-                    <i class='app-menu__icon bx bx-id-card'></i>
-                    <span class="app-menu__label">Quản trị FuniShop</span>
-                </a>
-            </li>
+
             <li>
                 <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Order" ? "active" : "")"
                     asp-controller="AdminOrders" asp-action="Index">
