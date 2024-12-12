@@ -30,9 +30,24 @@ namespace ThienAnFuni.Controllers
         {
             ViewData["ActiveMenu"] = "Dashboard";
 
+            var recentSalesData = await _context.Orders
+                .Where(o => o.OrderDate >= DateTime.Now.AddMonths(-6))
+                .ToListAsync(); // Lấy dữ liệu từ cơ sở dữ liệu trước
+
+            var groupedSalesData = recentSalesData
+                .GroupBy(o => new { o.OrderDate.Year, o.OrderDate.Month })
+                .Select(g => new SalesData
+                {
+                    Date = new DateTime(g.Key.Year, g.Key.Month, 1),
+                    Amount = g.Sum(o => o.TotalPrice)
+                })
+                .OrderByDescending(s => s.Date)
+                .ToList();
+
             var totalCustomers = _context.Customers.Count();
             var totalProducts = _context.Products.Count();
             var totalOrders = _context.Orders.Count();
+
             var lowStockProducts = _context.Products
                 .Join(_context.Goods,
                       product => product.Id,
@@ -64,8 +79,6 @@ namespace ThienAnFuni.Controllers
                 .Select(cu => cu.customer)
                 .ToList();
 
-
-
             // Get the role "customer"
             var customerRole = await _roleManager.FindByNameAsync("customer");
             List<User> customerUsers = new List<User>();
@@ -77,6 +90,7 @@ namespace ThienAnFuni.Controllers
 
             var viewModel = new DashboardViewModel
             {
+                RecentSalesData = groupedSalesData,
                 TotalCustomers = totalCustomers,
                 TotalProducts = totalProducts,
                 TotalOrders = totalOrders,
