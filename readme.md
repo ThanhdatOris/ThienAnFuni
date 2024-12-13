@@ -12,6 +12,15 @@
 - Tạo database thienanFuni
 - mở file appsettings.json đổi tên server
 ```
+# Fresh 
+```
+dotnet ef database drop --force
+
+dotnet ef migrations remove
+
+dotnet ef migrations add InitialCreate
+
+```
 
 Dưới đây là hướng dẫn chi tiết từ đầu để cấu hình chức năng đăng ký, đăng nhập và phân quyền trong dự án ASP.NET Core 8.0 MVC với ba loại người dùng (Manager, SaleStaff, Customer):
 

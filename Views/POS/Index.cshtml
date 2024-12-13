@@ -113,7 +113,11 @@
         <ul class="app-nav">
             <!-- User Menu-->
             <li>
-                <a class="app-nav__item" href="#"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+                <form action="@Url.Action("Logout", "Account")" method="post" style="display:inline;">
+                    <button type="submit" class="app-nav__item m-0">
+                        <i class='bx bx-log-out bx-rotate-180'></i>
+                    </button>
+                </form>
             </li>
         </ul>
     </header>
