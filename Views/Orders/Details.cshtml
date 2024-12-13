@@ -36,10 +36,8 @@
                                 <th class="shoping__product text-center">Mã SP</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
-                                @* <th>Ngày đặt</th> *@
                                 <th>Số lượng</th>
                                 <th>Tổng tiền</th>
-                                @* <th>Trạng thái</th> *@
                                 <th></th>
                             </tr>
                         </thead>
@@ -47,12 +45,12 @@
                             @foreach (var order in Model.OrderDetails)
                             {
                                 <tr>
-                                    <td>@order.Id</td>
+                                    <td>@order.Product.Id</td>
                                     <td>@order.Product?.Name</td>
                                     <td>
-                                        @if (order.Product?.ProductImages != null && order.Product.ProductImages.Any())
+                                        @if (order.Product?.MainImg != null && order.Product.MainImg.Any())
                                         {
-                                            <img src="/adminThienAn/image_product/@order.Product.ProductImages.FirstOrDefault()?.ImgURL" alt="@order.Product?.Name" style="width: 100px;" />
+                                            <img src="/adminThienAn/image_product/@order.Product.MainImg" alt="@order.Product?.Name" style="width: 100px;" />
                                         }
                                         else
                                         {
@@ -60,10 +58,8 @@
                                         }
                                     </td>
                                     <td>@order.Quantity</td>
-@*                                     <td>@order.Order.OrderDate</td>
- *@                                 <td>@string.Format("{0:0,0}đ", order.PriceAtOrder)</td>
-@*                                     <td class="font-weight-bold text-warning">@OrderStatusHelper.ReturnStatus(order.Order.OrderStatus.ToString())</td>
- *@                                </tr>
+                                    <td>@string.Format("{0:0,0}đ", order.PriceAtOrder)</td>
+                                </tr>
                             }
                         </tbody>
                     </table>

@@ -7,7 +7,5 @@ namespace ThienAnFuni.Models
         public virtual List<Order>? Orders { get; set; }
         [InverseProperty("Customer")]
         public virtual Cart? Cart { get; set; }
-        public void ChangeInfo() { }
-        public void ViewOrderHistory() { }
     }
 }

@@ -126,7 +126,11 @@
             <img class="app-sidebar__user-avatar" src="~/adminThienAn/assets/images/CLAPSHOP (1).png" width="50px"
                 alt="User Image">
             <div>
-                <p class="app-sidebar__user-name"><b>Admin</b></p>
+                <a asp-controller="Account" asp-action="Profile" class="text-white">
+
+                <p class="app-sidebar__user-name"><b>@(User.Identity.Name ?? "Admin")</b></p>
+                </a>
+
                 <p class="app-sidebar__user-designation">Wellcome my Boss</p>
             </div>
         </div>

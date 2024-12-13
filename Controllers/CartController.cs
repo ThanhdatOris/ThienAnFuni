@@ -339,7 +339,8 @@ namespace ThienAnFuni.Controllers
                         OrderDate = DateTime.Now,
                         OrderStatus = (int)ConstHelper.OrderStatus.Pending,
                         PaymentMethod = paymentMethod,
-                        Note = note
+                        Note = note,
+                        CustomerPhoneNumber = user.PhoneNumber
                     };
 
                     _context.Orders.Add(order);
