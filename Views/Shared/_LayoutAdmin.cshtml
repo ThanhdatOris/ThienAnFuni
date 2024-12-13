@@ -126,7 +126,8 @@
             <img class="app-sidebar__user-avatar" src="~/adminThienAn/assets/images/avtHotBoy.jpg" width="50px"
                 alt="User Image">
             <div>
-                <p class="app-sidebar__user-name"><b>Admin</b></p>
+                <p class="app-sidebar__user-name"><b>@(User.Identity.Name ?? "Admin")</b></p>
+
                 <p class="app-sidebar__user-designation">Wellcome my Boss</p>
             </div>
         </div>
