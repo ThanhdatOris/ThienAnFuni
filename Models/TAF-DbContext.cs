@@ -13,17 +13,16 @@ namespace ThienAnFuni.Models
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Cart> Carts { get; set; }
-        public DbSet<CartDetail> CartDetails { get; set; }
+
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
         public DbSet<Goods> Goods { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<SaleStaff> SaleStaffs { get; set; }
         public DbSet<Manager> Managers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

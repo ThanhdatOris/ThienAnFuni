@@ -323,8 +323,6 @@ namespace ThienAnFuni.Controllers
                 managerId = userId;  // Người dùng là Manager
             }
 
-
-
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
@@ -341,7 +339,8 @@ namespace ThienAnFuni.Controllers
                         OrderDate = DateTime.Now,
                         OrderStatus = (int)ConstHelper.OrderStatus.Pending,
                         PaymentMethod = paymentMethod,
-                        Note = note
+                        Note = note,
+                        CustomerPhoneNumber = user.PhoneNumber
                     };
 
                     _context.Orders.Add(order);
@@ -380,8 +379,7 @@ namespace ThienAnFuni.Controllers
                     HttpContext.Session.Remove("totalQuantity");
 
                     // Thông báo thành công
-                    TempData["SuccessMessage"] = "Thanh toán thành công! Đơn hàng của bạn đang được xử lý.";
-                    return RedirectToAction("Details", "Orders", new { id = order.Id });
+                    return RedirectToAction("OrderSuccess", "Orders");
                 }
                 catch (Exception ex)
                 {

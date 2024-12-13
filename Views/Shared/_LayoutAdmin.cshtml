@@ -123,10 +123,14 @@
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
         <div class="app-sidebar__user">
-            <img class="app-sidebar__user-avatar" src="~/adminThienAn/assets/images/avtHotBoy.jpg" width="50px"
+            <img class="app-sidebar__user-avatar" src="~/adminThienAn/assets/images/CLAPSHOP (1).png" width="50px"
                 alt="User Image">
             <div>
-                <p class="app-sidebar__user-name"><b>Admin</b></p>
+                <a asp-controller="Account" asp-action="Profile" class="text-white">
+
+                <p class="app-sidebar__user-name"><b>@(User.Identity.Name ?? "Admin")</b></p>
+                </a>
+
                 <p class="app-sidebar__user-designation">Wellcome my Boss</p>
             </div>
         </div>
@@ -140,19 +144,21 @@
             </li>
 
             <li>
+                <a class="app-menu__item haha @(ViewData["ActiveMenu"].ToString() == "Dashboard" ? "active" : "")"
+                    asp-controller="Dashboard" asp-action="Index">
+                    <i class='app-menu__icon bx bx-id-card'></i>
+                    <span class="app-menu__label">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
                 <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Customer" ? "active" : "")"
                     asp-controller="Customers" asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i>
                     <span class="app-menu__label">Quản lý khách hàng</span>
                 </a>
             </li>
-            <li>
-                <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Dashboard" ? "active" : "")"
-                    asp-controller="Dashboard" asp-action="Index">
-                    <i class='app-menu__icon bx bx-id-card'></i>
-                    <span class="app-menu__label">Quản trị FuniShop</span>
-                </a>
-            </li>
+
             <li>
                 <a class="app-menu__item @(ViewData["ActiveMenu"].ToString() == "Order" ? "active" : "")"
                     asp-controller="AdminOrders" asp-action="Index">

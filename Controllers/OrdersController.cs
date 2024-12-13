@@ -20,6 +20,7 @@ namespace ThienAnFuni.Controllers
             _context = context;
         }
 
+
         // GET: Orders
         public async Task<IActionResult> Index()
         {
@@ -29,6 +30,11 @@ namespace ThienAnFuni.Controllers
                 .OrderByDescending(o => o.Id);  // Sắp xếp theo OrderDate ngược lại
 
             return View(await tAF_DbContext.ToListAsync());  // Trả về danh sách đã sắp xếp
+        }
+
+        public async Task<IActionResult> OrderSuccess()
+        {
+            return View();  // Trả về danh sách đã sắp xếp
         }
 
 
@@ -44,6 +50,8 @@ namespace ThienAnFuni.Controllers
                 .Include(o => o.Customer)
                 .Include(o => o.SaleStaff)
                 .Include(o => o.OrderDetails)
+                    .ThenInclude(o => o.Product)
+                        .ThenInclude(p => p.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {

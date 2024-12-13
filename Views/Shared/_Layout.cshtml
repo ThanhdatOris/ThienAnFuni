@@ -67,7 +67,9 @@
             <div class="header__top__right__auth">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <span>Hi, @User.Identity.Name</span>
+                    <a asp-controller="Account" asp-action="Profile" class="d-inline-block text-truncate" style="max-width: 150px;">
+                        <span>Hi, @User.Identity.Name</span>
+                    </a>
 
                     @if (User.IsInRole(ConstHelper.RoleManager) && User.IsInRole(ConstHelper.RoleSaleStaff))
                     {
@@ -112,14 +114,12 @@
         <div id="mobile-menu-wrap"></div>
         <div class="header__top__right__social">
             <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
         </div>
         <div class="humberger__menu__contact">
             <ul>
-                <li><i class="fa fa-envelope"></i> funiteam@ctuet.edu.vn</li>
-                <li>Giao hàng miễn phí vận chuyển nội thành.</li>
+                <li><i class="fa fa-envelope"></i> thienanteam@ctuet.edu.vn</li>
+                <li>Freeship nội thành.</li>
             </ul>
         </div>
     </div>
@@ -132,18 +132,16 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                                <li><i class="fa fa-envelope"></i> funiteam@ctuet.edu.vn</li>
-                                <li>Giao hàng miễn phí vận chuyển nội thành.</li>
+                                <li><i class="fa fa-envelope"></i> thienanteam@ctuet.edu.vn</li>
+                                <li>Freeship nội thành.</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <div class="header__top__right d-flex align-items-center justify-content-around">
+                        <div class="header__top__right d-flex align-items-center justify-content-around text-nowrap">
                             <div class="header__top__right__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
                             </div>
                             <div class="header__top__right__language">
                                 <img src="/customerThienAn/img/vietnamese.jpg" width="30" alt="">
@@ -156,8 +154,10 @@
 
                             <div class="header__top__right__auth d-flex justify-content-center align-items-center">
                                 @if (User.Identity.IsAuthenticated)
-                                {
-                                    <span>Hi, @User.Identity.Name</span>
+                                    {
+                                    <a asp-controller="Account" asp-action="Profile" class="d-inline-block text-truncate" style="max-width: 150px;">
+                                        <span>Hi, @User.Identity.Name</span>
+                                    </a>
 
                                     <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Manager hoặc SaleStaff -->
                                     @if (User.IsInRole(ConstHelper.RoleManager) || User.IsInRole(ConstHelper.RoleSaleStaff))
@@ -219,7 +219,6 @@
                     </nav>
                 </div>
                 <div class="col-lg-3">
-                    @* Bê thằng này lên trên *@
                     <div class="header__cart">
                         <ul>
                             <li>
@@ -312,7 +311,7 @@
                         <ul>
                             <li>Address: 256 Nguyễn Văn Cừ, An Hòa, Ninh Kiều, Cần Thơ</li>
                             <li>Phone: +84 30 04 1975</li>
-                            <li>Email: funiteam@ctuet.edu.vn</li>
+                            <li>Email: thienanteam@ctuet.edu.vn</li>
                         </ul>
                     </div>
                 </div>
@@ -349,8 +348,6 @@
                         <div class="footer__widget__social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
                         </div>
                     </div>
                 </div>
@@ -362,7 +359,7 @@
                             <p>
                                 Copyright &copy;
                                 <script>document.write(new Date().getFullYear());</script> | Bản quyền được giữ bởi
-                                FuniTeam
+                                ThienAnTeam
                             </p>
                         </div>
                         <div class="footer__copyright__payment">
