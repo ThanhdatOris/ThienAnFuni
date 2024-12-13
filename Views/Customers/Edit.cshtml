@@ -21,7 +21,7 @@
                 <h3>Chỉnh sửa thông tin khách hàng</h3>
                 <form id="customerEditForm" method="post" action="@Url.Action("Edit", "Customers")">
                     @Html.AntiForgeryToken()  <!-- Đảm bảo bạn có AntiForgery Token -->
-                    <input type="hidden" name="Id" value="@Model.Id" />
+                    @* <input type="hidden" name="Id" value="@Model.Id" /> *@
                     <div class="form-group">
                         <label for="FullName">Họ và tên</label>
                         <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName"/>

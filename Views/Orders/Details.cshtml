@@ -92,10 +92,17 @@
                 <th>@Html.DisplayNameFor(model => model.Customer)</th>
                 <td>@(Model.Customer?.FullName ?? "Chưa cập nhật khách hàng")</td>
             </tr>
-            <tr>
+            @* <tr>
                 <th>@Html.DisplayNameFor(model => model.CustomerPhoneNumber)</th>
                 <td>@Html.DisplayFor(model => model.CustomerPhoneNumber)</td>
+            </tr> *@
+
+            @* hiển thị số điện thoại của người dùng*@
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.CustomerPhoneNumber)</th>
+                <td>@Model.Customer?.PhoneNumber</td>
             </tr>
+
 
             <tr>
                 <th>@Html.DisplayNameFor(model => model.TotalPrice)</th>

@@ -59,7 +59,15 @@
                 <input type="date" id="DateOfBirth" name="DateOfBirth" class="form-control" value="@Model.DateOfBirth?.ToString("yyyy-MM-dd")" />
             </div>
         </div>
-            
+
+        <div class="row">
+            <!-- Mật khẩu cũ -->
+            <div class="form-group col-md-6 mb-3">
+                <label for="OldPassword">Mật khẩu cũ:</label>
+                <input type="password" id="OldPassword" name="oldPassword" class="form-control" required />
+           </div>
+        </div>   
+
         <div class="row">
             <!-- Mật khẩu mới -->
             <div class="form-group col-md-6 mb-3">

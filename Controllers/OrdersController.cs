@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,18 +25,19 @@ namespace ThienAnFuni.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
+            // Lấy thông tin của người dùng đã đăng nhập
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Lấy danh sách đơn hàng thuộc về người dùng hiện tại
             var tAF_DbContext = _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.SaleStaff)
-                .OrderByDescending(o => o.Id);  // Sắp xếp theo OrderDate ngược lại
+                .Where(o => o.CustomerId == userId) // Chỉ lấy đơn hàng của người dùng hiện tại
+                .OrderByDescending(o => o.Id);
 
-            return View(await tAF_DbContext.ToListAsync());  // Trả về danh sách đã sắp xếp
+            return View(await tAF_DbContext.ToListAsync());
         }
 
-        public async Task<IActionResult> OrderSuccess()
-        {
-            return View();  // Trả về danh sách đã sắp xếp
-        }
 
 
         // GET: Orders/Details/5
@@ -46,13 +48,18 @@ namespace ThienAnFuni.Controllers
                 return NotFound();
             }
 
+            // Lấy thông tin của người dùng hiện tại
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Tìm kiếm đơn hàng và kiểm tra xem nó có thuộc về người dùng hiện tại không
             var order = await _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.SaleStaff)
                 .Include(o => o.OrderDetails)
                     .ThenInclude(o => o.Product)
                         .ThenInclude(p => p.ProductImages)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.CustomerId == userId); // Kiểm tra thêm CustomerId
+
             if (order == null)
             {
                 return NotFound();
