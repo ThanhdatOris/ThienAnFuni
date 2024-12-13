@@ -62,7 +62,7 @@
                         @Html.DisplayNameFor(model => model.IssuingDate)
                     </dt>
                     <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.IssuingDate)
+                        @Model.IssuingDate?.ToString("dd-MM-yyyy")
                     </dd>
 
                     <dt class="col-sm-3 font-weight-bold">
@@ -75,9 +75,9 @@
                     <dt class="col-sm-3 font-weight-bold">
                         @Html.DisplayNameFor(model => model.StartDate)
                     </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.StartDate)
-                    </dd>
+                   <dd class="col-sm-9">
+                        @Model.StartDate?.ToString("dd-MM-yyyy")
+                   </dd>
 
                     <dt class="col-sm-3 font-weight-bold">
                         @Html.DisplayNameFor(model => model.EndDate)
@@ -134,13 +134,13 @@
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.DateOfBirth)
                     </dd>
-
+@* 
                     <dt class="col-sm-3 font-weight-bold">
                         Mật khẩu
                     </dt>
                     <dd class="col-sm-9">
                         ******************
-                    </dd>
+                    </dd> *@
                 </dl>
 
 

@@ -21,13 +21,13 @@
         <div class="row">
             <!-- Tên tài khoản -->
             <div class="form-group col-md-6 mb-3">
-                <label for="UserName">Tên tài khoản:</label>
+                <label for="UserName">Tên tài khoản</label>
                 <input type="text" id="UserName" name="UserName" class="form-control" value="@Model.UserName" readonly />
             </div>
 
             <!-- Họ tên -->
             <div class="form-group col-md-6 mb-3">
-                <label for="FullName">Họ và tên:</label>
+                <label for="FullName">Họ và tên</label>
                 <input type="text" id="FullName" name="FullName" class="form-control" value="@Model.FullName" />
             </div>
         </div>
@@ -35,13 +35,13 @@
         <div class="row">
             <!-- Số điện thoại -->
             <div class="form-group col-md-6 mb-3">
-                <label for="PhoneNumber">Số điện thoại:</label>
+                <label for="PhoneNumber">Số điện thoại</label>
                 <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" />
             </div>
 
             <!-- Địa chỉ -->
             <div class="form-group col-md-6 mb-3">
-                <label for="Address">Địa chỉ:</label>
+                <label for="Address">Địa chỉ</label>
                 <input type="text" id="Address" name="Address" class="form-control" value="@Model.Address" />
             </div>
         </div>
@@ -49,13 +49,13 @@
         <div class="row">
             <!-- Giới tính -->
             <div class="form-group col-md-6 mb-3">
-                <label for="Gender">Giới tính:</label>
+                <label for="Gender">Giới tính</label>
                 <input type="text" id="Gender" name="Gender" class="form-control" value="@Model.Gender" />
             </div>
 
             <!-- Ngày sinh -->
             <div class="form-group col-md-6 mb-3">
-                <label for="DateOfBirth">Ngày sinh:</label>
+                <label for="DateOfBirth">Ngày sinh</label>
                 <input type="date" id="DateOfBirth" name="DateOfBirth" class="form-control" value="@Model.DateOfBirth?.ToString("yyyy-MM-dd")" />
             </div>
         </div>
@@ -63,7 +63,7 @@
         <div class="row">
             <!-- Mật khẩu cũ -->
             <div class="form-group col-md-6 mb-3">
-                <label for="OldPassword">Mật khẩu cũ:</label>
+                <label for="OldPassword">Mật khẩu cũ <span class="text-danger">*</label>
                 <input type="password" id="OldPassword" name="oldPassword" class="form-control" required />
            </div>
         </div>   
@@ -71,7 +71,7 @@
         <div class="row">
             <!-- Mật khẩu mới -->
             <div class="form-group col-md-6 mb-3">
-                <label for="NewPassword">Mật khẩu mới:</label>
+                <label for="NewPassword">Mật khẩu mới <span class="text-danger">*</label>
                 <input type="password" id="NewPassword" name="NewPassword" class="form-control" />
             </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="row">
             <!-- Xác nhận mật khẩu -->
             <div class="form-group col-md-6 mb-3">
-                <label for="ConfirmPassword">Xác nhận mật khẩu:</label>
+                <label for="ConfirmPassword">Xác nhận mật khẩu <span class="text-danger">*</label>
                 <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" />
             </div>
         </div>
