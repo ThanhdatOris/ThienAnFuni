@@ -28,10 +28,40 @@ namespace ThienAnFuni.Controllers
                 .ThenInclude(c => c.ParentCategory) // Include the parent category
                 .ToListAsync();
 
+            var featuredProducts = await _context.Products
+                .Where(p => p.IsActive)
+                .OrderByDescending(p => p.Price)
+                .Take(6)
+                .ToListAsync();
+
+            var newProducts = await _context.Products
+                .OrderByDescending(p => p.CreatedDate)
+                .Take(6)
+                .ToListAsync();
+
+            var bestSellerProducts = await _context.Products
+                .Join(_context.OrderDetails,
+                    product => product.Id,
+                    orderDetail => orderDetail.ProductId,
+                    (product, orderDetail) => new { product, orderDetail })
+                .GroupBy(po => po.product)
+                .Select(g => new
+                {
+                    Product = g.Key,
+                    TotalSold = g.Sum(po => po.orderDetail.Quantity)
+                })
+                .OrderByDescending(g => g.TotalSold)
+                .Take(6)
+                .Select(g => g.Product)
+                .ToListAsync();
+
             var viewModel = new HomeViewModel
             {
                 Categories = categories,
-                Products = products
+                Products = products,
+                FeaturedProducts = featuredProducts,
+                NewProducts = newProducts,
+                BestSellerProducts = bestSellerProducts
             };
 
             return View(viewModel);
