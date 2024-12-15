@@ -39,7 +39,7 @@ namespace ThienAnFuni.Controllers
 
         public IActionResult Index(string query, string slug, int page = 1, string sortOrder = null, decimal? minPrice = null, decimal? maxPrice = null, string color = null)
         {
-            int pageSize = 4;
+            int pageSize = 6;
 
             // Lấy danh mục nếu có slug
             Category category = null;
@@ -123,25 +123,25 @@ namespace ThienAnFuni.Controllers
 
             if (product == null)
             {
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
 
             // Tính tổng SL đã bán
             int soldQuantity = _context.OrderDetails
                 .Where(od => od.ProductId == id)  // ... của sp này
-                .Sum(od => od.Quantity);  
+                .Sum(od => od.Quantity);
 
             // Lấy tổng SL nhập
             int totalQuantityInStock = _context.Goods
                 .Where(g => g.ProductId == id)  // ... của sp này
-                .Sum(g => (int?)g.Quantity) ?? 0;  
+                .Sum(g => (int?)g.Quantity) ?? 0;
 
             // Tính SL tồn
             int availableQuantity = totalQuantityInStock - soldQuantity;
 
             ViewBag.AvailableQuantity = availableQuantity;
             ViewBag.RelatedProducts = relatedProducts;
-            
+
             return View(product);
         }
 
