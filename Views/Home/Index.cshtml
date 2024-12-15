@@ -23,7 +23,7 @@
                 @foreach (var category in ViewBag.Categories)
                 {
                     <div class="col-lg-3" data-filter=".@category.Slug">
-                        <div class="categories__item set-bg" data-setbg="/customerThienAn/img/categories/cat-2.jpg">
+                        <div class="categories__item set-bg" data-setbg="./customerThienAn/img/categories/@category.Image">
                             <h5><a asp-action="Index" asp-route-slug="@category.Slug" asp-controller="Shop">@category.Name</a></h5>
                         </div>
                     </div>
