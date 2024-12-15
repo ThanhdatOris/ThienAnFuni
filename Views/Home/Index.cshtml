@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model IEnumerable<Product>
+@model ThienAnFuni.ViewModels.HomeViewModel
 
 @section background_home {
     <div class="hero__item set-bg" data-setbg="/customerThienAn/img/hero/banner2.png">
@@ -20,7 +20,7 @@
     <div class="container">
         <div class="row">
             <div class="categories__slider owl-carousel">
-                @foreach (var category in ViewBag.Categories)
+                @foreach (var category in Model.Categories)
                 {
                     <div class="col-lg-3" data-filter=".@category.Slug">
                         <div class="categories__item set-bg" data-setbg="./customerThienAn/img/categories/@category.Image">
@@ -44,7 +44,7 @@
                 <div class="featured__controls">
                     <ul>
                         <li class="active" data-filter="*">All</li>
-                        @foreach (var category in ViewBag.Categories)
+                        @foreach (var category in Model.Categories)
                         {
                             <li data-filter=".@category.Slug">@category.Name</li>
                         }
@@ -53,9 +53,10 @@
             </div>
         </div>
         <div class="row featured__filter">
-            @foreach (var product in Model)
+            @foreach (var product in Model.Products)
             {
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+                var parentCategorySlug = product.Category?.ParentCategory?.Slug;
+                <div class="col-lg-3 col-md-4 col-sm-6 mix @parentCategorySlug">
                     <div class="featured__item">
                         <div class="featured__item__pic set-bg" data-setbg="./adminThienAn/image_product/@product.MainImg">
                             <ul class="featured__item__pic__hover">
@@ -71,7 +72,27 @@
                 </div>
             }
         </div>
-   </div>
+        @* <script> *@
+        @*     document.querySelectorAll('.featured__controls ul li').forEach(function (filter) { *@
+        @*         filter.addEventListener('click', function () { *@
+        @*             var category = this.getAttribute('data-filter').substring(1); *@
+        @*             document.querySelectorAll('.mix').forEach(function (item) { *@
+        @*                 if (category === '*' || item.classList.contains(category)) { *@
+        @*                     item.style.display = 'block'; *@
+        @*                 } else { *@
+        @*                     item.style.display = 'none'; *@
+        @*                 } *@
+        @*             }); *@
+
+        @*             // Update active class *@
+        @*             document.querySelectorAll('.featured__controls ul li').forEach(function (filter) { *@
+        @*                 filter.classList.remove('active'); *@
+        @*             }); *@
+        @*             this.classList.add('active'); *@
+        @*         }); *@
+        @*     }); *@
+        @* </script> *@
+    </div>
 </section>
 <!-- Featured Section End -->
 <!-- Banner Begin -->

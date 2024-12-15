@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using ThienAnFuni.Models;
+using ThienAnFuni.ViewModels;
 
 namespace ThienAnFuni.Controllers
 {
@@ -15,15 +16,25 @@ namespace ThienAnFuni.Controllers
             _logger = logger;
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
             var categories = await _context.Categories
-            .Where(c => c.ParentId == null && c.IsActive)
-            .ToListAsync();
+                .Where(c => c.ParentId == null && c.IsActive)
+                .ToListAsync();
 
-            ViewBag.Categories = categories;
-            var products = await _context.Products.ToListAsync();
-            return View(products);
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .ThenInclude(c => c.ParentCategory) // Include the parent category
+                .ToListAsync();
+
+            var viewModel = new HomeViewModel
+            {
+                Categories = categories,
+                Products = products
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
