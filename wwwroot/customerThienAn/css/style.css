@@ -1643,6 +1643,7 @@ ol {
 }
 
     .product__pagination a,
+    .product__pagination span,
     .blog__pagination a {
         display: inline-block;
         width: 30px;
@@ -1662,13 +1663,21 @@ ol {
     }
 
         .product__pagination a:hover,
+        .product__pagination span:hover,
         .blog__pagination a:hover {
             background: rgb(190,163,101);
             border-color: rgb(190,163,101);
             color: #ffffff;
         }
 
+        .product__pagination__item .active {
+            background: rgb(190,163,101);
+            border-color: rgb(190,163,101);
+            color: #ffffff;
+        }
+
         .product__pagination a:last-child,
+        .product__pagination span:last-child,
         .blog__pagination a:last-child {
             margin-right: 0;
         }
