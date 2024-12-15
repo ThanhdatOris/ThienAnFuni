@@ -76,7 +76,9 @@ namespace ThienAnFuni.Models
                     Gender = "Nữ",
                     DateOfBirth = new DateTime(1995, 5, 12),
                     CitizenId = "999456789",
-                    IsActive = true
+                    IsActive = true,
+                    Email = "tramanh@gmail.com",
+                    StartDate = new DateTime(2021, 5, 12)
                 },
                 new SaleStaff
                 {
@@ -90,7 +92,9 @@ namespace ThienAnFuni.Models
                     Gender = "Nam",
                     DateOfBirth = new DateTime(1990, 8, 25),
                     CitizenId = "9876234521",
-                    IsActive = true
+                    IsActive = true,
+                    Email = "",
+                    StartDate = new DateTime(2023, 5, 12)
                 }
             );
 

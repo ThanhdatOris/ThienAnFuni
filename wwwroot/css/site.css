@@ -1,5 +1,4 @@
 ﻿body {
-    padding-top: 50px;
     padding-bottom: 20px;
 }
 
@@ -41,3 +40,123 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+
+/* styles.css */
+.zalo-icon {
+    position: fixed;
+    bottom: 20px; /* Đặt logo ở dưới cùng bên phải */
+    right: 20px;
+    background-color: #00c6ff; /* Màu nền của Zalo */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Tạo hình tròn */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Đổ bóng cho logo */
+    z-index: 1000;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Hiệu ứng khi hover */
+    animation: pulse-blue 1.5s infinite; /* Áp dụng hiệu ứng loang màu */
+}
+
+/* Hiệu ứng loang màu (Pulse) */
+@keyframes pulse-blue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 198, 255, 0.7); /* Sóng bắt đầu từ logo */
+        transform: scale(0.95);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(0, 198, 255, 0); /* Sóng lan tỏa và mờ đi */
+        transform: scale(1);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 198, 255, 0);
+        transform: scale(0.95);
+    }
+}
+
+
+/* styles.css */
+
+/* Container chứa tất cả các biểu tượng */
+.social-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Khoảng cách giữa các biểu tượng */
+    animation: slide 9s infinite; /* Lặp lại hiệu ứng chuyển động mỗi 9 giây */
+}
+
+/* Các biểu tượng xã hội */
+.social-icon {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    animation: pulse 1.5s infinite; /* Hiệu ứng loang màu */
+    transition: transform 0.3s ease;
+}
+
+/* Hiệu ứng loang màu */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 198, 255, 0.7);
+        transform: scale(0.95);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(0, 198, 255, 0);
+        transform: scale(1);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 198, 255, 0);
+        transform: scale(0.95);
+    }
+}
+
+/* Hiệu ứng chuyển động */
+@keyframes slide {
+    0% {
+        transform: translateY(0); /* Bắt đầu từ vị trí ban đầu */
+    }
+
+    25% {
+        transform: translateY(-80px); /* Di chuyển lên một chút */
+    }
+
+    50% {
+        transform: translateY(0); /* Trở lại vị trí ban đầu */
+    }
+
+    75% {
+        transform: translateY(80px); /* Di chuyển xuống một chút */
+    }
+
+    100% {
+        transform: translateY(0); /* Trở lại vị trí ban đầu */
+    }
+}
+
+/* Cụ thể cho từng biểu tượng */
+.social-icon.facebook {
+    background-color: #1877F2;
+}
+
+.social-icon.instagram {
+    background-color: #E4405F;
+}
+
+.social-icon.zalo {
+    background-color: #00c6ff;
+}
