@@ -2,7 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
 using ThienAnFuni.Helpers;
+using ThienAnFuni.Services; 
+using ThienAnFuni.Configurations;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// SendMail
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<ThienAnFuni.Services.IEmailSender, EmailSender>();
 
 // Load configurations from appsettings.json and appsettings.Local.json
 builder.Configuration
@@ -32,13 +39,13 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequiredLength = 6;  // Độ dài mật khẩu tối thiểu
     options.Password.RequiredUniqueChars = 1;  // Số ký tự duy nhất tối thiểu
 })
-.AddEntityFrameworkStores<TAF_DbContext>()  // Thay <TAF_DbContext> bằng DbContext của bạn
+.AddEntityFrameworkStores<TAF_DbContext>()  
 .AddDefaultTokenProviders();
 
 // Không có quyền thì bị đá vào Controller Account - Action:AccessDenied
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.AccessDeniedPath = "/Account/AccessDenied";  // Trang xử lý khi bị từ chối quyền truy cập
+    options.AccessDeniedPath = "/Account/AccessDenied";  // Sẽ đá về UI này khi không đủ quyền truy cập
 });
 
 // Add session 
@@ -92,14 +99,12 @@ using (var scope = app.Services.CreateScope())
     await SeedRolesAndUsers(userManager, roleManager);
 }
 
-
 // Tham số động
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
 
 async Task SeedRolesAndUsers(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
 {

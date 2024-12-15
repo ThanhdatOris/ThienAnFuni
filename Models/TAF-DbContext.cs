@@ -119,24 +119,25 @@ namespace ThienAnFuni.Models
                     Address = "456 Hậu Giang",
                     Gender = "Nam",
                     DateOfBirth = new DateTime(1990, 8, 25),
-                    IsActive = true
+                    IsActive = true,
+                    Email = "Khoalmht0@gmail.com"
                 }
             );
 
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Phòng khách", Slug = "Phòng khách".ToSlug(), IsActive = true },
+                new Category { Id = 1, Name = "Phòng khách", Slug = "Phòng khách".ToSlug(), IsActive = true, Image = "cat-1.jpg" },
                 new Category { Id = 2, Name = "Ghế sofa", Slug = "Ghế sofa".ToSlug(), ParentId = 1, IsActive = true },
                 new Category { Id = 3, Name = "Bàn sofa", Slug = "Bàn sofa".ToSlug(), ParentId = 1, IsActive = true },
 
-                new Category { Id = 4, Name = "Phòng ngủ", Slug = "Phòng ngủ".ToSlug(), IsActive = true },
+                new Category { Id = 4, Name = "Phòng ngủ", Slug = "Phòng ngủ".ToSlug(), IsActive = true, Image = "cat-2.jpg" },
                 new Category { Id = 5, Name = "Giường", Slug = "Giường".ToSlug(), ParentId = 4, IsActive = true },
                 new Category { Id = 6, Name = "Bàn Trang Điểm", Slug = "Bàn Trang Điểm".ToSlug(), ParentId = 4, IsActive = true },
 
-                new Category { Id = 7, Name = "Phòng làm việc", Slug = "Phòng làm việc".ToSlug(), IsActive = true },
+                new Category { Id = 7, Name = "Phòng làm việc", Slug = "Phòng làm việc".ToSlug(), IsActive = true, Image = "cat-3.jpg" },
                 new Category { Id = 8, Name = "Bàn làm việc", Slug = "Bàn làm việc".ToSlug(), ParentId = 7, IsActive = true },
                 new Category { Id = 9, Name = "Ghế văn phòng", Slug = "Ghế văn phòng".ToSlug(), ParentId = 7, IsActive = true },
 
-                new Category { Id = 10, Name = "Phòng ăn", Slug = "Phòng ăn".ToSlug(), IsActive = true },
+                new Category { Id = 10, Name = "Phòng ăn", Slug = "Phòng ăn".ToSlug(), IsActive = true, Image = "cat-4.jpg" },
                 new Category { Id = 11, Name = "Bàn ăn", Slug = "Bàn ăn".ToSlug(), ParentId = 10, IsActive = true },
                 new Category { Id = 12, Name = "Ghế ăn", Slug = "Ghế ăn".ToSlug(), ParentId = 10, IsActive = true }
             );

@@ -38,6 +38,11 @@ namespace ThienAnFuni.Controllers
             return View(await tAF_DbContext.ToListAsync());
         }
 
+        // Hiển thị thành công
+        public IActionResult OrderSuccess()
+        {
+            return View();
+        }
 
 
         // GET: Orders/Details/5
