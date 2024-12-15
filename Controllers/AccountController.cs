@@ -345,9 +345,11 @@ namespace ThienAnFuni.Controllers
         user.Address = model.Address;
         user.Gender = model.Gender;
         user.DateOfBirth = model.DateOfBirth;
+        user.Email = model.Email;
 
-        // Cập nhật thông tin cơ bản
-        var result = await _userManager.UpdateAsync(user);
+
+                // Cập nhật thông tin cơ bản
+                var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)

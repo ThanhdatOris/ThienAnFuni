@@ -17,12 +17,12 @@
         <div class="tile">
             <div class="tile-body">
                 <div class="row element-button">
-                    <div class="col-sm-2">
+                 @*    <div class="col-sm-2">
                         <a class="btn btn-dark btn-sm" asp-action="Index" title="Trở về">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i>
                             Trở về
                         </a>
-                    </div>
+                    </div> *@
                     <div class="col-sm-2">
                         <a class="btn btn-add btn-sm" asp-controller="Suppliers" asp-action="Create" title="Thêm NCC">
                             <i class="fas fa-plus"></i>
@@ -66,11 +66,11 @@
                                 <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
                             </label>
                         </div>
-                        <div class="row col-12">
-                            <div class="form-group col-1">
-                                <input type="submit" value="Lưu thông tin" class="btn btn-success px-4" />
+                        <div class="col-12 d-flex">
+                            <div class="form-group mr-2">
+                                <input type="submit" value="Lưu thông tin" class="btn btn-success" />
                             </div>
-                            <div>
+                            <div class="form-group">
                                 <a class="btn btn-dark" asp-action="Index"> Trở về</a>
                             </div>
                         </div>
