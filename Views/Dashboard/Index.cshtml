@@ -132,7 +132,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="tile">
-                    <h3 class="tile-title">Dữ liệu 6 gần đây</h3>
+                    <h3 class="tile-title">Dữ liệu 6 tháng gần đây</h3>
                     <div class="embed-responsive embed-responsive-16by9">
                         <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
                     </div>
@@ -151,56 +151,77 @@
     <!--END right-->
 </div>
 
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+@{
+    var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true,
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+            };
+    var salesDataJson = JsonSerializer.Serialize(Model.RecentSalesData, jsonOptions);
+    var ordersJson = JsonSerializer.Serialize(Model.RecentOrders, jsonOptions);
+}
+
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
     <script type="text/javascript">
-        var salesData = @Html.Raw(Json.Serialize(Model.RecentSalesData));
-        var orders = @Html.Raw(Json.Serialize(Model.RecentOrders));
+        document.addEventListener("DOMContentLoaded", function() {
+            var salesData = @Html.Raw(salesDataJson);
+            var orders = @Html.Raw(ordersJson);
 
-        var salesLabels = salesData.map(s => new Date(s.date).toLocaleDateString('vi-VN', { month: 'short', year: 'numeric' }));
-        var salesValues = salesData.map(s => s.amount);
+            if (salesData && orders) {
+                var salesLabels = salesData.map(s => new Date(s.date).toLocaleDateString('vi-VN', { month: 'short', year: 'numeric' }));
+                var salesValues = salesData.map(s => s.amount);
 
-        var orderLabels = orders.map(o => new Date(o.orderDate).toLocaleDateString('vi-VN', { month: 'short', year: 'numeric' }));
-        var orderValues = orders.map(o => o.totalAmount);
+                var orderLabels = orders.map(o => new Date(o.orderDate).toLocaleDateString('vi-VN', { month: 'short', year: 'numeric' }));
+                var orderValues = orders.map(o => o.totalAmount);
 
-        var salesChartData = {
-            labels: salesLabels,
-            datasets: [{
-                label: "Doanh thu",
-                data: salesValues,
-                backgroundColor: "rgba(255, 213, 59, 0.767)",
-                borderColor: "rgb(255, 212, 59)",
-                pointBackgroundColor: "rgb(255, 212, 59)",
-                pointBorderColor: "rgb(255, 212, 59)",
-                pointHoverBackgroundColor: "rgb(255, 212, 59)",
-                pointHoverBorderColor: "rgb(255, 212, 59)",
-            }]
-        };
+                var salesChartData = {
+                    labels: salesLabels,
+                    datasets: [{
+                        label: "Doanh thu",
+                        data: salesValues,
+                        backgroundColor: "rgba(255, 213, 59, 0.767)",
+                        borderColor: "rgb(255, 212, 59)",
+                        pointBackgroundColor: "rgb(255, 212, 59)",
+                        pointBorderColor: "rgb(255, 212, 59)",
+                        pointHoverBackgroundColor: "rgb(255, 212, 59)",
+                        pointHoverBorderColor: "rgb(255, 212, 59)",
+                    }]
+                };
 
-        var ordersChartData = {
-            labels: orderLabels,
-            datasets: [{
-                label: "Đơn hàng",
-                data: orderValues,
-                backgroundColor: "rgba(153, 102, 255, 0.2)",
-                borderColor: "rgba(153, 102, 255, 1)",
-                pointBackgroundColor: "rgba(153, 102, 255, 1)",
-                pointBorderColor: "rgba(153, 102, 255, 1)",
-                pointHoverBackgroundColor: "rgba(153, 102, 255, 1)",
-                pointHoverBorderColor: "rgba(153, 102, 255, 1)",
-            }]
-        };
+                var ordersChartData = {
+                    labels: orderLabels,
+                    datasets: [{
+                        label: "Đơn hàng",
+                        data: orderValues,
+                        backgroundColor: "rgba(153, 102, 255, 0.2)",
+                        borderColor: "rgba(153, 102, 255, 1)",
+                        pointBackgroundColor: "rgba(153, 102, 255, 1)",
+                        pointBorderColor: "rgba(153, 102, 255, 1)",
+                        pointHoverBackgroundColor: "rgba(153, 102, 255, 1)",
+                        pointHoverBorderColor: "rgba(153, 102, 255, 1)",
+                    }]
+                };
 
-        var ctxSales = document.getElementById("lineChartDemo").getContext("2d");
-        new Chart(ctxSales, {
-            type: 'line',
-            data: salesChartData
-        });
+                var ctxSales = document.getElementById("lineChartDemo").getContext("2d");
+                new Chart(ctxSales, {
+                    type: 'line',
+                    data: salesChartData
+                });
 
-        var ctxOrders = document.getElementById("barChartDemo").getContext("2d");
-        new Chart(ctxOrders, {
-            type: 'bar',
-            data: ordersChartData
+                var ctxOrders = document.getElementById("barChartDemo").getContext("2d");
+                new Chart(ctxOrders, {
+                    type: 'bar',
+                    data: ordersChartData
+                });
+            } else {
+                console.error("Sales data or orders data is missing.");
+            }
         });
     </script>
 }

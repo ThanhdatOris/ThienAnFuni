@@ -136,6 +136,12 @@ namespace ThienAnFuni.Controllers
                 return StatusCode(500, "Database context is not initialized.");
             }
 
+            // Kiểm tra giá nhập có hợp lệ không
+            if (importPrice <= 0)
+            {
+                return BadRequest("Giá nhập phải lớn hơn 0.");
+            }
+
             // Kiểm tra sản phẩm
             var product = _context.Products.FirstOrDefault(p => p.Id == productId);
             if (product == null)
@@ -278,6 +284,12 @@ namespace ThienAnFuni.Controllers
 
         public async Task<IActionResult> SaveShipmentToDatabase(DateTime receiptDate, int supplierId)
         {
+            // Kiểm tra nếu ngày nhập lớn hơn ngày hiện tại
+            if (receiptDate > DateTime.Now)
+            {
+                return BadRequest("Ngày nhập không được lớn hơn ngày hiện tại.");
+            }
+
             // Lấy thông tin lô hàng từ session
             var sessionShipment = GetShipment();
 
@@ -285,6 +297,14 @@ namespace ThienAnFuni.Controllers
             if (sessionShipment == null || sessionShipment.Goods == null || !sessionShipment.Goods.Any())
             {
                 return BadRequest("Lô hàng trống, không thể lưu.");
+            }
+
+
+            // Nếu có lỗi, trả về lại view và hiển thị lỗi
+            if (!ModelState.IsValid)
+            {
+                // Có thể cần gửi lại dữ liệu để hiển thị form nhập liệu cho người dùng
+                return View("Index", sessionShipment); // Thay "YourViewName" bằng tên view của bạn
             }
 
             // **************BUG**************

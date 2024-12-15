@@ -63,13 +63,13 @@
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         @* Chi tiết *@
-                                        <a class="btn btn-info btn-sm mx-1" asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                        <a class="btn btn-info btn-sm mx-1" asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id" title="Chi tiết"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                                         @* Duyệt *@
-                                        <a class="btn text-white btn-success btn-sm mx-1 orderSuccess" data-id="@order.Id">
+                                        <a class="btn text-white btn-success btn-sm mx-1 orderSuccess" data-id="@order.Id" title="Duyệt">
                                             <i class="fa fa-check" aria-hidden="true"></i>
                                         </a>
                                         @* Hủy *@
-                                        <a class="btn btn-danger text-white btn-sm ml-1 deleteOrder" data-id="@order.Id">
+                                        <a class="btn btn-danger text-white btn-sm ml-1 deleteOrder" data-id="@order.Id" title="Hủy">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </a>
 
@@ -122,7 +122,7 @@
                                     </td>
                                     <td class="text-center">
                                         @* Chi tiết *@
-                                        <a class="btn btn-info btn-sm " asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                        <a class="btn btn-info btn-sm " asp-controller="AdminOrders" asp-action="Detail" asp-route-id="@order.Id"><i class="fa fa-info-circle" aria-hidden="true" title="Chi tiết"></i></a>
                                     </td>
                                 </tr>
                             }

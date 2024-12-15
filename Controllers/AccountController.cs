@@ -71,7 +71,7 @@ namespace ThienAnFuni.Controllers
                 int customerCode = customerCount + 1; // Mã khách hàng tự động tăng
 
                 //// Sinh mã khách hàng tự động tăng
-                //int customerCode = customerCount + 1;   
+                //int customerCode = customerCount + 1;
 
                 var customer = new Customer
                 {
@@ -172,11 +172,11 @@ namespace ThienAnFuni.Controllers
                     // Điều hướng người dùng theo vai trò
                     if (roles.Contains(ConstHelper.RoleManager))
                     {
-                        return RedirectToAction("Index", "AdminOrders");
+                        return RedirectToAction("Index", "Dashboard");
                     }
                     else if (roles.Contains(ConstHelper.RoleSaleStaff))
                     {
-                        return RedirectToAction("Index", "AdminOrders");
+                        return RedirectToAction("Index", "Dashboard");
                     }
                     else if (roles.Contains(ConstHelper.RoleCustomer))
                     {
@@ -307,8 +307,8 @@ namespace ThienAnFuni.Controllers
 
             return View();
         }
-        
-        
+
+
         // Profile người dùng
         [HttpGet]
         public async Task<IActionResult> Profile()
@@ -345,9 +345,11 @@ namespace ThienAnFuni.Controllers
         user.Address = model.Address;
         user.Gender = model.Gender;
         user.DateOfBirth = model.DateOfBirth;
+        user.Email = model.Email;
 
-        // Cập nhật thông tin cơ bản
-        var result = await _userManager.UpdateAsync(user);
+
+                // Cập nhật thông tin cơ bản
+                var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)
@@ -365,7 +367,7 @@ namespace ThienAnFuni.Controllers
                 ModelState.AddModelError("", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
                 return View(model);
             }
-            
+
             var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
             if (!passwordChangeResult.Succeeded)
             {

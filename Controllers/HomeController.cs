@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using ThienAnFuni.Models;
+using ThienAnFuni.ViewModels;
 
 namespace ThienAnFuni.Controllers
 {
@@ -15,15 +16,55 @@ namespace ThienAnFuni.Controllers
             _logger = logger;
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
             var categories = await _context.Categories
-            .Where(c => c.ParentId == null && c.IsActive)
-            .ToListAsync();
+                .Where(c => c.ParentId == null && c.IsActive)
+                .ToListAsync();
 
-            ViewBag.Categories = categories;
-            var products = await _context.Products.ToListAsync();
-            return View(products);
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .ThenInclude(c => c.ParentCategory) // Include the parent category
+                .ToListAsync();
+
+            var featuredProducts = await _context.Products
+                .Where(p => p.IsActive)
+                .OrderByDescending(p => p.Price)
+                .Take(6)
+                .ToListAsync();
+
+            var newProducts = await _context.Products
+                .OrderByDescending(p => p.CreatedDate)
+                .Take(6)
+                .ToListAsync();
+
+            var bestSellerProducts = await _context.Products
+                .Join(_context.OrderDetails,
+                    product => product.Id,
+                    orderDetail => orderDetail.ProductId,
+                    (product, orderDetail) => new { product, orderDetail })
+                .GroupBy(po => po.product)
+                .Select(g => new
+                {
+                    Product = g.Key,
+                    TotalSold = g.Sum(po => po.orderDetail.Quantity)
+                })
+                .OrderByDescending(g => g.TotalSold)
+                .Take(6)
+                .Select(g => g.Product)
+                .ToListAsync();
+
+            var viewModel = new HomeViewModel
+            {
+                Categories = categories,
+                Products = products,
+                FeaturedProducts = featuredProducts,
+                NewProducts = newProducts,
+                BestSellerProducts = bestSellerProducts
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
