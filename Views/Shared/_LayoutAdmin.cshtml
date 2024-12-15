@@ -122,18 +122,16 @@
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
+        <a asp-controller="Account" asp-action="Profile">
         <div class="app-sidebar__user">
             <img class="app-sidebar__user-avatar" src="~/adminThienAn/assets/images/CLAPSHOP (1).png" width="50px"
                 alt="User Image">
             <div>
-                <a asp-controller="Account" asp-action="Profile" class="text-white">
-
                 <p class="app-sidebar__user-name"><b>@(User.Identity.Name ?? "Admin")</b></p>
-                </a>
-
                 <p class="app-sidebar__user-designation">Wellcome my Boss</p>
             </div>
         </div>
+        </a>
         <hr>
         <ul class="app-menu">
             <li>
