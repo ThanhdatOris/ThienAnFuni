@@ -1,4 +1,6 @@
 ﻿using ThienAnFuni.Models;
+using System.Collections.Generic;
+
 
 namespace ThienAnFuni.ViewModels
 {
@@ -6,5 +8,7 @@ namespace ThienAnFuni.ViewModels
     {
         public List<Category> Categories { get; set; }
         public List<Product> Products { get; set; }
+
+
     }
 }
