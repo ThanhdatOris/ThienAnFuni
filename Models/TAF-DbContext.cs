@@ -426,11 +426,45 @@ namespace ThienAnFuni.Models
                   IsImport = false, // này giữ nguyên
                   MainImg = "bmt_WORKS702_trang.jpg",
                   CategoryId = 8
-              }
-            // Ghế văn phòng 20 21
+              },
+            // Ghế văn phòng id 20 21
+             new Product
+             {
+                 Id = 20,
+                 Name = "Ghế Xoay Văn Phòng Ngả Lưng MOHO JEFE 701",
+                 Price = 2990000,
+                 Unit = "Cái",
+                 Material = "",
+                 Dimension = "Dài 47cm x Rộng 65cm x Cao 108-126cm",
+                 Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                 Color = "Đen",
+                 Brand = "Woodland",
+                 WarrantyPeriod = "2 năm",
+                 Description = "",
+                 IsActive = true,
+                 IsImport = false,
+                 MainImg = "ghexoayvp_JEFE701_den.2.jpg",
+                 CategoryId = 9
+             },
 
-
-
+             new Product
+             {
+                 Id = 21,
+                 Name = "Ghế Xoay Văn Phòng Tay Gập Thông Minh MOHO RIGA 701",
+                 Price = 1690000,
+                 Unit = "Cái",
+                 Material = "",
+                 Dimension = " Dài 52cm x Rộng 65cm x Cao 94-101cm",
+                 Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                 Color = "Trắng",
+                 Brand = "Woodland",
+                 WarrantyPeriod = "2 năm",
+                 Description = "",
+                 IsActive = true,
+                 IsImport = false,
+                 MainImg = "ghexoayvp_RIGA701_trang.1.jpg",
+                 CategoryId = 9
+             }
             );
 
             // Seed ProductImage
@@ -529,7 +563,172 @@ namespace ThienAnFuni.Models
                     CustomerId = "6",
                     SaleStaffId = "3",
                     ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 4,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 79440000,
+                    TotalQuantity = 6,
+                    Note = "Khách yêu cầu giao hàng tận nhà.",
+                    Address = "123 Đường Nguyễn Bỉnh Khiêm, Quận Bình Tân, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-4).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0004",
+                    InvoiceDate = DateTime.Now.AddMonths(-4).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 5,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 111920000,
+                    TotalQuantity = 8,
+                    Note = "Khách yêu cầu giao hàng vào buổi sáng.",
+                    Address = "456 Đường XYZ, Quận ABC, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-5).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0005",
+                    InvoiceDate = DateTime.Now.AddMonths(-5).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 6,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 59910000,
+                    TotalQuantity = 9,
+                    Note = "Khách yêu cầu giao hàng vào cuối tuần.",
+                    Address = "789 Đường DEF, Quận LMN, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-6).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0006",
+                    InvoiceDate = DateTime.Now.AddMonths(-6).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 7,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 50420000,
+                    TotalQuantity = 8,
+                    Note = "Khách yêu cầu giao hàng nhanh.",
+                    Address = "456 Đường XYZ, Quận ABC, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-7).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0007",
+                    InvoiceDate = DateTime.Now.AddMonths(-7).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 8,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 29910000,
+                    TotalQuantity = 9,
+                    Note = "Khách yêu cầu giao hàng vào tận nhà.",
+                    Address = "789 Đường DEF, Quận LMN, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-8).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0008",
+                    InvoiceDate = DateTime.Now.AddMonths(-8).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 9,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 18540000,
+                    TotalQuantity = 6,
+                    Note = "Khách yêu cầu giao hàng nhanh.",
+                    Address = "123 Đường Nguyễn Bỉnh Khiêm, Quận Bình Tân, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-9).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0009",
+                    InvoiceDate = DateTime.Now.AddMonths(-9).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 10,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 48760000,
+                    TotalQuantity = 4,
+                    Note = "Khách yêu cầu giao hàng vào cuối tuần.",
+                    Address = "123 Đường Nguyễn Bỉnh Khiêm, Quận Bình Tân, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-10).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0010",
+                    InvoiceDate = DateTime.Now.AddMonths(-10).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 11,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 83940000,
+                    TotalQuantity = 6,
+                    Note = "Khách yêu cầu giao hàng nhanh.",
+                    Address = "789 Đường DEF, Quận LMN, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-11).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0011",
+                    InvoiceDate = DateTime.Now.AddMonths(-11).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 12,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 97110000,
+                    TotalQuantity = 9,
+                    Note = "Khách yêu cầu giao hàng vào chiều thứ 7.",
+                    Address = "108/45A/1 Trần Quang Diệu, P.An Thới, Q. Bình Thủy, TP. Cần Thơ",
+                    OrderDate = DateTime.Now.AddMonths(-12).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0012",
+                    InvoiceDate = DateTime.Now.AddMonths(-12).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
                 }
+
+
+
 
             );
             // Seed Order Detail
@@ -551,7 +750,7 @@ namespace ThienAnFuni.Models
                     PriceAtOrder = 13990000
                 },
 
-                // Seed OrderDetail for Order 2
+            // Seed OrderDetail for Order 2
                 new OrderDetail
                 {
                     Id = 3,
@@ -569,7 +768,7 @@ namespace ThienAnFuni.Models
                     PriceAtOrder = 11890000
                 },
 
-                // Seed OrderDetail for Order 3
+            // Seed OrderDetail for Order 3
                 new OrderDetail
                 {
                     Id = 5,
@@ -585,10 +784,186 @@ namespace ThienAnFuni.Models
                     ProductId = 4,
                     Quantity = 3,
                     PriceAtOrder = 2190000
+                },
+
+            // Seed OrderDetail for Order 4
+                new OrderDetail
+                {
+                    Id = 7,
+                    OrderId = 4,
+                    ProductId = 11,
+                    Quantity = 3,
+                    PriceAtOrder = 12490000
+                },
+                new OrderDetail
+                {
+                    Id = 8,
+                    OrderId = 4,
+                    ProductId = 13,
+                    Quantity = 3,
+                    PriceAtOrder = 13990000
+                },
+
+            // Seed OrderDetail for Order 5
+                new OrderDetail
+                {
+                    Id = 9,
+                    OrderId = 5,
+                    ProductId = 14,
+                    Quantity = 4,
+                    PriceAtOrder = 13990000
+                },
+                new OrderDetail
+                {
+                    Id = 10,
+                    OrderId = 5,
+                    ProductId = 16,
+                    Quantity = 4,
+                    PriceAtOrder = 13990000
+                },
+
+            // Seed OrderDetail for Order 6
+                new OrderDetail
+                {
+                    Id = 11,
+                    OrderId = 6,
+                    ProductId = 18,
+                    Quantity = 3,
+                    PriceAtOrder = 13990000 //41970000
+                },
+                new OrderDetail
+                {
+                    Id = 12,
+                    OrderId = 6,
+                    ProductId = 20,
+                    Quantity = 6,
+                    PriceAtOrder = 2990000 //17940000
+                },
+
+            // Seed OrderDetail for Order 7
+                new OrderDetail
+                {
+                    Id = 13,
+                    OrderId = 7,
+                    ProductId = 21,
+                    Quantity = 5,
+                    PriceAtOrder = 1690000 //8450000
+                },
+                new OrderDetail
+                {
+                    Id = 14,
+                    OrderId = 7,
+                    ProductId = 19,
+                    Quantity = 3,
+                    PriceAtOrder = 13990000 //41970000
+                },
+
+
+            // Seed OrderDetail for Order 8
+                new OrderDetail
+                {
+                    Id = 15,
+                    OrderId = 8,
+                    ProductId = 1,
+                    Quantity = 6,
+                    PriceAtOrder = 3990000
+                },
+                new OrderDetail
+                {
+                    Id = 16,
+                    OrderId = 8,
+                    ProductId = 3,
+                    Quantity = 1,
+                    PriceAtOrder = 1990000
+                },
+
+            // Seed OrderDetail for Order 9
+                new OrderDetail
+                {
+                    Id = 17,
+                    OrderId = 9,
+                    ProductId = 4,
+                    Quantity = 3,
+                    PriceAtOrder = 2190000
+                },
+                new OrderDetail
+                {
+                    Id = 18,
+                    OrderId = 9,
+                    ProductId = 3,
+                    Quantity = 1,
+                    PriceAtOrder = 3990000
+                },
+
+            // Seed OrderDetail for Order 10
+                new OrderDetail
+                {
+                    Id = 19,
+                    OrderId = 10,
+                    ProductId = 11,
+                    Quantity = 2,
+                    PriceAtOrder = 12490000
+                },
+                new OrderDetail
+                {
+                    Id = 20,
+                    OrderId = 10,
+                    ProductId = 12,
+                    Quantity = 2,
+                    PriceAtOrder = 11890000
+                },
+
+            // Seed OrderDetail for Order 11
+                new OrderDetail
+                {
+                    Id = 21,
+                    OrderId = 11,
+                    ProductId = 14,
+                    Quantity = 2,
+                    PriceAtOrder = 13990000
+                },
+                new OrderDetail
+                {
+                    Id = 22,
+                    OrderId = 11,
+                    ProductId = 16,
+                    Quantity = 4,
+                    PriceAtOrder = 13990000
+                },
+
+            // Seed OrderDetail for Order 12
+                new OrderDetail
+                {
+                    Id = 23,
+                    OrderId = 12,
+                    ProductId = 21,
+                    Quantity = 2,
+                    PriceAtOrder = 1690000 //3380000
+                },
+                new OrderDetail
+                {
+                    Id = 24,
+                    OrderId = 12,
+                    ProductId = 19,
+                    Quantity = 2,
+                    PriceAtOrder = 13990000 //27980000
+                },
+                new OrderDetail
+                {
+                    Id = 25,
+                    OrderId = 12,
+                    ProductId = 13,
+                    Quantity = 3,
+                    PriceAtOrder = 13990000 //41970000
+                },
+                new OrderDetail
+                {
+                    Id = 26,
+                    OrderId = 12,
+                    ProductId = 12,
+                    Quantity = 2,
+                    PriceAtOrder = 11890000 
                 }
-
-                // Seed OrderDetail for Order 4 ...
-
             );
 
             // Seeder cho bảng Shipment
