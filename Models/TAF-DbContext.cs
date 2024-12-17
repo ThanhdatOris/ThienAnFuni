@@ -190,7 +190,7 @@ namespace ThienAnFuni.Models
                     Material = "Vải Polyester: Ghế có màu xám đậm nâng tầm thẩm mỹ và không gian nội thất phòng khách của bạn; Gỗ cao su tự nhiên: Nội thất Thiên Ân sử dụng chất liệu gỗ cao su giúp ghế sofa gỗ HOBRO có khả năng chịu lực tốt và độ bền cao.",
                     Dimension = "900 x 900 x 400 cm",
                     Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
-                    Color = "Màu nâu",
+                    Color = "Nâu",
                     Brand = "Sofaland",
                     WarrantyPeriod = "1 năm",
                     Description = "Dễ dàng vệ sinh: Nệm Sofa bằng vải polyester chống bụi, kháng ẩm mốc và có thể dễ dàng tháo bọc nệm để vệ sinh. Đệm ghế sofa có màu xám tạo nên vẻ hiện đại nhưng không kém phần sang trọng cho căn phòng của bạn.; Ghế Sofa đơn có kích thước tiêu chuẩn: Ghế Đôn có kích thước rộng rãi , với thiết kế tinh giản giúp chúng gọn nhẹ và tiết kiệm được diện tích căn phòng, bạn cũng có thể ngồi một cách thoải mái và bài trí trong nhiều không gian khác nhau.; Mút đệm cao cấp, dày dặn và chống cháy: Độ bền cao, chống xẹp lún và đạt tiêu chuẩn của Mỹ về khả năng chống cháy.; Độ cao chân ghế vừa phải: Chân ghế có chiều cao hợp lý nên Robot hút bụi có thể lau dọn phía dưới sàn một cách dễ dàng; Chân ghế cao su: Sử dụng chất liệu gỗ cao su tự nhiên với khả năng chịu lực cao.",
@@ -390,7 +390,7 @@ namespace ThienAnFuni.Models
               },
 
             // Phòng làm việc:
-            // Bàn làm việc 18 19
+            // Bàn làm việc id 18 19
              new Product
              {
                  Id = 18,
@@ -416,18 +416,20 @@ namespace ThienAnFuni.Models
                   Price = 13990000,
                   Unit = "Cái",
                   Material = "",
-                  Dimension = " Bàn và chân bài: Dài 120cm x Rộng 62cm x Cao 72cm; Giá đỡ ổ điện: Dài 33cm x Rộng 9.74cm x Sâu 12cm; Trọng lượng chịu tải: 50~70 kg, tối đa 100kg khi phân phối đều khối lượng trên mặt bàn (1m4)",
+                  Dimension = "Bàn và chân bài: Dài 120cm x Rộng 62cm x Cao 72cm; Giá đỡ ổ điện: Dài 33cm x Rộng 9.74cm x Sâu 12cm; Trọng lượng chịu tải: 50~70 kg, tối đa 100kg khi phân phối đều khối lượng trên mặt bàn (1m4)",
                   Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
                   Color = "Nâu",
                   Brand = "Woodland",
                   WarrantyPeriod = "2 năm",
-                  Description = "",
-                  IsActive = true,
-                  IsImport = false,
+                  Description = "", // này giữ nguyên
+                  IsActive = true, // này giữ nguyên
+                  IsImport = false, // này giữ nguyên
                   MainImg = "bmt_WORKS702_trang.jpg",
                   CategoryId = 8
               }
             // Ghế văn phòng 20 21
+
+
 
             );
 
@@ -481,13 +483,13 @@ namespace ThienAnFuni.Models
                     TotalPrice = 17980000,
                     TotalQuantity = 5,
                     Note = "Khách yêu cầu giao hàng nhanh.",
-                    Address = "123 Đường ABC, Quận XYZ, TP.HCM",
-                    OrderDate = DateTime.Now.AddDays(-2),
+                    Address = "123 Đường Nguyễn Bỉnh Khiêm, Quận Bình Tân, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-1).AddDays(-2),
                     OrderStatus = (int)ConstHelper.OrderStatus.Success,
                     PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
                     PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
                     InvoiceNumber = "HD0001",
-                    InvoiceDate = DateTime.Now.AddDays(-1),
+                    InvoiceDate = DateTime.Now.AddMonths(-1).AddDays(-1),
                     CustomerId = "6",
                     SaleStaffId = "3",
                     ManagerId = "1"
@@ -500,12 +502,12 @@ namespace ThienAnFuni.Models
                     TotalQuantity = 7,
                     Note = "Khách yêu cầu giao hàng vào buổi tối.",
                     Address = "456 Đường XYZ, Quận ABC, TP.HCM",
-                    OrderDate = DateTime.Now.AddDays(-1),
+                    OrderDate = DateTime.Now.AddMonths(-2).AddDays(-2),
                     OrderStatus = (int)ConstHelper.OrderStatus.Success,
                     PaymentMethod = (int)ConstHelper.PaymentMethod.Bank_transfer,
                     PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
                     InvoiceNumber = "HD0002",
-                    InvoiceDate = DateTime.Now,
+                    InvoiceDate = DateTime.Now.AddMonths(-2).AddDays(-1),
                     CustomerId = "6",
                     SaleStaffId = "3",
                     ManagerId = "1"
@@ -518,16 +520,17 @@ namespace ThienAnFuni.Models
                     TotalQuantity = 9,
                     Note = "Khách yêu cầu giao hàng vào cuối tuần.",
                     Address = "789 Đường DEF, Quận LMN, TP.HCM",
-                    OrderDate = DateTime.Now.AddDays(-3),
+                    OrderDate = DateTime.Now.AddMonths(-3).AddDays(-2),
                     OrderStatus = (int)ConstHelper.OrderStatus.Pending,
                     PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
                     PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
                     InvoiceNumber = "HD0003",
-                    InvoiceDate = DateTime.Now.AddDays(1),
+                    InvoiceDate = DateTime.Now.AddMonths(-3).AddDays(-1),
                     CustomerId = "6",
                     SaleStaffId = "3",
                     ManagerId = "1"
                 }
+
             );
             // Seed Order Detail
             modelBuilder.Entity<OrderDetail>().HasData(
@@ -583,6 +586,9 @@ namespace ThienAnFuni.Models
                     Quantity = 3,
                     PriceAtOrder = 2190000
                 }
+
+                // Seed OrderDetail for Order 4 ...
+
             );
 
             // Seeder cho bảng Shipment
