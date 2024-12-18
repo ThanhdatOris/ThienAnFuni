@@ -48,6 +48,31 @@ namespace ThienAnFuni.Controllers
             var totalProducts = _context.Products.Count();
             var totalOrders = _context.Orders.Count();
 
+            //var recentOrders = await _context.Orders
+            //    .OrderBy(o => o.InvoiceDate)
+            //    .Take(6)
+            //    .Select(o => new OrderViewModel
+            //    {
+            //        Id = o.Id,
+            //        CustomerName = o.Customer.FullName,
+            //        TotalAmount = o.TotalPrice,
+            //        Status = o.OrderStatus,
+            //        Date = (DateTime)o.InvoiceDate
+            //    }).ToListAsync();
+
+            var recentOrders = await _context.Orders
+                .Where(o => o.InvoiceDate != null)
+                .OrderBy(o => o.InvoiceDate)
+                .Take(6)
+                .Select(o => new OrderViewModel
+                {
+                    Id = o.Id,
+                    CustomerName = o.Customer.FullName,
+                    TotalAmount = o.TotalPrice,
+                    Status = o.OrderStatus,
+                    Date = (DateTime)o.InvoiceDate
+                }).ToListAsync();
+
             //var lowStockProducts = await _context.Products
             //    .Join(_context.Goods,
             //          product => product.Id,
@@ -77,17 +102,6 @@ namespace ThienAnFuni.Controllers
                 .CountAsync();
 
 
-            var recentOrders = await _context.Orders
-                .OrderBy(o => o.InvoiceDate)
-                .Take(6)
-                .Select(o => new OrderViewModel
-                {
-                    Id = o.Id,
-                    CustomerName = o.Customer.FullName,
-                    TotalAmount = o.TotalPrice,
-                    Status = o.OrderStatus,
-                    Date = (DateTime)o.InvoiceDate
-                }).ToListAsync();
 
             var newCustomers = _context.Customers
                 .Join(_context.Users,
