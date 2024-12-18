@@ -149,7 +149,7 @@
             </div>
             <div class="col-md-12">
                 <div class="tile">
-                    <h3 class="tile-title">Dơn hàng gần đây</h3>
+                    <h3 class="tile-title">Đơn hàng gần đây</h3>
                     <div class="embed-responsive embed-responsive-16by9">
                         <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
                     </div>
@@ -186,7 +186,7 @@
                 var salesLabels = salesData.map(s => new Date(s.date).toLocaleDateString('vi-VN', { month: 'short', year: 'numeric' }));
                 var salesValues = salesData.map(s => s.amount);
 
-                var orderLabels = orders.map(o => new Date(o.orderDate).toLocaleDateString('vi-VN', { month: 'short', year: 'numeric' }));
+                var orderLabels = orders.map(o => new Date(o.Date).toLocaleDateString('vi-VN', { day: '2-digit', month: 'short', year: 'numeric' }));
                 var orderValues = orders.map(o => o.totalAmount);
 
                 var salesChartData = {

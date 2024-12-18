@@ -48,13 +48,34 @@ namespace ThienAnFuni.Controllers
             var totalProducts = _context.Products.Count();
             var totalOrders = _context.Orders.Count();
 
+            //var lowStockProducts = await _context.Products
+            //    .Join(_context.Goods,
+            //          product => product.Id,
+            //          goods => goods.ProductId,
+            //          (product, goods) => new { product, goods })
+            //    .Where(pg => pg.goods.Quantity < 10)
+            //    .CountAsync();
+
             var lowStockProducts = await _context.Products
                 .Join(_context.Goods,
                       product => product.Id,
                       goods => goods.ProductId,
                       (product, goods) => new { product, goods })
-                .Where(pg => pg.goods.Quantity < 10)
+                .GroupJoin(_context.OrderDetails,
+                           pg => pg.product.Id,
+                           orderDetail => orderDetail.ProductId,
+                           (pg, orderDetails) => new { pg.product, pg.goods, orderDetails })
+                .SelectMany(pg => pg.orderDetails.DefaultIfEmpty(),
+                            (pg, orderDetail) => new { pg.product, pg.goods, orderDetail })
+                .GroupBy(pg => new { pg.product.Id, pg.goods.Quantity })
+                .Select(g => new
+                {
+                    ProductId = g.Key.Id,
+                    RemainingQuantity = g.Key.Quantity - g.Sum(pg => pg.orderDetail != null ? pg.orderDetail.Quantity : 0)
+                })
+                .Where(g => g.RemainingQuantity < 10)
                 .CountAsync();
+
 
             var recentOrders = await _context.Orders
                 .OrderBy(o => o.InvoiceDate)
