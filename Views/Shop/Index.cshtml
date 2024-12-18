@@ -33,7 +33,7 @@
                 <div class="sidebar">
                     <div class="sidebar__item">
                         <h4>Danh mục sản phẩm</h4>
-                        <li class="list-unstyled font-weight-bold ">
+                        <li class="list-unstyled font-weight-bold pb-3 pl-3">
                             <a asp-action="index" class="text-info">Tất cả sản phẩm</a>
                         </li>
                         @* Hiển thị category *@
@@ -79,29 +79,32 @@
                         <form method="get" id="colorFilterForm">
                             <div class="sidebar__item__color sidebar__item__color--white">
                                 <label for="white">
-                                    Trắng
                                     <input type="radio" name="color" value="Trắng" id="white"
                                            onchange="submitColorFilter()"
-                                           checked="@(ViewBag.SelectedColor == "Trắng" ? "true" : "false")">
+                                    @(ViewBag.SelectedColor == "Trắng" ? "checked" : "")>
+                                    Trắng
                                 </label>
                             </div>
+
                             <div class="sidebar__item__color sidebar__item__color--brown">
                                 <label for="brown">
-                                    Nâu
                                     <input type="radio" name="color" value="Nâu" id="brown"
                                            onchange="submitColorFilter()"
-                                           checked="@(ViewBag.SelectedColor == "Nâu" ? "true" : "false")">
+                                    @(ViewBag.SelectedColor == "Nâu" ? "checked" : "")>
+                                    Nâu
                                 </label>
                             </div>
-                            <div class="sidebar__item__color sidebar__item__color--natural">
-                                <label for="natural">
-                                    Màu tự nhiên
-                                    <input type="radio" name="color" value="Tự nhiên" id="natural"
+
+                            <div class="sidebar__item__color sidebar__item__color--black">
+                                <label for="black">
+                                    <input type="radio" name="color" value="Đen" id="black"
                                            onchange="submitColorFilter()"
-                                           checked="@(ViewBag.SelectedColor == "Màu tự nhiên" ? "true" : "false")">
+                                    @(ViewBag.SelectedColor == "Đen" ? "checked" : "")>
+                                    Đen
                                 </label>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
