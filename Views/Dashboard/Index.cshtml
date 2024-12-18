@@ -67,45 +67,6 @@
             <!-- col-12 -->
             <div class="col-md-12">
                 <div class="tile">
-                    <h3 class="tile-title">Tình trạng đơn hàng</h3>
-                    <div>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID đơn hàng</th>
-                                    <th>Tên khách hàng</th>
-                                    <th>Tổng tiền</th>
-                                    <th>Trạng thái</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var order in Model.RecentOrders)
-                                {
-                                    <tr>
-                                        <td>@order.Id</td>
-                                        <td>@order.CustomerName</td>
-                                        <td>@order.TotalAmount.ToString("C")</td>
-                                        <td><span class="badge bg-info">
-                                                @if (order.Status == 0)
-                                                {
-                                                    @:Đã giao
-                                                }
-                                                else
-                                                {
-                                                    @:Chưa giao
-                                                }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- / col-12 -->
-            <!-- col-12 -->
-            <div class="col-md-12">
-                <div class="tile">
                     <h3 class="tile-title">Khách hàng mới</h3>
                     <div>
                         <table class="table table-hover">
@@ -147,15 +108,57 @@
                     </div>
                 </div>
             </div>
+            @* <div class="col-md-12"> *@
+            @*     <div class="tile"> *@
+            @*         <h3 class="tile-title">Đơn hàng gần đây</h3> *@
+            @*         <div class="embed-responsive embed-responsive-16by9"> *@
+            @*             <canvas class="embed-responsive-item" id="barChartDemo"></canvas> *@
+            @*         </div> *@
+            @*     </div> *@
+            @* </div> *@
+            <!-- col-12 -->
             <div class="col-md-12">
                 <div class="tile">
-                    <h3 class="tile-title">Đơn hàng gần đây</h3>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
+                    <h3 class="tile-title">Tình trạng đơn hàng</h3>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID đơn hàng</th>
+                                    <th>Tên khách hàng</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model.RecentOrders)
+                                {
+                                    <tr>
+                                        <td>@order.Id</td>
+                                        <td>@order.CustomerName</td>
+                                        <td>@order.TotalAmount.ToString("C")</td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                @if (order.Status == 0)
+                                                {
+                                                    @:Đã giao
+                                                }
+                                                else
+                                                {
+                                                    @:Chưa giao
+                                                }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+            <!-- / col-12 -->
+
         </div>
+
     </div>
     <!--END right-->
 </div>

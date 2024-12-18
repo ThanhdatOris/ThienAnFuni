@@ -61,9 +61,8 @@ namespace ThienAnFuni.Controllers
             //    }).ToListAsync();
 
             var recentOrders = await _context.Orders
-                .Where(o => o.InvoiceDate != null)
                 .OrderBy(o => o.InvoiceDate)
-                .Take(6)
+                .Take(5)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.Id,
