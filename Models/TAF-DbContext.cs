@@ -246,7 +246,7 @@ namespace ThienAnFuni.Models
                     Material = "Gỗ cao su tự nhiên: Bàn trà chữ nhật OSLO làm từ gỗ cao su giúp sản phẩm có khả năng chịu lực tốt và độ bền cao.; Gỗ công nghiệp, Veneer gỗ sồi: Sử dụng chất liệu gỗ công nghiệp PB đạt chuẩn CARB-P2 và chứng nhận FSC thân thiện với môi trường.;",
                     Dimension = "Dài 95cm x Rộng 50cm x Cao 42cm",
                     Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
-                    Color = "Tự nhiên",
+                    Color = "Nâu",
                     Brand = "Woodland",
                     WarrantyPeriod = "2 năm",
                     Description = "Thiết kế tối ưu tiện ích: Bàn trà có thiết kế thêm kệ ngăn bên dưới gia tăng khả năng chứa đồ đầy tiện lợi.; Mặt bàn Veneer gỗ sồi: Bề mặt sản phẩm được xử lý nhẵn mịn, veneer thêm vân gỗ sồi mang màu sắc đẹp tự nhiên.; Các góc cạnh bàn được bo tròn: Từng đường nét góc cạnh được hoàn thiện một cách tỉ mỉ đem lại vẻ đẹp hoàn thiện cho sản phẩm.; Chân bàn gỗ cao su: Phần chân bàn trà sofa được làm hoàn toàn bằng gỗ cao su tự nhiên giúp khung bàn hoàn toàn chắc chắn, chịu tải trọng lớn từ nhiều món đồ trang trí như chậu cây, sách báo...; Độ rộng giữa kệ ngăn và mặt bàn rộng: Khoảng cách giữa ngăn kệ và mặt bàn khá lớn, thuận tiện cho việc vệ sinh, lau chùi.",
