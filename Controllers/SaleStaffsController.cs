@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -67,13 +68,19 @@ namespace ThienAnFuni.Controllers
         // POST: SaleStaffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,Username,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
+        public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,UserName,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 
             if (ModelState.IsValid)
             {
+                var passwordHasher = new PasswordHasher<SaleStaff>();
+
+                // Băm mật khẩu
+                saleStaff.PasswordHash = passwordHasher.HashPassword(saleStaff, saleStaff.PhoneNumber);
+
                 saleStaff.IsActive = true; // Mặc định là true khi tạo mới
+                saleStaff.StartDate = DateTime.Now; // Ngày bắt đầu là ngày hiện tại
                 _context.Add(saleStaff);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

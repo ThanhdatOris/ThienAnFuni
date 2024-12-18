@@ -50,7 +50,7 @@
                     <tbody>
                         @foreach (var product in Model)
                         {
-                            <tr>
+                            <tr >
                                 <td>@product.Id</td>
                                 <td>@product.Name</td>
                                 <td>
@@ -63,10 +63,10 @@
                                         <img src="~/adminThienAn/image_product/default.png" alt="Product Image" width="100px" />
                                     }
                                 </td>
-                                <td>@(product?.QuantityInStock ?? 0)</td>
+                                <td class="text-center">@(product?.QuantityInStock ?? 0)</td>
                                 <td>
-                                    <span class="badge @(product.IsActive ? "bg-success" : "bg-danger")">
-                                        @(product.IsActive ? "Còn hàng" : "Hết hàng")
+                                    <span class="badge @(product.QuantityInStock > 0 ? "bg-success" : "bg-danger")">
+                                        @(product.QuantityInStock > 0 ? "Còn hàng" : "Hết hàng")
                                     </span>
                                 </td>
                                 <td>@String.Format("{0:n0}đ", product.Price)</td>

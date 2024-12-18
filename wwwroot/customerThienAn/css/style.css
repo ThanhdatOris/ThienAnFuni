@@ -1670,7 +1670,7 @@ ol {
             color: #ffffff;
         }
 
-        .product__pagination__item .active {
+        .product__pagination__item.active {
             background: rgb(190,163,101);
             border-color: rgb(190,163,101);
             color: #ffffff;

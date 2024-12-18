@@ -273,7 +273,9 @@
                                 icon: "success",
                                 button: "OK"
                             })
-                                location.reload(); 
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
                         } else {
                             swal({
                                 title: "Cập nhật thất bại",

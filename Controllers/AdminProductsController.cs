@@ -29,12 +29,12 @@ namespace ThienAnFuni.Controllers
                 .Include(p => p.Category)
                 .Select(p => new
                 {
-                    p.Id, // Lưu ID của sản phẩm
-                    p.Name, // Lưu tên sản phẩm
+                    p.Id, 
+                    p.Name, 
                     p.MainImg,
                     p.IsActive,
                     p.Price,
-                    CategoryName = p.Category.Name, // Lưu tên danh mục
+                    CategoryName = p.Category.Name,
                     QuantityInStock = (_context.Goods
                         .Where(g => g.ProductId == p.Id)
                         .Sum(g => (int?)g.Quantity) ?? 0) -
