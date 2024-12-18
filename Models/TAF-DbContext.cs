@@ -309,7 +309,7 @@ namespace ThienAnFuni.Models
                      WarrantyPeriod = "2 năm",
                      Description = "",
                      IsActive = true,
-                     IsImport = false,
+                     IsImport = true,
                      MainImg = "btd_GoDN_VIENNA202_nau.jpg",
                      CategoryId = 6
                  },
@@ -329,7 +329,7 @@ namespace ThienAnFuni.Models
                 WarrantyPeriod = "2 năm",
                 Description = "default.png",
                 IsActive = true,
-                IsImport = false,
+                IsImport = true,
                 MainImg = "banan_GoCaoSu_OSLO901_nau.jpg",
                 CategoryId = 11
             },
@@ -366,7 +366,7 @@ namespace ThienAnFuni.Models
                  WarrantyPeriod = "2 năm",
                  Description = "",
                  IsActive = true,
-                 IsImport = false,
+                 IsImport = true,
                  MainImg = "ghean_GoCaoSuTN_ODESSA_nau.jpg",
                  CategoryId = 12
              },
@@ -405,7 +405,7 @@ namespace ThienAnFuni.Models
                  WarrantyPeriod = "2 năm",
                  Description = "",
                  IsActive = true,
-                 IsImport = false,
+                 IsImport = true,
                  MainImg = "blv_FYN601_tn.jpg",
                  CategoryId = 8
              },
@@ -423,7 +423,7 @@ namespace ThienAnFuni.Models
                   WarrantyPeriod = "2 năm",
                   Description = "", // này giữ nguyên
                   IsActive = true, // này giữ nguyên
-                  IsImport = false, // này giữ nguyên
+                  IsImport = true, // này giữ nguyên
                   MainImg = "bmt_WORKS702_trang.jpg",
                   CategoryId = 8
               },
@@ -442,7 +442,7 @@ namespace ThienAnFuni.Models
                  WarrantyPeriod = "2 năm",
                  Description = "",
                  IsActive = true,
-                 IsImport = false,
+                 IsImport = true,
                  MainImg = "ghexoayvp_JEFE701_den.2.jpg",
                  CategoryId = 9
              },
@@ -461,7 +461,7 @@ namespace ThienAnFuni.Models
                  WarrantyPeriod = "2 năm",
                  Description = "",
                  IsActive = true,
-                 IsImport = false,
+                 IsImport = true,
                  MainImg = "ghexoayvp_RIGA701_trang.1.jpg",
                  CategoryId = 9
              }
@@ -988,8 +988,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 1000000,
                     TotalPrice = 10000000,
-                    ProductId = 3, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 1
+                    ProductId = 3,
+                    ShipmentId = 1
                 },
                 new Goods
                 {
@@ -997,8 +997,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 10000000,
                     TotalPrice = 100000000,
-                    ProductId = 11, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 1
+                    ProductId = 11,
+                    ShipmentId = 1 
                 },
                 new Goods
                 {
@@ -1006,8 +1006,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 10000000,
                     TotalPrice = 100000000,
-                    ProductId = 2, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                    ProductId = 2,
+                    ShipmentId = 1
                 },
                 new Goods
                 {
@@ -1015,8 +1015,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 1000000,
                     TotalPrice = 10000000,
-                    ProductId = 4, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                    ProductId = 4,
+                    ShipmentId = 1
                 },
                 new Goods
                 {
@@ -1024,8 +1024,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 10000000,
                     TotalPrice = 100000000,
-                    ProductId = 12, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                    ProductId = 12,
+                    ShipmentId = 1 
                 },
                 new Goods
                 {
@@ -1033,9 +1033,81 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 2000000,
                     TotalPrice = 20000000,
-                    ProductId = 1, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                    ProductId = 1,
+                    ShipmentId = 1
+                },
+                new Goods
+                {
+                    Id = 7,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 13,
+                    ShipmentId = 1
+                }, 
+                new Goods
+                {
+                    Id = 8,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 14,
+                    ShipmentId = 1
+                },
+                new Goods
+                {
+                    Id = 9,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 16,
+                    ShipmentId = 1
+                },       
+                new Goods
+                {
+                    Id = 10,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 17,
+                    ShipmentId = 1
+                },       
+                new Goods
+                {
+                    Id = 11,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 18,
+                    ShipmentId = 1
+                },
+                new Goods
+                {
+                    Id = 12,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 19,
+                    ShipmentId = 1
+                },   
+                new Goods
+                {
+                    Id = 13,
+                    Quantity = 10,
+                    ImportPrice = 1200000,
+                    TotalPrice = 12000000,
+                    ProductId = 20,
+                    ShipmentId = 1
+                },   new Goods
+                {
+                    Id = 14,
+                    Quantity = 10,
+                    ImportPrice = 1200000,
+                    TotalPrice = 12000000,
+                    ProductId = 21,
+                    ShipmentId = 1
                 }
+
             );
 
         }
