@@ -235,7 +235,7 @@ namespace ThienAnFuni.Models
                      IsActive = true,
                      IsImport = true,
                      MainImg = "banSofa_HOBRO301.jpg",
-                     CategoryId = 2
+                     CategoryId = 3
                  },
                 new Product
                 {
@@ -253,7 +253,7 @@ namespace ThienAnFuni.Models
                     IsActive = true,
                     IsImport = true,
                     MainImg = "banSofa_OSLO901.jpg",
-                    CategoryId = 2
+                    CategoryId = 3
                 },
 
                 // Phòng ngủ: 
