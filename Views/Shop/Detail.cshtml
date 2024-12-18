@@ -81,7 +81,15 @@
 
 
                     <ul>
-                        <li><b>Danh mục</b> <span>@(Model.Category?.Name ?? "")</span></li>
+                        @* <li><b>Danh mục</b> <span>@(Model.Category?.Name ?? "")</span></li> *@
+
+                        <li>
+                            <b>Danh mục</b>
+                            <a href="@Url.Action("Index", "Shop", new { slug = Model.Category?.Slug })"
+                               style="color: black; text-decoration: underline;">
+                                @Model.Category?.Name
+                            </a>
+                        </li>
 
                         <li><b>Tiêu chuẩn</b> <span>@Model.Standard</span></li>
                         <li><b>Màu sắc</b> <span>@Model.Color</span></li>
@@ -92,10 +100,8 @@
                         <li>
                             <b>Chia sẽ</b>
                             <div class="share">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                                <a href="https://www.facebook.com/ariety06/" target="_blank"><i class="fa fa-facebook"></i></a>
+                                <a href="https://www.instagram.com/_nhw.yie24/" target="_blank"><i class="fa fa-instagram"></i></a>
                             </div>
                         </li>
                     </ul>
@@ -147,9 +153,10 @@
                                 <li><a href="#" class="add-to-cart" data-id="@product.Id"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
+
                         <div class="product__item__text">
-                            <h6><a href="#">@product.Name</a></h6>
-                            <h5>@product.Price</h5>
+                            <h6><a asp-action="Detail" asp-route-id="@product.Id">@product.Name</a></h6>
+                            <h5>@($"{product.Price:N0} VNĐ")</h5>
                         </div>
                     </div>
                 </div>
