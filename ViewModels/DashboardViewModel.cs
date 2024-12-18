@@ -19,6 +19,7 @@ public class OrderViewModel
     public string CustomerName { get; set; }
     public double TotalAmount { get; set; }
     public int? Status { get; set; }
+    public DateTime Date { get; set; }
 }
 
 public class SalesData

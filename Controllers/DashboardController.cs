@@ -31,8 +31,8 @@ namespace ThienAnFuni.Controllers
             ViewData["ActiveMenu"] = "Dashboard";
 
             var recentSalesData = await _context.Orders
-                .Where(o => o.OrderDate >= DateTime.Now.AddMonths(-6))
-                .ToListAsync(); // Lấy dữ liệu từ cơ sở dữ liệu trước
+                .Where(o => o.InvoiceDate >= DateTime.Now.AddMonths(-7))
+                .ToListAsync();
 
             var groupedSalesData = recentSalesData
                 .GroupBy(o => new { o.OrderDate.Year, o.OrderDate.Month })
@@ -41,31 +41,32 @@ namespace ThienAnFuni.Controllers
                     Date = new DateTime(g.Key.Year, g.Key.Month, 1),
                     Amount = g.Sum(o => o.TotalPrice)
                 })
-                .OrderByDescending(s => s.Date)
+                .OrderBy(s => s.Date)
                 .ToList();
 
             var totalCustomers = _context.Customers.Count();
             var totalProducts = _context.Products.Count();
             var totalOrders = _context.Orders.Count();
 
-            var lowStockProducts = _context.Products
+            var lowStockProducts = await _context.Products
                 .Join(_context.Goods,
                       product => product.Id,
                       goods => goods.ProductId,
                       (product, goods) => new { product, goods })
                 .Where(pg => pg.goods.Quantity < 10)
-                .Count();
+                .CountAsync();
 
-            var recentOrders = _context.Orders
-                .OrderByDescending(o => o.OrderDate)
-                .Take(5)
+            var recentOrders = await _context.Orders
+                .OrderBy(o => o.InvoiceDate)
+                .Take(6)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.Id,
                     CustomerName = o.Customer.FullName,
                     TotalAmount = o.TotalPrice,
-                    Status = o.OrderStatus
-                }).ToList();
+                    Status = o.OrderStatus,
+                    Date = (DateTime)o.InvoiceDate
+                }).ToListAsync();
 
             var newCustomers = _context.Customers
                 .Join(_context.Users,
