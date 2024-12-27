@@ -74,9 +74,21 @@ namespace ThienAnFuni.Controllers
 
             if (ModelState.IsValid)
             {
-                var passwordHasher = new PasswordHasher<SaleStaff>();
+
+                // Kiểm tra nếu CCCD hoặc số điện thoại đã tồn tại trong bảng Users
+                var existingStaff = await _context.Users
+                    .Where(u => (u.CitizenId == saleStaff.CitizenId || u.PhoneNumber == saleStaff.PhoneNumber) && u is SaleStaff)
+                    .FirstOrDefaultAsync();
+
+                if (existingStaff != null)
+                {
+                    // Thêm thông báo lỗi vào TempData để hiển thị trong view
+                    TempData["ErrorMessage"] = "Nhân viên với CCCD hoặc số điện thoại này đã tồn tại.";
+                    return RedirectToAction("Create");
+                }
 
                 // Băm mật khẩu
+                var passwordHasher = new PasswordHasher<SaleStaff>();
                 saleStaff.PasswordHash = passwordHasher.HashPassword(saleStaff, saleStaff.PhoneNumber);
 
                 saleStaff.IsActive = true; // Mặc định là true khi tạo mới

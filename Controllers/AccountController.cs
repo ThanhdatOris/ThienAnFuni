@@ -362,13 +362,14 @@ namespace ThienAnFuni.Controllers
         // Kiểm tra và thay đổi mật khẩu
         if (!string.IsNullOrWhiteSpace(newPassword))
         {
-            if (newPassword != confirmPassword)
-            {
-                ModelState.AddModelError("", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
-                return View(model);
-            }
+                    if (newPassword != confirmPassword)
+                    {
+                        TempData["ConfirmPasswordError"] = "Mật khẩu mới và xác nhận mật khẩu không khớp.";
+                        return View(model);
+                    }
 
-            var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+
+                    var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
             if (!passwordChangeResult.Succeeded)
             {
                 foreach (var error in passwordChangeResult.Errors)
