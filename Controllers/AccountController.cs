@@ -407,7 +407,29 @@ namespace ThienAnFuni.Controllers
 
                 // Cập nhật thông tin cơ bản
                 var result = await _userManager.UpdateAsync(user);
-                if (!result.Succeeded)
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            return View(model);
+        }
+
+        // Kiểm tra và thay đổi mật khẩu
+        if (!string.IsNullOrWhiteSpace(newPassword))
+        {
+                    if (newPassword != confirmPassword)
+                    {
+                        TempData["ConfirmPasswordError"] = "Mật khẩu mới và xác nhận mật khẩu không khớp.";
+                        return View(model);
+                    }
+
+
+                    var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            if (!passwordChangeResult.Succeeded)
+            {
+                foreach (var error in passwordChangeResult.Errors)
                 {
                     foreach (var error in result.Errors)
                     {
@@ -442,6 +464,13 @@ namespace ThienAnFuni.Controllers
 
             return View(model); // Trả về view với model nếu có lỗi
         }
+
+        TempData["SuccessMessage"] = "Thông tin đã được cập nhật!";
+        return RedirectToAction("Profile");
+    }
+
+    return View(model); // Trả về view với model nếu có lỗi
+}
 
 
     }

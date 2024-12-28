@@ -85,6 +85,7 @@
             <div class="form-group col-md-6 mb-3">
                 <label for="ConfirmPassword">Xác nhận mật khẩu <span class="text-danger">*</span></label>
                 <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" />
+                <span id="confirmPasswordError" class="text-danger"></span>
             </div>
         </div>
 
@@ -94,3 +95,51 @@
 
     </form>
 </div>
+
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: '@Html.Raw(TempData["SuccessMessage"])'
+            });
+        </script>
+    }
+
+
+    <script>
+        // Lắng nghe sự kiện khi người dùng nhập vào các trường mật khẩu
+        document.getElementById("NewPassword").addEventListener("input", validatePasswords);
+        document.getElementById("ConfirmPassword").addEventListener("input", validatePasswords);
+
+        function validatePasswords() {
+            var newPassword = document.getElementById("NewPassword").value;
+            var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+            var errorElement = document.getElementById("confirmPasswordError");
+
+            // Kiểm tra nếu mật khẩu mới và xác nhận mật khẩu không khớp
+            if (newPassword !== confirmPassword) {
+                errorElement.textContent = "Mật khẩu xác nhận không khớp!";
+            } else {
+                errorElement.textContent = ""; // Xóa thông báo lỗi nếu mật khẩu khớp
+            }
+        }
+
+        // Kiểm tra khi form submit
+        document.querySelector("form").addEventListener("submit", function (event) {
+            var newPassword = document.getElementById("NewPassword").value;
+            var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+            if (newPassword !== confirmPassword) {
+                event.preventDefault(); // Ngừng submit form
+                document.getElementById("confirmPasswordError").textContent = "Mật khẩu xác nhận không khớp!";
+            }
+        });
+    </script>
+}

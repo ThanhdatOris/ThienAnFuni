@@ -70,31 +70,24 @@ namespace ThienAnFuni.Controllers
         // POST: SaleStaffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,UserName,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
-        //{
-        //    ViewData["ActiveMenu"] = "SaleStaff";
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        var passwordHasher = new PasswordHasher<SaleStaff>();
-
-        //        // Băm mật khẩu
-        //        saleStaff.PasswordHash = passwordHasher.HashPassword(saleStaff, saleStaff.PhoneNumber);
-
-        //        saleStaff.IsActive = true; // Mặc định là true khi tạo mới
-        //        saleStaff.StartDate = DateTime.Now; // Ngày bắt đầu là ngày hiện tại
-        //        _context.Add(saleStaff);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(saleStaff);
-        //}
         public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,UserName,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 
             if (ModelState.IsValid)
             {
+                // Kiểm tra nếu CCCD hoặc số điện thoại đã tồn tại trong bảng Users
+                var existingStaff = await _context.Users
+                    .Where(u => (u.CitizenId == saleStaff.CitizenId || u.PhoneNumber == saleStaff.PhoneNumber) && u is SaleStaff)
+                    .FirstOrDefaultAsync();
+
+                if (existingStaff != null)
+                {
+                    // Thêm thông báo lỗi vào TempData để hiển thị trong view
+                    TempData["ErrorMessage"] = "Nhân viên với CCCD hoặc số điện thoại này đã tồn tại.";
+                    return RedirectToAction("Create");
+                }
+
                 // Cấu hình các thuộc tính mặc định
                 saleStaff.IsActive = true;
                 saleStaff.StartDate = DateTime.Now;
