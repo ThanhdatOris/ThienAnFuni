@@ -386,92 +386,154 @@ namespace ThienAnFuni.Controllers
 
 
         [HttpPost]
+        #region Old Profile
+        //public async Task<IActionResult> Profile(User model, string oldPassword, string newPassword, string confirmPassword)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = await _userManager.GetUserAsync(User);
+        //        if (user == null)
+        //        {
+        //            return RedirectToAction("Login", "Account");
+        //        }
+
+        //        // Cập nhật thông tin người dùng
+        //        user.FullName = model.FullName;
+        //        user.PhoneNumber = model.PhoneNumber;
+        //        user.Address = model.Address;
+        //        user.Gender = model.Gender;
+        //        user.DateOfBirth = model.DateOfBirth;
+        //        user.Email = model.Email;
+
+
+        //        // Cập nhật thông tin cơ bản
+        //        var result = await _userManager.UpdateAsync(user);
+        //        if (!result.Succeeded)
+        //        {
+        //            foreach (var error in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", error.Description);
+        //            }
+        //            return View(model);
+        //        }
+
+        //        // Kiểm tra và thay đổi mật khẩu
+        //        if (!string.IsNullOrWhiteSpace(newPassword))
+        //        {
+        //            if (newPassword != confirmPassword)
+        //            {
+        //                TempData["ConfirmPasswordError"] = "Mật khẩu mới và xác nhận mật khẩu không khớp.";
+        //                return View(model);
+        //            }
+
+
+        //            var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        //            if (!passwordChangeResult.Succeeded)
+        //            {
+        //                foreach (var error in passwordChangeResult.Errors)
+        //                {
+        //                    foreach (var error in result.Errors)
+        //                    {
+        //                        ModelState.AddModelError("", error.Description);
+        //                    }
+        //                    return View(model);
+        //                }
+
+        //                // Kiểm tra và thay đổi mật khẩu
+        //                if (!string.IsNullOrWhiteSpace(newPassword))
+        //                {
+        //                    if (newPassword != confirmPassword)
+        //                    {
+        //                        ModelState.AddModelError("", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
+        //                        return View(model);
+        //                    }
+
+        //                    var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        //                    if (!passwordChangeResult.Succeeded)
+        //                    {
+        //                        foreach (var error in passwordChangeResult.Errors)
+        //                        {
+        //                            ModelState.AddModelError("", error.Description);
+        //                        }
+        //                        return View(model);
+        //                    }
+        //                }
+
+        //                TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+        //                return RedirectToAction("Profile");
+        //            }
+
+        //            return View(model); // Trả về view với model nếu có lỗi
+        //        }
+
+        //        TempData["SuccessMessage"] = "Thông tin đã được cập nhật!";
+        //        return RedirectToAction("Profile");
+        //    }
+
+        //    return View(model); // Trả về view với model nếu có lỗi
+        //}
+        #endregion
         public async Task<IActionResult> Profile(User model, string oldPassword, string newPassword, string confirmPassword)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Cập nhật thông tin cá nhân
+            user.FullName = model.FullName;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Address = model.Address;
+            user.Gender = model.Gender;
+            user.DateOfBirth = model.DateOfBirth;
+            user.Email = model.Email;
+
+            // Cập nhật thông tin cơ bản
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
                 {
-                    return RedirectToAction("Login", "Account");
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
+            }
+
+            // Kiểm tra và cập nhật mật khẩu nếu người dùng muốn đổi mật khẩu
+            if (!string.IsNullOrWhiteSpace(newPassword))
+            {
+                if (newPassword != confirmPassword)
+                {
+                    ModelState.AddModelError("", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
+                    return View(model);
                 }
 
-                // Cập nhật thông tin người dùng
-                user.FullName = model.FullName;
-                user.PhoneNumber = model.PhoneNumber;
-                user.Address = model.Address;
-                user.Gender = model.Gender;
-                user.DateOfBirth = model.DateOfBirth;
-                user.Email = model.Email;
-
-
-                // Cập nhật thông tin cơ bản
-                var result = await _userManager.UpdateAsync(user);
-        if (!result.Succeeded)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
-            return View(model);
-        }
-
-        // Kiểm tra và thay đổi mật khẩu
-        if (!string.IsNullOrWhiteSpace(newPassword))
-        {
-                    if (newPassword != confirmPassword)
-                    {
-                        TempData["ConfirmPasswordError"] = "Mật khẩu mới và xác nhận mật khẩu không khớp.";
-                        return View(model);
-                    }
-
-
-                    var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
-            if (!passwordChangeResult.Succeeded)
-            {
-                foreach (var error in passwordChangeResult.Errors)
+                if (string.IsNullOrWhiteSpace(oldPassword))
                 {
-                    foreach (var error in result.Errors)
+                    ModelState.AddModelError("", "Vui lòng nhập mật khẩu cũ để thay đổi mật khẩu mới.");
+                    return View(model);
+                }
+
+                var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+                if (!passwordChangeResult.Succeeded)
+                {
+                    foreach (var error in passwordChangeResult.Errors)
                     {
                         ModelState.AddModelError("", error.Description);
                     }
                     return View(model);
                 }
-
-                // Kiểm tra và thay đổi mật khẩu
-                if (!string.IsNullOrWhiteSpace(newPassword))
-                {
-                    if (newPassword != confirmPassword)
-                    {
-                        ModelState.AddModelError("", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
-                        return View(model);
-                    }
-
-                    var passwordChangeResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
-                    if (!passwordChangeResult.Succeeded)
-                    {
-                        foreach (var error in passwordChangeResult.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-                        }
-                        return View(model);
-                    }
-                }
-
-                TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
-                return RedirectToAction("Profile");
             }
 
-            return View(model); // Trả về view với model nếu có lỗi
+            TempData["SuccessMessage"] = "Thông tin đã được cập nhật!";
+            return RedirectToAction("Profile");
         }
-
-        TempData["SuccessMessage"] = "Thông tin đã được cập nhật!";
-        return RedirectToAction("Profile");
-    }
-
-    return View(model); // Trả về view với model nếu có lỗi
-}
-
 
     }
 
