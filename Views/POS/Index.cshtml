@@ -551,21 +551,20 @@
                     // username: $('#phone').val(), // Thêm trường username
                 };
 
-
                 // Gửi yêu cầu AJAX
                 $.ajax({
                     url: '/POS/AddNewCustomer',
                     method: 'POST',
                     data: formData,
                     success: function (response) {
-                        // Hiển thị thông báo thành công
-                        swal("Thành công!", "Khách hàng đã được tạo thành công!", "success");
+                        if (response.success) {
+                            swal("Thành công!", response.message, "success");
+                        } else {
+                            swal(response.message, "Bạn vui lòng kiểm tra lại thông tin!", "error");
+                        }
 
                         // Đóng modal
                         $('#ModalUP').modal('hide');
-
-                        // Thực hiện các hành động khác như làm mới danh sách khách hàng nếu cần
-                        // location.reload(); // Ví dụ, làm mới trang để thấy danh sách khách hàng mới
                     },
                     error: function (xhr) {
                         // Xử lý lỗi từ server

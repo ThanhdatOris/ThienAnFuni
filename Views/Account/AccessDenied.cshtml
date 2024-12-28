@@ -2,7 +2,7 @@
     ViewData["Title"] = "Access Denied";
 }
 
-@section breadcrumb {
+@* @section breadcrumb {
     <section class="breadcrumb-section set-bg" data-setbg="/customerThienAn/img/breadcrumb.jpg">
         <div class="container">
             <div class="row">
@@ -18,10 +18,10 @@
             </div>
         </div>
     </section>
-}
+} *@
 
-<div class="alert alert-danger text-center p-5 mt-5">
-    <img src="~/customerThienAn/img/accessDenied/accessDenied.png" alt="Access Denied" class="mb-4 img-fluid w-25">
+<div class="text-center py-3">
+    <img src="~/customerThienAn/img/accessDenied/accessDenied.jpg" alt="Access Denied" class="mb-4 img-fluid w-25">
     <h3 class="alert-heading mb-3">Xin lỗi, bạn không có quyền truy cập vào trang này.</h3>
     <p class="mb-4">Vui lòng liên hệ với quản trị viên để biết thêm chi tiết.</p>
     <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg px-4">

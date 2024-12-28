@@ -60,16 +60,16 @@ namespace ThienAnFuni.Controllers
             //        Date = (DateTime)o.InvoiceDate
             //    }).ToListAsync();
 
-            var recentOrders = await _context.Orders
+            var recentOrders = await  _context.Orders
                 .OrderBy(o => o.InvoiceDate)
                 .Take(5)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.Id,
-                    CustomerName = o.Customer.FullName,
+                    CustomerName = o.Customer.FullName ?? "",
                     TotalAmount = o.TotalPrice,
                     Status = o.OrderStatus,
-                    Date = (DateTime)o.InvoiceDate
+                    Date = o.InvoiceDate.HasValue ? o.InvoiceDate.Value : default(DateTime)
                 }).ToListAsync();
 
             //var lowStockProducts = await _context.Products

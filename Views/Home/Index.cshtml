@@ -23,7 +23,7 @@
                 @foreach (var category in Model.Categories)
                 {
                     <div class="col-lg-3" data-filter=".@category.Slug">
-                        <div class="categories__item set-bg" data-setbg="./customerThienAn/img/categories/@category.Image">
+                        <div class="categories__item set-bg" data-setbg="/customerThienAn/img/categories/@category.Image">
                             <h5><a class="shadow rounded" asp-action="Index" asp-route-slug="@category.Slug" asp-controller="Shop">@category.Name</a></h5>
                         </div>
                     </div>
@@ -32,6 +32,7 @@
         </div>
     </div>
 </section>
+
 <!-- Categories Section End -->
 <!-- Featured Section Begin -->
 <section class="featured spad">
@@ -58,7 +59,7 @@
                 var parentCategorySlug = product.Category?.ParentCategory?.Slug;
                 <div class="col-lg-3 col-md-4 col-sm-6 mix @parentCategorySlug">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="./adminThienAn/image_product/@product.MainImg">
+                        <div class="featured__item__pic set-bg" data-setbg="/adminThienAn/image_product/@product.MainImg">
                             <ul class="featured__item__pic__hover">
                                 @* <li><a href="#"><i class="fa fa-heart"></i></a></li> *@
                                 <li><a href="#" class="add-to-cart" data-id="@product.Id"><i class="fa fa-shopping-cart"></i></a></li>
@@ -108,9 +109,9 @@
                                 @for (int j = i; j < i + 3 && j < Model.NewProducts.Count; j++)
                                 {
                                     var product = Model.NewProducts[j];
-                                    <a href="#" class="latest-product__item">
+                                    <a asp-controller="Shop" asp-action="Detail" asp-route-id="@product.Id" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="./adminThienAn/image_product/@product.MainImg" alt="">
+                                            <img src="/adminThienAn/image_product/@product.MainImg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>@product.Name</h6>
@@ -133,9 +134,9 @@
                                 @for (int j = i; j < i + 3 && j < Model.FeaturedProducts.Count; j++)
                                 {
                                     var product = Model.FeaturedProducts[j];
-                                    <a href="#" class="latest-product__item">
+                                    <a asp-controller="Shop" asp-action="Detail" asp-route-id="@product.Id" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="./adminThienAn/image_product/@product.MainImg" alt="">
+                                            <img src="/adminThienAn/image_product/@product.MainImg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>@product.Name</h6>
@@ -158,9 +159,9 @@
                                 @for (int j = i; j < i + 3 && j < Model.BestSellerProducts.Count; j++)
                                 {
                                     var product = Model.BestSellerProducts[j];
-                                    <a href="#" class="latest-product__item">
+                                    <a asp-controller="Shop" asp-action="Detail" asp-route-id="@product.Id" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="./adminThienAn/image_product/@product.MainImg" alt="">
+                                            <img src="/adminThienAn/image_product/@product.MainImg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>@product.Name</h6>

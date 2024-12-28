@@ -102,35 +102,41 @@
                         <label class="control-label">Kích thước</label>
                         <input class="form-control" type="text" name="Dimension" placeholder="Nhập kích thước">
                     </div>
+
                     <div class="form-group col-md-3">
                         <label class="control-label">Tiêu chuẩn</label>
                         <input class="form-control" type="text" name="Standard" placeholder="Nhập tiêu chuẩn">
                     </div>
+
                     <div class="form-group col-md-3">
                         <label class="control-label">Màu sắc</label>
                         <input class="form-control" type="text" name="Color" placeholder="Nhập màu sắc">
                     </div>
+
                     <div class="form-group col-md-3">
                         <label class="control-label">Thương hiệu</label>
                         <input class="form-control" type="text" name="Brand" placeholder="Nhập thương hiệu">
                     </div>
+
                     <div class="form-group col-md-3">
                         <label class="control-label">Thời gian bảo hành</label>
                         <input class="form-control" type="text" name="WarrantyPeriod"
                             placeholder="Nhập thời gian bảo hành">
                     </div>
+
                     <div class="form-group col-md-3">
                         <label class="control-label">Kích hoạt</label>
-                        <select class="form-control" name="Active" required>
+                        <select class="form-control" name="Active" required disabled>
                             <option selected value="true">Có</option>
                             <option value="false">Không</option>
                         </select>
                     </div>
+
                     @* Upload Main IMG *@
                     <div class="form-group col-md-12">
                         <label class="control-label">Ảnh sản phẩm</label>
                         <div id="myfileupload">
-                            <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
+                            <input type="file" id="uploadfile" name="MainImage" onchange="readURL(this);" />
                         </div>
                         <div id="thumbbox">
                             <img height="130" alt="Thumb image" id="thumbimage" style="display: none" />
@@ -144,6 +150,7 @@
                             <p style="clear:both"></p>
                         </div>
                     </div>
+
                     @* Upload Multi *@
                     <div class="form-group col-md-12">
                         <label class="control-label" for="productImages">Thêm nhiều ảnh</label>

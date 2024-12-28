@@ -38,6 +38,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;  // Không yêu cầu ký tự không phải chữ cái
     options.Password.RequiredLength = 6;  // Độ dài mật khẩu tối thiểu
     options.Password.RequiredUniqueChars = 1;  // Số ký tự duy nhất tối thiểu
+    options.SignIn.RequireConfirmedEmail = false; // Không yêu cầu xác thực email
 })
 .AddEntityFrameworkStores<TAF_DbContext>()  
 .AddDefaultTokenProviders();
@@ -81,12 +82,22 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseStaticFiles(); // cho phép truy cập tệp tĩnh
 
 app.UseSession(); // Session
 
 app.UseAuthorization();
 
 app.UseWebSockets(); //  UseWebSockets
+
+// Error 404
+app.UseStatusCodePages(async context =>
+{
+    if (context.HttpContext.Response.StatusCode == 404)
+    {
+        context.HttpContext.Response.Redirect("/Account/Error404");
+    }
+});
 
 // Role sẽ được tạo khi app nó chạy nha bà con
 using (var scope = app.Services.CreateScope())

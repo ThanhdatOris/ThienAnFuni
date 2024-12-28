@@ -16,10 +16,12 @@ namespace ThienAnFuni.Controllers
     public class SaleStaffsController : Controller
     {
         private readonly TAF_DbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public SaleStaffsController(TAF_DbContext context)
+        public SaleStaffsController(TAF_DbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: SaleStaffs
@@ -28,8 +30,8 @@ namespace ThienAnFuni.Controllers
             ViewData["ActiveMenu"] = "SaleStaff";
 
             return View(await _context.SaleStaffs.Where(s => s.IsActive == true).ToListAsync());
-        }       
-        
+        }
+
         public async Task<IActionResult> ListDeleted()
         {
             ViewData["ActiveMenu"] = "SaleStaff";
@@ -68,22 +70,46 @@ namespace ThienAnFuni.Controllers
         // POST: SaleStaffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,UserName,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
+        //{
+        //    ViewData["ActiveMenu"] = "SaleStaff";
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        var passwordHasher = new PasswordHasher<SaleStaff>();
+
+        //        // Băm mật khẩu
+        //        saleStaff.PasswordHash = passwordHasher.HashPassword(saleStaff, saleStaff.PhoneNumber);
+
+        //        saleStaff.IsActive = true; // Mặc định là true khi tạo mới
+        //        saleStaff.StartDate = DateTime.Now; // Ngày bắt đầu là ngày hiện tại
+        //        _context.Add(saleStaff);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(saleStaff);
+        //}
         public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,UserName,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 
             if (ModelState.IsValid)
             {
-                var passwordHasher = new PasswordHasher<SaleStaff>();
+                // Cấu hình các thuộc tính mặc định
+                saleStaff.IsActive = true;
+                saleStaff.StartDate = DateTime.Now;
 
-                // Băm mật khẩu
-                saleStaff.PasswordHash = passwordHasher.HashPassword(saleStaff, saleStaff.PhoneNumber);
+                // Tạo tài khoản thông qua UserManager sẽ chính xác và tiện lợi hơn
+                var result = await _userManager.CreateAsync(saleStaff, saleStaff.PhoneNumber); // Mật khẩu mặc định là số điện thoại
 
-                saleStaff.IsActive = true; // Mặc định là true khi tạo mới
-                saleStaff.StartDate = DateTime.Now; // Ngày bắt đầu là ngày hiện tại
-                _context.Add(saleStaff);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(saleStaff, ConstHelper.RoleSaleStaff);
+                    return RedirectToAction(nameof(Index));
+                }
+
+                // Truyền lỗi bằng kỹ thuật TempData
+                TempData["ErrorMessage"] = string.Join("<br>", result.Errors.Select(e => e.Description));
             }
             return View(saleStaff);
         }
@@ -198,9 +224,9 @@ namespace ThienAnFuni.Controllers
             var saleStaff = await _context.SaleStaffs.FindAsync(id);
             if (saleStaff != null)
             {
-                saleStaff.IsActive = false; 
+                saleStaff.IsActive = false;
                 saleStaff.EndDate = DateTime.Now;
-                _context.SaleStaffs.Update(saleStaff); 
+                _context.SaleStaffs.Update(saleStaff);
                 await _context.SaveChangesAsync();
             }
 
