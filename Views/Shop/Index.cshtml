@@ -33,12 +33,13 @@
                 <div class="sidebar">
                     <div class="sidebar__item">
                         <h4>Danh mục sản phẩm</h4>
-                        <li class="list-unstyled font-weight-bold ">
+                        <li class="list-unstyled font-weight-bold pb-3 pl-3">
                             <a asp-action="index" class="text-info">Tất cả sản phẩm</a>
                         </li>
                         @* Hiển thị category *@
                         @await Component.InvokeAsync("CategoryHero")
                     </div>
+
                     @* Lọc giá *@
                     <div class="sidebar__item">
                         <h4>Giá</h4>
@@ -58,158 +59,80 @@
                             </div>
                         </div>
                     </div>
+
                     @* Lọc màu sắc *@
-                    @*  <div class="sidebar__item sidebar__item__color--option">
-                    <h4>Màu sắc</h4>
-                    <div class="sidebar__item__color sidebar__item__color--white">
-                    <label for="white">
-                    Trắng
-                    <input type="radio" id="white">
-                    </label>
-                    </div>
-                    <div class="sidebar__item__color sidebar__item__color--brown">
-                    <label for="brown">
-                    Nâu
-                    <input type="radio" id="brown">
-                    </label>
-                    </div>
-                    </div> *@
                     <div class="sidebar__item sidebar__item__color--option">
                         <h4>Màu sắc</h4>
                         <form method="get" id="colorFilterForm">
                             <div class="sidebar__item__color sidebar__item__color--white">
                                 <label for="white">
-                                    Trắng
                                     <input type="radio" name="color" value="Trắng" id="white"
                                            onchange="submitColorFilter()"
-                                           checked="@(ViewBag.SelectedColor == "Trắng" ? "true" : "false")">
+                                    @(ViewBag.SelectedColor == "Trắng" ? "checked" : "")>
+                                    Trắng
                                 </label>
                             </div>
+
                             <div class="sidebar__item__color sidebar__item__color--brown">
                                 <label for="brown">
-                                    Nâu
                                     <input type="radio" name="color" value="Nâu" id="brown"
                                            onchange="submitColorFilter()"
-                                           checked="@(ViewBag.SelectedColor == "Nâu" ? "true" : "false")">
+                                    @(ViewBag.SelectedColor == "Nâu" ? "checked" : "")>
+                                    Nâu
                                 </label>
                             </div>
-                            <div class="sidebar__item__color sidebar__item__color--natural">
-                                <label for="natural">
-                                    Màu tự nhiên
-                                    <input type="radio" name="color" value="Tự nhiên" id="natural"
+
+                            <div class="sidebar__item__color sidebar__item__color--black">
+                                <label for="black">
+                                    <input type="radio" name="color" value="Đen" id="black"
                                            onchange="submitColorFilter()"
-                                           checked="@(ViewBag.SelectedColor == "Màu tự nhiên" ? "true" : "false")">
+                                    @(ViewBag.SelectedColor == "Đen" ? "checked" : "")>
+                                    Đen
                                 </label>
                             </div>
                         </form>
                     </div>
 
-
-
-                    @* Sản phẩm mới nhất *@
-                    <div class="sidebar__item">
-                        <div class="latest-product__text">
-                            <h4>Latest Products</h4>
-                            <div class="latest-product__slider owl-carousel">
-                                <div class="latest-prdouct__slider__item">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="/customerThienAn/img/latest-product/lp-1.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="/customerThienAn/img/latest-product/lp-2.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="/customerThienAn/img/latest-product/lp-3.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="latest-prdouct__slider__item">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="/customerThienAn/img/latest-product/lp-1.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="/customerThienAn/img/latest-product/lp-2.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="/customerThienAn/img/latest-product/lp-3.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
                 <div class="filter__item">
                     <div class="row">
                         <div class="col-lg-4 col-md-5">
+                            @* Sort theo combobox *@
                             <div class="filter__sort">
-                                @* <span>Sắp sếp theo</span> *@
-                                @*       <select>
-                                <option value="0">Sản phẩm mới nhất</option>
-                                <option value="0">Giá giảm dần</option>
-                                <option value="0">Giá tăng dần</option>
-                                </select> *@
-
                                 <select id="sortOrder" onchange="changeSortOrder()">
                                     <option value="" selected="@((ViewBag.SortOrder == null) ? true : "")">Sản phẩm mới nhất</option>
+
                                     <option value="price_desc"
                                             selected="@((ViewBag.SortOrder == "price_desc") ? true : false)">Giá giảm dần</option>
 
                                     <option value="price_asc"
                                             selected="@((ViewBag.SortOrder == "price_asc") ? true : false)">Giá tăng dần</option>
+
+                                    <option value="name_asc"
+                                            selected="@((ViewBag.SortOrder == "price_asc") ? true : false)">A-Z</option>
+
+                                    <option value="name_desc"
+                                            selected="@((ViewBag.SortOrder == "price_asc") ? true : false)">Z-A</option>
                                 </select>
-
-
-
                             </div>
+
                         </div>
+
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
                                 <h6><span>@ViewBag.Count</span> Sản phẩm</h6>
                             </div>
                         </div>
+
                         <div class="col-lg-4 col-md-3">
                             <div class="filter__option">
                                 <span class="icon_grid-2x2"></span>
                                 <span class="icon_ul"></span>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="row">
@@ -313,38 +236,38 @@
         function changeSortOrder() {
             const sortOrder = document.getElementById('sortOrder').value;
 
-            // Lấy URL hiện tại
+            // Đưa url hiện tại thành đối tượng URL cho dễ thao tác
             const currentUrl = new URL(window.location.href);
 
-            // Cập nhật tham số "sortOrder"
+            // Cập nhật tham số
             currentUrl.searchParams.set('sortOrder', sortOrder);
 
             // Chuyển hướng tới URL mới
             window.location.href = currentUrl.toString();
         }
 
-        // Price slider - Trượt giá từ 1 củ đến 30 củ
+        // Price slider - Trượt giá từ 1 triệu đến 20 triệu
         let debounceTimer;
 
         $(function () {
-            let minPrice = 1000000;
-            let maxPrice = 30000000;
+            let minPrice = @ViewBag.MinPrice;
+            let maxPrice = @ViewBag.MaxPrice;
 
             $(".price-range").slider({
                 range: true,
-                min: minPrice,
-                max: maxPrice,
+                min: 1000000,
+                max: 20000000,
                 step: 100000, // Bước nhảy 100k
                 values: [minPrice, maxPrice],
                 slide: function (event, ui) {
                     $("#minamount").val(ui.values[0].toLocaleString("vi-VN") + "đ");
                     $("#maxamount").val(ui.values[1].toLocaleString("vi-VN") + "đ");
 
-                    // Gửi AJAX với debounce
+                    // Gửi AJAX với debounce để tránh spam request
                     clearTimeout(debounceTimer);
                     debounceTimer = setTimeout(() => {
-                        filterProducts(ui.values[0], ui.values[1]);
-                    }, 300); // Delay 300ms
+                        updatePriceFilter(ui.values[0], ui.values[1]);
+                    }, 300);
                 }
             });
 
@@ -352,14 +275,20 @@
             $("#minamount").val($(".price-range").slider("values", 0).toLocaleString("vi-VN") + "đ");
             $("#maxamount").val($(".price-range").slider("values", 1).toLocaleString("vi-VN") + "đ");
 
-            // Hàm gửi yêu cầu AJAX
-            function filterProducts(minPrice, maxPrice) {
-                const url = `/Shop/Index?minPrice=${minPrice}&maxPrice=${maxPrice}`;
-                window.location.href = url; // Chuyển trang bằng URL
+            // Hàm cập nhật URL khi lọc giá
+            function updatePriceFilter(minPrice, maxPrice) {
+                const currentUrl = new URL(window.location.href);
+
+                // Cập nhật hoặc thêm tham số minPrice và maxPrice
+                currentUrl.searchParams.set('minPrice', minPrice);
+                currentUrl.searchParams.set('maxPrice', maxPrice);
+
+                // Chuyển hướng tới URL mới
+                window.location.href = currentUrl.toString();
             }
         });
 
-
+        // Cập nhật giá trị slider khi load lại trang
         $(function () {
             let minPrice = @ViewBag.MinPrice;
             let maxPrice = @ViewBag.MaxPrice;
@@ -369,10 +298,15 @@
             $("#maxamount").val(maxPrice.toLocaleString("vi-VN") + "đ");
         });
 
-
         // Màu sắc
         function submitColorFilter() {
-            document.getElementById("colorFilterForm").submit();
+            const form = document.getElementById("colorFilterForm");
+            const currentUrl = new URL(window.location.href);
+            const selectedColor = form.querySelector('input[name="color"]:checked').value;
+
+            // Giữ lại tất cả tham số hiện tại, chỉ thêm color
+            currentUrl.searchParams.set('color', selectedColor);
+            window.location.href = currentUrl.toString();
         }
     </script>
 

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <meta title="Nội thất Thiên Ân"
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
@@ -20,9 +20,50 @@
     <link rel="stylesheet" href="/customerThienAn/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/customerThienAn/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/customerThienAn/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="/customerThienAn/css/snowflake.css" type="text/css" />
+
 </head>
 
 <body>
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+        <div class="snowflake">
+            <div class="inner">❅</div>
+        </div>
+    </div>
     <!-- Page Preloder -->
     @* <div id="preloder">
     <div class="loader"></div>
@@ -74,7 +115,7 @@
                     @if (User.IsInRole(ConstHelper.RoleManager) && User.IsInRole(ConstHelper.RoleSaleStaff))
                     {
                         <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Admin -->
-                        <a href="@Url.Action("Index", "AdminProducts")" class="btn btn-primary">
+                        <a href="@Url.Action("Index", "Dashboard")" class="btn btn-primary">
                             <i class="fa fa-cogs"></i> Admin Dashboard
                         </a>
                     }
@@ -113,8 +154,8 @@
         </nav>
         <div id="mobile-menu-wrap"></div>
         <div class="header__top__right__social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="https://www.facebook.com/ariety06/" target="_blank"><i class="fa fa-facebook"></i></a>
+            <a href="https://www.instagram.com/_nhw.yie24/" target="_blank"><i class="fa fa-instagram"></i></a>
         </div>
         <div class="humberger__menu__contact">
             <ul>
@@ -140,8 +181,8 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__right d-flex align-items-center justify-content-around text-nowrap">
                             <div class="header__top__right__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="https://www.facebook.com/ariety06/" target="_blank"><i class="fa fa-facebook"></i></a>
+                                <a href="https://www.instagram.com/_nhw.yie24/" target="_blank"><i class="fa fa-instagram"></i></a>
                             </div>
                             <div class="header__top__right__language">
                                 <img src="/customerThienAn/img/vietnamese.jpg" width="30" alt="">
@@ -154,7 +195,7 @@
 
                             <div class="header__top__right__auth d-flex justify-content-center align-items-center">
                                 @if (User.Identity.IsAuthenticated)
-                                    {
+                                {
                                     <a asp-controller="Account" asp-action="Profile" class="d-inline-block text-truncate" style="max-width: 150px;">
                                         <span>Hi, @User.Identity.Name</span>
                                     </a>
@@ -162,7 +203,7 @@
                                     <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Manager hoặc SaleStaff -->
                                     @if (User.IsInRole(ConstHelper.RoleManager) || User.IsInRole(ConstHelper.RoleSaleStaff))
                                     {
-                                        <a href="@Url.Action("Index", "AdminProducts")" class="btn btn-primary ml-2 btn-sm text-white">
+                                        <a href="@Url.Action("Index", "Dashboard")" class="btn btn-primary ml-2 btn-sm text-white">
                                             <i class="fa fa-cogs m-0"></i>
                                         </a>
                                     }
@@ -195,7 +236,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 d-flex justify-content-center align-items-center">
                     <nav class="header__menu">
                         @* Bê thằng ở trên xuống *@
                         <ul>
@@ -249,7 +290,12 @@
     </header>
     <!-- Header Section End -->
     <!-- Hero Section Begin hero-normal-->
-    <section class="hero @(Context.Request.Path == "/" ? "" : "hero-normal")">
+    @*    <section class="hero @(Context.Request.Path == "/" ? "" : "hero-normal")"> *@
+    <section class="hero @(Context.Request.Path == "/" ||
+                      (ViewContext.RouteData.Values["controller"]?.ToString() == "Home"
+                      && ViewContext.RouteData.Values["action"]?.ToString() == "Index")
+                      ? "" : "hero-normal")">
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -280,7 +326,7 @@
                                 <i class="fa fa-phone"></i>
                             </div>
                             <div class="hero__search__phone__text">
-                                <h5>+84 30 04 1975</h5>
+                                <h5 class="text-black"> <a class="btn font-weight-bold" href="tel:+8430041975">+84 30 04 1975</a></h5>
                                 <span>Hỗ trợ 24/7</span>
                             </div>
                         </div>
@@ -306,7 +352,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="/customerThienAn/img/logo.png" alt=""></a>
+                            <a href="@Url.ActionLink("Index","Home")"><img src="/customerThienAn/img/logo.png" alt=""></a>
                         </div>
                         <ul>
                             <li>Address: 256 Nguyễn Văn Cừ, An Hòa, Ninh Kiều, Cần Thơ</li>
@@ -346,8 +392,8 @@
                             <button type="submit" class="site-btn">Đăng ký</button>
                         </form>
                         <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="https://www.facebook.com/ariety06/" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/_nhw.yie24/" target="_blank"><i class="fa fa-instagram"></i></a>
                         </div>
                     </div>
                 </div>
@@ -368,6 +414,18 @@
                     </div>
                 </div>
             </div>
+
+            <div class="header__top__right__social">
+                <a href="https://zalo.me/0982147252" target="_blank">
+                    <img src="/customerThienAn/img/icon_zalo.png" alt="Zalo" class="zalo-icon social-icon.zalo">
+                </a>
+
+                @*                 <a href="#" target="_blank">
+                <img src="/customerThienAn/img" alt="Instagram" class="zalo-icon social-icon.instagram" >
+                </a> *@
+
+            </div>
+
         </div>
     </footer>
     <!-- Footer Section End -->

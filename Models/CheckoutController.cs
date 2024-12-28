@@ -1,18 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using ThienAnFuni.Models;
 
-namespace ThienAnFuni.Models
+public class CheckoutController : Controller
 {
-    public class CheckoutController : Controller
+    private readonly UserManager<User> _userManager;
+
+    // truy xuất thông tin người dùng hiện tại
+    public CheckoutController(UserManager<User> userManager)
     {
-        public IActionResult Index()
-        {
-            // Kiểm tra xem người dùng đã đăng nhập hay chưa
-            if (!User.Identity.IsAuthenticated)
-            {
-                // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
-                return RedirectToAction("Login", "Account");  // Giả sử trang đăng nhập có action Login trong controller Account
-            }
-            return View();
-        }
+        _userManager = userManager;
+    }
+
+    public async Task<IActionResult> CheckOutSV()
+    {
+        var user = await _userManager.GetUserAsync(User); // Lấy thông tin người dùng hiện tại
+        var phoneNumber = user?.PhoneNumber; // Lấy số điện thoại của người dùng
+
+        // Truyền số điện thoại vào ViewBag hoặc Model để sử dụng trong View
+        ViewBag.PhoneNumber = phoneNumber;
+
+        return View();
     }
 }

@@ -13,6 +13,7 @@
     <div id="clock"></div>
 </div>
 
+
 <!-- Form chỉnh sửa thông tin khách hàng (ẩn ban đầu) -->
 <div id="editForm">
     <div class="col-md-12">
@@ -21,7 +22,7 @@
                 <h3>Chỉnh sửa thông tin khách hàng</h3>
                 <form id="customerEditForm" method="post" action="@Url.Action("Edit", "Customers")">
                     @Html.AntiForgeryToken()  <!-- Đảm bảo bạn có AntiForgery Token -->
-                    <input type="hidden" name="Id" value="@Model.Id" />
+                    @* <input type="hidden" name="Id" value="@Model.Id" /> *@
                     <div class="form-group">
                         <label for="FullName">Họ và tên</label>
                         <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName"/>
@@ -53,7 +54,7 @@
                             <option value="Khác" selected="@((Model.Gender == "Khác") ? true : false)">Khác</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                    <button type="submit" class="btn btn-success">Cập nhật</button>
                     <a class="btn btn-dark" id="cancelEdit" asp-action="Index" asp-controller="Customers">Hủy</a>
                 </form>
             </div>
@@ -63,8 +64,26 @@
 
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Đảm bảo rằng bạn đã tải đúng thư viện Swal -->
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Chỉ hiển thị thông báo thành công nếu TempData có thông báo -->
+    @if (TempData["Success"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: 'Cập nhật thành công!',
+                text: '@Html.Raw(TempData["Success"])',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Action("Index", "Customers")';
+                }
+            });
+        </script>
     }
 }

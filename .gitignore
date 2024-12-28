@@ -33,3 +33,4 @@ Migrations/
 .fake
 .claudiaideconfig
 ThienAnFuni.csproj
+appsettings.json

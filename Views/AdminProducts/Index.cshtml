@@ -27,13 +27,72 @@
                             Sản phẩm ngừng bán
                         </a>
                     </div>
-                  @*   <div class="col-sm-2">
-                        <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)">
-                            <i class="fas fa-file-pdf"></i> Xuất PDF
-                        </a>
+                    @*   <div class="col-sm-2">
+                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)">
+                    <i class="fas fa-file-pdf"></i> Xuất PDF
+                    </a>
                     </div> *@
 
                 </div>
+
+                <div class="row">
+
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Danh mục</label>
+                        @*  <form method="get" action="/AdminProducts/Index">
+                        <select class="form-control" name="categorySlug" id="categorySlug" onchange="this.form.submit()">
+                        <option value="" selected>Tất cả danh mục</option>
+
+                        @foreach (var category in ((List<Category>)ViewData["Categories"]).OrderBy(c => c.Name))
+                        {
+                        var selectedParent = category.Slug == ViewBag.ActiveSlug ? "selected" : "";
+                        <option value="@category.Slug" selected="@selectedParent">
+                        @category.Name
+                        </option>
+
+                        @if (category.SubCategories != null && category.SubCategories.Any())
+                        {
+                        foreach (var subCategory in category.SubCategories.OrderBy(c => c.Name))
+                        {
+                        var selectedChild = subCategory.Slug == ViewBag.ActiveSlug ? "selected" : "";
+                        <option value="@subCategory.Slug" selected="@selectedChild">
+                        -- @subCategory.Name
+                        </option>
+                        }
+                        }
+                        }
+                        </select>
+                        </form> *@
+                        <form method="get" action="/AdminProducts/Index">
+                            <select class="form-control" name="categorySlug" id="categorySlug" onchange="this.form.submit()">
+                                <option value="" selected="@(string.IsNullOrEmpty(ViewBag.ActiveSlug) ? "selected" : null)">Tất cả danh mục</option>
+
+                                @foreach (var category in ((List<Category>)ViewData["Categories"]).OrderBy(c => c.Name))
+                                {
+                                    <option value="@category.Slug" selected="@(category.Slug == ViewBag.ActiveSlug ? "selected" : null)">
+                                        @category.Name
+                                    </option>
+
+                                    @if (category.SubCategories != null && category.SubCategories.Any())
+                                    {
+                                        foreach (var subCategory in category.SubCategories.OrderBy(c => c.Name))
+                                        {
+                                            <option value="@subCategory.Slug" selected="@(subCategory.Slug == ViewBag.ActiveSlug ? "selected" : null)">
+                                                -- @subCategory.Name
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </form>
+
+                    </div>
+
+
+
+                </div>
+
+
                 <table class="table table-hover table-bordered" id="sampleTable">
                     <thead>
                         <tr>
@@ -63,10 +122,10 @@
                                         <img src="~/adminThienAn/image_product/default.png" alt="Product Image" width="100px" />
                                     }
                                 </td>
-                                <td>@(product?.QuantityInStock ?? 0)</td>
+                                <td class="text-center">@(product?.QuantityInStock ?? 0)</td>
                                 <td>
-                                    <span class="badge @(product.IsActive ? "bg-success" : "bg-danger")">
-                                        @(product.IsActive ? "Còn hàng" : "Hết hàng")
+                                    <span class="badge @(product.QuantityInStock > 0 ? "bg-success" : "bg-danger")">
+                                        @(product.QuantityInStock > 0 ? "Còn hàng" : "Hết hàng")
                                     </span>
                                 </td>
                                 <td>@String.Format("{0:n0}đ", product.Price)</td>
@@ -93,4 +152,28 @@
 
 @section Scripts {
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    @*
+    <script>
+        $(document).ready(function () {
+            $("#categorySlug").change(function () {
+                var slug = $(this).val();
+
+                $.ajax({
+                    url: '/AdminProducts/Index',
+                    type: 'GET',
+                    data: { categorySlug: slug },
+                    success: function (response) {
+                    },
+                    error: function () {
+                        swal({
+                            title: "Lỗi!",
+                            text: "Đã xảy ra lỗi khi tải dữ liệu.",
+                            icon: "error",
+                            button: "Đóng",
+                        });
+                    }
+                });
+            });
+        });
+    </script> *@
 }

@@ -7,6 +7,10 @@
   - `Username`: `tramanh`
   - `Password`: `123456`
 
+- `Customer 1`:
+  - `Username`: `teoemcus`
+  - `Password`: `123456`
+  
 # Lần pull đầu tiên
 ```
 - Tạo database thienanFuni
@@ -22,19 +26,20 @@ dotnet ef migrations add InitialCreate
 
 ```
 
-Dưới đây là hướng dẫn chi tiết từ đầu để cấu hình chức năng đăng ký, đăng nhập và phân quyền trong dự án ASP.NET Core 8.0 MVC với ba loại người dùng (Manager, SaleStaff, Customer):
-
 ### 1. Tạo Dự Án ASP.NET Core 8.0 MVC
 
-### 2. Cài Đặt Thư Viện Identity
+### 2. Cài Đặt Thư Viện Identity và setup môi trường như này
 
 - **Identity** giúp bạn quản lý xác thực, phân quyền và đăng nhập/đăng xuất một cách dễ dàng.
 
-- Mở **Package Manager Console** và chạy lệnh sau để cài đặt thư viện `Microsoft.AspNetCore.Identity.EntityFrameworkCore`:
    ```powershell
-   dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
-   dotnet add package Microsoft.EntityFrameworkCore.SqlServer
-   dotnet add package Microsoft.EntityFrameworkCore.Tools
+    dotnet add package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+    dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+    dotnet add package Microsoft.AspNetCore.Identity.UI
+    dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+    dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+    dotnet add package Microsoft.EntityFrameworkCore.Tools
+    dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
    ```
 
 ### 3. Cấu Hình Database Context
@@ -78,7 +83,7 @@ Dưới đây là hướng dẫn chi tiết từ đầu để cấu hình chức
 
 ### 4. Cập Nhật Model Người Dùng Với Identity
 
-- Để phù hợp với cấu trúc của Identity, bạn cập nhật các model `User`, `Manager`, `SaleStaff`, và `Customer` theo định nghĩa của bạn ở trên.
+- Để phù hợp với cấu trúc của Identity, cập nhật các model `User`, `Manager`, `SaleStaff`, và `Customer` theo định nghĩa của bạn ở trên.
 
 ### 5. Thiết Lập Bảng Role Cho Người Dùng
 
@@ -123,16 +128,9 @@ Dưới đây là hướng dẫn chi tiết từ đầu để cấu hình chức
 
 ### 6. Tạo AccountController
 
-Tạo `AccountController` để quản lý các chức năng đăng ký, đăng nhập, và đăng xuất.
+Tạo `AccountController` để quản lý các `Action` đăng ký, đăng nhập, và đăng xuất.
 
-1. **Đăng ký người dùng**:
-  
 
-2. **Đăng nhập người dùng**:
-  
-
-3. **Đăng xuất**:
- 
 
 ### 7. Phân Quyền Cho Các Controller
 
@@ -151,12 +149,131 @@ Tạo `AccountController` để quản lý các chức năng đăng ký, đăng 
    }
    ```
 
-### 8. Migrate và Chạy Ứng Dụng
+### 8. Migrate và Chạy Ứng Dụng (Fresh) ở đầu file
 
-- Chạy các lệnh migration để tạo bảng trong database:
-   ```bash
-   dotnet ef migrations add InitialCreate
-   dotnet ef database update
-   ```
+### ====================================================================
 
-- Sau khi thiết lập xong, bạn có thể chạy ứng dụng. Các tài khoản Manager, SaleStaff, và Customer có thể đăng nhập và truy cập vào các trang được phân quyền riêng biệt.
+# 1. Cách setup send mail (Thủ công)
+
+### **Gửi Email Sau Khi Đặt Hàng Thành Công**  
+
+Dưới đây là cách **tích hợp gửi email miễn phí bằng SMTP** sử dụng dịch vụ Gmail.  
+
+---
+
+### **Bước 1: Cấu hình dịch vụ gửi email**  
+
+**Thêm cài đặt SMTP trong `appsettings.json`:**  
+```json
+ "EmailSettings": {
+    "SmtpServer": "smtp.gmail.com",
+    "SmtpPort": 587,
+    "SenderName": "Thiên Ân Store",
+    "SenderEmail": "Khoalmht0@gmail.com",
+    "SenderPassword": "jfka bvsp wvlp rzlb" (Phần này tạo bằng các bật FA2 và Create Application Password trên tài khoản google)
+  }
+```
+
+---
+
+### **Bước 2: Đăng ký dịch vụ gửi email trong `Program.cs`**  
+
+```csharp
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<ThienAnFuni.Services.IEmailSender, EmailSender>();
+```
+
+**Tạo lớp `EmailSettings.cs`:**  
+```csharp
+public class EmailSettings
+{
+    public string SmtpServer { get; set; }
+    public int SmtpPort { get; set; }
+    public string SenderName { get; set; }
+    public string SenderEmail { get; set; }
+    public string SenderPassword { get; set; }
+}
+```
+
+**Tạo giao diện `IEmailSender.cs`:**  
+```csharp
+public interface IEmailSender
+{
+    Task SendEmailAsync(string toEmail, string subject, string message);
+}
+```
+
+**Tạo lớp `EmailSender.cs`:**  
+```csharp
+public class EmailSender : IEmailSender
+    {
+        private readonly EmailSettings _emailSettings;
+
+        public EmailSender(IOptions<EmailSettings> emailSettings)
+        {
+            _emailSettings = emailSettings.Value;
+        }
+
+        public async Task SendEmailAsync(string toEmail, string subject, string message)
+        {
+            using (var smtpClient = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.SmtpPort))
+            {
+                smtpClient.Credentials = new NetworkCredential(
+                    _emailSettings.SenderEmail,
+                    _emailSettings.SenderPassword
+                );
+
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network; // Thêm dòng này
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(_emailSettings.SenderEmail, _emailSettings.SenderName),
+                    Subject = subject,
+                    Body = message,
+                    IsBodyHtml = true,
+                };
+
+                mailMessage.To.Add(toEmail);
+
+                try
+                {
+                    await smtpClient.SendMailAsync(mailMessage);
+                }
+                catch (SmtpException ex)
+                {
+                    Console.WriteLine($"Lỗi khi gửi email: {ex.Message} - {ex.StatusCode}");
+                    Console.WriteLine($"Chi tiết lỗi: {ex.InnerException?.Message}");
+                    throw;
+                }
+
+            }
+        }
+
+    }
+```
+
+---
+
+### **Bước 3: Cập Nhật Controller Đặt Hàng**  
+
+**Thêm vào `CheckOutSV`:**  
+```csharp
+ if (order != null)
+            {
+                string subject = "💕💕💕 Đặt Hàng Thành Công - Thiên Ân Store 💕💕💕";
+                string message = $@"
+                <h2>💌Cảm ơn bạn đã đặt hàng tại Thiên Ân Store!💌</h2>
+                <p>🎁 Đơn hàng #{order.Id} đã được tạo thành công.</p>
+                <p>🎁 Địa chỉ giao hàng: {order.Address}</p>
+                <p>🎁 Tổng số lượng: {order.TotalQuantity}</p>
+                <p>🎁 Tổng giá: {order.TotalPrice:n0}đ</p>
+                <p>Chúng tôi sẽ liên hệ với bạn sớm nhất để giao hàng ❤️.</p>";
+
+                await _emailSender.SendEmailAsync(user.Email, subject, message);
+            }
+```
+
+---
+

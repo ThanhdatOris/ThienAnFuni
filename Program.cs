@@ -2,7 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
 using ThienAnFuni.Helpers;
+using ThienAnFuni.Services; 
+using ThienAnFuni.Configurations;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// SendMail
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<ThienAnFuni.Services.IEmailSender, EmailSender>();
 
 // Load configurations from appsettings.json and appsettings.Local.json
 builder.Configuration
@@ -31,14 +38,15 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;  // Không yêu cầu ký tự không phải chữ cái
     options.Password.RequiredLength = 6;  // Độ dài mật khẩu tối thiểu
     options.Password.RequiredUniqueChars = 1;  // Số ký tự duy nhất tối thiểu
+    options.SignIn.RequireConfirmedEmail = false; // Không yêu cầu xác thực email
 })
-.AddEntityFrameworkStores<TAF_DbContext>()  // Thay <TAF_DbContext> bằng DbContext của bạn
+.AddEntityFrameworkStores<TAF_DbContext>()  
 .AddDefaultTokenProviders();
 
 // Không có quyền thì bị đá vào Controller Account - Action:AccessDenied
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.AccessDeniedPath = "/Account/AccessDenied";  // Trang xử lý khi bị từ chối quyền truy cập
+    options.AccessDeniedPath = "/Account/AccessDenied";  // Sẽ đá về UI này khi không đủ quyền truy cập
 });
 
 // Add session 
@@ -74,12 +82,22 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseStaticFiles(); // cho phép truy cập tệp tĩnh
 
 app.UseSession(); // Session
 
 app.UseAuthorization();
 
 app.UseWebSockets(); //  UseWebSockets
+
+// Error 404
+app.UseStatusCodePages(async context =>
+{
+    if (context.HttpContext.Response.StatusCode == 404)
+    {
+        context.HttpContext.Response.Redirect("/Account/Error404");
+    }
+});
 
 // Role sẽ được tạo khi app nó chạy nha bà con
 using (var scope = app.Services.CreateScope())
@@ -92,14 +110,12 @@ using (var scope = app.Services.CreateScope())
     await SeedRolesAndUsers(userManager, roleManager);
 }
 
-
 // Tham số động
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
 
 async Task SeedRolesAndUsers(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
 {

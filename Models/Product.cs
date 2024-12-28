@@ -34,9 +34,9 @@ namespace ThienAnFuni.Models
         public DateOnly? CreatedDate { get; set; }
         [Required]
         [Display(Name = "Trạng thái")]
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
         //[Required]
-        public bool? IsImport { get; set; } = false;
+        public bool IsImport { get; set; }
         public int? CategoryId { get; set; }
         public virtual Category? Category { get; set; }
         public virtual ICollection<OrderDetail>? OrderItems { get; set; }

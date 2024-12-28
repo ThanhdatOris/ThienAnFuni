@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,12 @@ namespace ThienAnFuni.Controllers
     public class SaleStaffsController : Controller
     {
         private readonly TAF_DbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public SaleStaffsController(TAF_DbContext context)
+        public SaleStaffsController(TAF_DbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: SaleStaffs
@@ -27,8 +30,8 @@ namespace ThienAnFuni.Controllers
             ViewData["ActiveMenu"] = "SaleStaff";
 
             return View(await _context.SaleStaffs.Where(s => s.IsActive == true).ToListAsync());
-        }       
-        
+        }
+
         public async Task<IActionResult> ListDeleted()
         {
             ViewData["ActiveMenu"] = "SaleStaff";
@@ -67,16 +70,39 @@ namespace ThienAnFuni.Controllers
         // POST: SaleStaffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,Username,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
+        public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,UserName,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 
             if (ModelState.IsValid)
             {
-                saleStaff.IsActive = true; // Mặc định là true khi tạo mới
-                _context.Add(saleStaff);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Kiểm tra nếu CCCD hoặc số điện thoại đã tồn tại trong bảng Users
+                var existingStaff = await _context.Users
+                    .Where(u => (u.CitizenId == saleStaff.CitizenId || u.PhoneNumber == saleStaff.PhoneNumber) && u is SaleStaff)
+                    .FirstOrDefaultAsync();
+
+                if (existingStaff != null)
+                {
+                    // Thêm thông báo lỗi vào TempData để hiển thị trong view
+                    TempData["ErrorMessage"] = "Nhân viên với CCCD hoặc số điện thoại này đã tồn tại.";
+                    return RedirectToAction("Create");
+                }
+
+                // Cấu hình các thuộc tính mặc định
+                saleStaff.IsActive = true;
+                saleStaff.StartDate = DateTime.Now;
+
+                // Tạo tài khoản thông qua UserManager sẽ chính xác và tiện lợi hơn
+                var result = await _userManager.CreateAsync(saleStaff, saleStaff.PhoneNumber); // Mật khẩu mặc định là số điện thoại
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(saleStaff, ConstHelper.RoleSaleStaff);
+                    return RedirectToAction(nameof(Index));
+                }
+
+                // Truyền lỗi bằng kỹ thuật TempData
+                TempData["ErrorMessage"] = string.Join("<br>", result.Errors.Select(e => e.Description));
             }
             return View(saleStaff);
         }
@@ -191,9 +217,9 @@ namespace ThienAnFuni.Controllers
             var saleStaff = await _context.SaleStaffs.FindAsync(id);
             if (saleStaff != null)
             {
-                saleStaff.IsActive = false; 
+                saleStaff.IsActive = false;
                 saleStaff.EndDate = DateTime.Now;
-                _context.SaleStaffs.Update(saleStaff); 
+                _context.SaleStaffs.Update(saleStaff);
                 await _context.SaveChangesAsync();
             }
 

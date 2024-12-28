@@ -1,27 +1,5 @@
 ﻿@model List<Category>
 
-
-@* <ul class="category-list category boder-shadow-cate">
-    @foreach (var category in Model)
-    {
-        <li>
-            <a class="pl-3" href="#">@category.Name</a>
-            @if (category.SubCategories != null && category.SubCategories.Any())
-            {
-                <ul class="subcategories">
-                    @foreach (var subCategory in category.SubCategories)
-                    {
-                        <li>
-                            <a class="pl-5" href="#">@subCategory.Name</a>
-                        </li>
-                    }
-                </ul>
-            }
-        </li>
-    }
-</ul>
- *@
-
 <ul class="category-list category boder-shadow-cate px-3">
     @foreach (var category in Model)
     {

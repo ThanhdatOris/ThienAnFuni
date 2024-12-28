@@ -239,41 +239,72 @@ namespace ThienAnFuni.Controllers
             return Json(new { exists = customer != null });
         }
 
+        #region old AddNewCustomer
+        //[HttpPost]
+        //public async Task<IActionResult> AddNewCustomer(string fullname, string phone)
+        //{
+        //    // Kiểm tra xem số điện thoại đã tồn tại trong cơ sở dữ liệu chưa
+        //    if (await _context.Users.AnyAsync(u => u.PhoneNumber == phone))
+        //        return Json(new { success = false, message = "Số điện thoại đã tồn tại" });
+
+        //    // Khởi tạo đối tượng Customer
+        //    var customer = new Customer
+        //    {
+        //        FullName = fullname,
+        //        PhoneNumber = phone,
+        //        UserName = phone, // Sử dụng sđt để đăng nhập
+        //    };
+        //    // MK: !aK + phone
+
+        //    // Tạo tài khoản cho khách hàng với mật khẩu mặc định là số điện thoại
+        //    var result = await _userManager.CreateAsync(customer, phone);
+
+        //    // Kiểm tra xem việc tạo tài khoản có thành công không
+        //    if (!result.Succeeded)
+        //    {
+        //        // Tạo thông báo lỗi với các lỗi từ Identity
+        //        var errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+
+        //        // Trả về lỗi với mã trạng thái 400 và thông điệp lỗi
+        //        return BadRequest(new { success = false, message = "Lỗi khi tạo tài khoản: " + errorMessage });
+        //    }
+
+        //    // Không cần thêm lại vào _context.Users nếu CreateAsync đã thành công
+        //    await _context.SaveChangesAsync();
+
+        //    // Trả về thông tin khách hàng nếu thành công
+        //    return Json(new { success = true, customer });
+        //}
+        #endregion
         [HttpPost]
         public async Task<IActionResult> AddNewCustomer(string fullname, string phone)
         {
-            // Kiểm tra xem số điện thoại đã tồn tại trong cơ sở dữ liệu chưa
             if (await _context.Users.AnyAsync(u => u.PhoneNumber == phone))
                 return Json(new { success = false, message = "Số điện thoại đã tồn tại" });
 
-            // Khởi tạo đối tượng Customer
             var customer = new Customer
             {
                 FullName = fullname,
                 PhoneNumber = phone,
-                UserName = phone, // Sử dụng số điện thoại làm tên đăng nhập
+                UserName = phone,
+                //EmailConfirmed = true // Xác nhận email ngay lập tức
             };
-            // MK: !aK + phone
 
-            // Tạo tài khoản cho khách hàng với mật khẩu mặc định là số điện thoại
-            var result = await _userManager.CreateAsync(customer, "!aK" + phone);
+            var result = await _userManager.CreateAsync(customer, phone);
 
-            // Kiểm tra xem việc tạo tài khoản có thành công không
             if (!result.Succeeded)
             {
-                // Tạo thông báo lỗi với các lỗi từ Identity
                 var errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-
-                // Trả về lỗi với mã trạng thái 400 và thông điệp lỗi
                 return BadRequest(new { success = false, message = "Lỗi khi tạo tài khoản: " + errorMessage });
             }
 
-            // Không cần thêm lại vào _context.Users nếu CreateAsync đã thành công
-            await _context.SaveChangesAsync();
+            // Gán vai trò mặc định là Customer
+            await _userManager.AddToRoleAsync(customer, ConstHelper.RoleCustomer);
 
-            // Trả về thông tin khách hàng nếu thành công
-            return Json(new { success = true, customer });
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Khách hàng đã được thêm thành công!" });
         }
+
 
         // Phương thức tạo đơn hàng
         [HttpPost]
@@ -308,7 +339,6 @@ namespace ThienAnFuni.Controllers
 
             try
             {
-
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user == null)
@@ -334,10 +364,8 @@ namespace ThienAnFuni.Controllers
                     InvoiceDate = DateTime.Now,
                     SaleStaffId = userId,  // Có cần kiểm tra xem admin đã đăng nhập ?
                     ManagerId = userId,
-                    OrderStatus = (int)ConstHelper.OrderStatus.Pending
-
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success
                 };
-
 
                 // Kiểm tra nếu người dùng là SaleStaff
                 if (userRoles.Contains(ConstHelper.RoleSaleStaff))

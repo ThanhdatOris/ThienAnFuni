@@ -80,11 +80,13 @@
 
                         <div class="form-group col-md-3">
                             <label class="control-label">Kích hoạt</label>
-                            <select asp-for="IsActive" class="form-control">
-                                <option value="true">Có</option>
+                            <select asp-for="IsActive" class="form-control" disabled>
+                                <option value="true" selected>Có</option>
                                 <option value="false">Không</option>
                             </select>
+                            <input type="hidden" asp-for="IsActive">
                         </div>
+
 
 
                         <div class="form-group col-md-12">

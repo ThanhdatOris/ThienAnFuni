@@ -31,8 +31,8 @@ namespace ThienAnFuni.Controllers
             ViewData["ActiveMenu"] = "Dashboard";
 
             var recentSalesData = await _context.Orders
-                .Where(o => o.OrderDate >= DateTime.Now.AddMonths(-6))
-                .ToListAsync(); // Lấy dữ liệu từ cơ sở dữ liệu trước
+                .Where(o => o.InvoiceDate >= DateTime.Now.AddMonths(-7))
+                .ToListAsync();
 
             var groupedSalesData = recentSalesData
                 .GroupBy(o => new { o.OrderDate.Year, o.OrderDate.Month })
@@ -41,31 +41,66 @@ namespace ThienAnFuni.Controllers
                     Date = new DateTime(g.Key.Year, g.Key.Month, 1),
                     Amount = g.Sum(o => o.TotalPrice)
                 })
-                .OrderByDescending(s => s.Date)
+                .OrderBy(s => s.Date)
                 .ToList();
 
             var totalCustomers = _context.Customers.Count();
             var totalProducts = _context.Products.Count();
             var totalOrders = _context.Orders.Count();
 
-            var lowStockProducts = _context.Products
-                .Join(_context.Goods,
-                      product => product.Id,
-                      goods => goods.ProductId,
-                      (product, goods) => new { product, goods })
-                .Where(pg => pg.goods.Quantity < 10)
-                .Count();
+            //var recentOrders = await _context.Orders
+            //    .OrderBy(o => o.InvoiceDate)
+            //    .Take(6)
+            //    .Select(o => new OrderViewModel
+            //    {
+            //        Id = o.Id,
+            //        CustomerName = o.Customer.FullName,
+            //        TotalAmount = o.TotalPrice,
+            //        Status = o.OrderStatus,
+            //        Date = (DateTime)o.InvoiceDate
+            //    }).ToListAsync();
 
-            var recentOrders = _context.Orders
-                .OrderByDescending(o => o.OrderDate)
+            var recentOrders = await  _context.Orders
+                .OrderBy(o => o.InvoiceDate)
                 .Take(5)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.Id,
-                    CustomerName = o.Customer.FullName,
+                    CustomerName = o.Customer.FullName ?? "",
                     TotalAmount = o.TotalPrice,
-                    Status = o.OrderStatus
-                }).ToList();
+                    Status = o.OrderStatus,
+                    Date = o.InvoiceDate.HasValue ? o.InvoiceDate.Value : default(DateTime)
+                }).ToListAsync();
+
+            //var lowStockProducts = await _context.Products
+            //    .Join(_context.Goods,
+            //          product => product.Id,
+            //          goods => goods.ProductId,
+            //          (product, goods) => new { product, goods })
+            //    .Where(pg => pg.goods.Quantity < 10)
+            //    .CountAsync();
+
+            var lowStockProducts = await _context.Products
+                .Join(_context.Goods,
+                      product => product.Id,
+                      goods => goods.ProductId,
+                      (product, goods) => new { product, goods })
+                .GroupJoin(_context.OrderDetails,
+                           pg => pg.product.Id,
+                           orderDetail => orderDetail.ProductId,
+                           (pg, orderDetails) => new { pg.product, pg.goods, orderDetails })
+                .SelectMany(pg => pg.orderDetails.DefaultIfEmpty(),
+                            (pg, orderDetail) => new { pg.product, pg.goods, orderDetail })
+                .GroupBy(pg => new { pg.product.Id, pg.goods.Quantity })
+                .Select(g => new
+                {
+                    ProductId = g.Key.Id,
+                    RemainingQuantity = g.Key.Quantity - g.Sum(pg => pg.orderDetail != null ? pg.orderDetail.Quantity : 0)
+                })
+                .Where(g => g.RemainingQuantity < 10)
+                .CountAsync();
+
+
 
             var newCustomers = _context.Customers
                 .Join(_context.Users,

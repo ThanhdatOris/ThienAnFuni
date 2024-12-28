@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\customerThienAn\img\NewFolder\**" />
+    <Content Remove="wwwroot\customerThienAn\img\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\customerThienAn\img\NewFolder\**" />
+    <None Remove="wwwroot\customerThienAn\img\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />

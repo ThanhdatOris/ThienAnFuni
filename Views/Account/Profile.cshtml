@@ -17,62 +17,90 @@
 }
 
 <div class="container" style="margin-top: 30px;">
+    @if (ViewData.ModelState.ErrorCount > 0)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
     <form class="mb-4" asp-action="Profile" method="post">
         <div class="row">
             <!-- Tên tài khoản -->
             <div class="form-group col-md-6 mb-3">
-                <label for="UserName">Tên tài khoản:</label>
+                <label for="UserName">Tên tài khoản</label>
                 <input type="text" id="UserName" name="UserName" class="form-control" value="@Model.UserName" readonly />
             </div>
 
             <!-- Họ tên -->
             <div class="form-group col-md-6 mb-3">
-                <label for="FullName">Họ và tên:</label>
+                <label for="FullName">Họ và tên</label>
                 <input type="text" id="FullName" name="FullName" class="form-control" value="@Model.FullName" />
             </div>
         </div>
 
         <div class="row">
-            <!-- Số điện thoại -->
+            <!-- Email -->
             <div class="form-group col-md-6 mb-3">
-                <label for="PhoneNumber">Số điện thoại:</label>
-                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" />
+                <label for="Email">Email</label>
+                <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" />
             </div>
 
-            <!-- Địa chỉ -->
+            <!-- Số điện thoại -->
             <div class="form-group col-md-6 mb-3">
-                <label for="Address">Địa chỉ:</label>
-                <input type="text" id="Address" name="Address" class="form-control" value="@Model.Address" />
+                <label for="PhoneNumber">Số điện thoại</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" />
             </div>
         </div>
 
         <div class="row">
-            <!-- Giới tính -->
+            <!-- Địa chỉ -->
             <div class="form-group col-md-6 mb-3">
-                <label for="Gender">Giới tính:</label>
-                <input type="text" id="Gender" name="Gender" class="form-control" value="@Model.Gender" />
+                <label for="Address">Địa chỉ</label>
+                <input type="text" id="Address" name="Address" class="form-control" value="@Model.Address" />
             </div>
 
-            <!-- Ngày sinh -->
+            <!-- Giới tính -->
             <div class="form-group col-md-6 mb-3">
-                <label for="DateOfBirth">Ngày sinh:</label>
-                <input type="date" id="DateOfBirth" name="DateOfBirth" class="form-control" value="@Model.DateOfBirth?.ToString("yyyy-MM-dd")" />
+                <label for="Gender">Giới tính</label>
+                <input type="text" id="Gender" name="Gender" class="form-control" value="@Model.Gender" />
             </div>
         </div>
-            
+
+        <div class="row">
+            <!-- Ngày sinh -->
+            <div class="form-group col-md-6 mb-3">
+                <label for="DateOfBirth">Ngày sinh</label>
+                <input type="date" id="DateOfBirth" name="DateOfBirth" class="form-control" value="@Model.DateOfBirth?.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <!-- Mật khẩu cũ -->
+            <div class="form-group col-md-6 mb-3">
+                <label for="OldPassword">Mật khẩu cũ <span class="text-danger">*</label>
+                <input type="password" id="OldPassword" name="oldPassword" class="form-control" required />
+            </div>
+        </div>
+
         <div class="row">
             <!-- Mật khẩu mới -->
             <div class="form-group col-md-6 mb-3">
-                <label for="NewPassword">Mật khẩu mới:</label>
+                <label for="NewPassword">Mật khẩu mới <span class="text-danger">*</span></label>
                 <input type="password" id="NewPassword" name="NewPassword" class="form-control" />
             </div>
-        </div>
 
-        <div class="row">
             <!-- Xác nhận mật khẩu -->
             <div class="form-group col-md-6 mb-3">
-                <label for="ConfirmPassword">Xác nhận mật khẩu:</label>
+                <label for="ConfirmPassword">Xác nhận mật khẩu <span class="text-danger">*</span></label>
                 <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" />
+                <span id="confirmPasswordError" class="text-danger"></span>
             </div>
         </div>
 
@@ -82,3 +110,51 @@
 
     </form>
 </div>
+
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: '@Html.Raw(TempData["SuccessMessage"])'
+            });
+        </script>
+    }
+
+
+    <script>
+        // Lắng nghe sự kiện khi người dùng nhập vào các trường mật khẩu
+        document.getElementById("NewPassword").addEventListener("input", validatePasswords);
+        document.getElementById("ConfirmPassword").addEventListener("input", validatePasswords);
+
+        function validatePasswords() {
+            var newPassword = document.getElementById("NewPassword").value;
+            var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+            var errorElement = document.getElementById("confirmPasswordError");
+
+            // Kiểm tra nếu mật khẩu mới và xác nhận mật khẩu không khớp
+            if (newPassword !== confirmPassword) {
+                errorElement.textContent = "Mật khẩu xác nhận không khớp!";
+            } else {
+                errorElement.textContent = ""; // Xóa thông báo lỗi nếu mật khẩu khớp
+            }
+        }
+
+        // Kiểm tra khi form submit
+        document.querySelector("form").addEventListener("submit", function (event) {
+            var newPassword = document.getElementById("NewPassword").value;
+            var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+            if (newPassword !== confirmPassword) {
+                event.preventDefault(); // Ngừng submit form
+                document.getElementById("confirmPasswordError").textContent = "Mật khẩu xác nhận không khớp!";
+            }
+        });
+    </script>
+}

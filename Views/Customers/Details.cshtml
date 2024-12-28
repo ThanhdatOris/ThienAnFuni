@@ -49,13 +49,13 @@
                 } *@
                 <h3 class="text-center">Thông tin khách hàng</h3>
                 <dl class="row">
-                    <dt class="col-sm-3 font-weight-bold">
-                        Mã KH
+                    @* <dt class="col-sm-3 font-weight-bold">
+                        Mã KH *@
                        @*  @Html.DisplayNameFor(model => model.Id) *@  <!-- Hiển thị nhãn: "Id" -->
-                    </dt>
+                    @* </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.Id)  <!-- Hiển thị giá trị của "Id" -->
-                    </dd>
+                    </dd> *@
 
 
                     <dt class="col-sm-3 font-weight-bold">
@@ -123,6 +123,9 @@
                 </dl>
             </div>
         </div>
+            <div class="form-group">
+                <a class="btn btn-dark" asp-action="Index"> Trở về</a>
+            </div>
     </div>
 </div>
 

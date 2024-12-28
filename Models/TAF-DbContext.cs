@@ -76,7 +76,9 @@ namespace ThienAnFuni.Models
                     Gender = "Nữ",
                     DateOfBirth = new DateTime(1995, 5, 12),
                     CitizenId = "999456789",
-                    IsActive = true
+                    IsActive = true,
+                    Email = "tramanh@gmail.com",
+                    StartDate = new DateTime(2021, 5, 12)
                 },
                 new SaleStaff
                 {
@@ -90,7 +92,9 @@ namespace ThienAnFuni.Models
                     Gender = "Nam",
                     DateOfBirth = new DateTime(1990, 8, 25),
                     CitizenId = "9876234521",
-                    IsActive = true
+                    IsActive = true,
+                    Email = "",
+                    StartDate = new DateTime(2023, 5, 12)
                 }
             );
 
@@ -119,24 +123,25 @@ namespace ThienAnFuni.Models
                     Address = "456 Hậu Giang",
                     Gender = "Nam",
                     DateOfBirth = new DateTime(1990, 8, 25),
-                    IsActive = true
+                    IsActive = true,
+                    Email = "Khoalmht0@gmail.com"
                 }
             );
 
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Phòng khách", Slug = "Phòng khách".ToSlug(), IsActive = true },
+                new Category { Id = 1, Name = "Phòng khách", Slug = "Phòng khách".ToSlug(), IsActive = true, Image = "cat-1.jpg" },
                 new Category { Id = 2, Name = "Ghế sofa", Slug = "Ghế sofa".ToSlug(), ParentId = 1, IsActive = true },
                 new Category { Id = 3, Name = "Bàn sofa", Slug = "Bàn sofa".ToSlug(), ParentId = 1, IsActive = true },
 
-                new Category { Id = 4, Name = "Phòng ngủ", Slug = "Phòng ngủ".ToSlug(), IsActive = true },
+                new Category { Id = 4, Name = "Phòng ngủ", Slug = "Phòng ngủ".ToSlug(), IsActive = true, Image = "cat-2.jpg" },
                 new Category { Id = 5, Name = "Giường", Slug = "Giường".ToSlug(), ParentId = 4, IsActive = true },
                 new Category { Id = 6, Name = "Bàn Trang Điểm", Slug = "Bàn Trang Điểm".ToSlug(), ParentId = 4, IsActive = true },
 
-                new Category { Id = 7, Name = "Phòng làm việc", Slug = "Phòng làm việc".ToSlug(), IsActive = true },
+                new Category { Id = 7, Name = "Phòng làm việc", Slug = "Phòng làm việc".ToSlug(), IsActive = true, Image = "cat-3.jpg" },
                 new Category { Id = 8, Name = "Bàn làm việc", Slug = "Bàn làm việc".ToSlug(), ParentId = 7, IsActive = true },
                 new Category { Id = 9, Name = "Ghế văn phòng", Slug = "Ghế văn phòng".ToSlug(), ParentId = 7, IsActive = true },
 
-                new Category { Id = 10, Name = "Phòng ăn", Slug = "Phòng ăn".ToSlug(), IsActive = true },
+                new Category { Id = 10, Name = "Phòng ăn", Slug = "Phòng ăn".ToSlug(), IsActive = true, Image = "cat-4.jpg" },
                 new Category { Id = 11, Name = "Bàn ăn", Slug = "Bàn ăn".ToSlug(), ParentId = 10, IsActive = true },
                 new Category { Id = 12, Name = "Ghế ăn", Slug = "Ghế ăn".ToSlug(), ParentId = 10, IsActive = true }
             );
@@ -182,10 +187,10 @@ namespace ThienAnFuni.Models
                     Name = "Ghế Đôn Sofa HOBRO 301",
                     Price = 3990000,
                     Unit = "Cái",
-                    Material = "Vải Polyester: Ghế có màu xám đậm nâng tầm thẩm mỹ và không gian nội thất phòng khách của bạn; Gỗ cao su tự nhiên: Nội thất Thiên Ân sử dụng chất liệu gỗ cao su giúp ghế sofa gỗ HOBRO có khả năng chịu lực tốt và độ bền cao.",
+                    Material = "<p><strong>Vải Polyester</strong>: Ghế c&oacute; m&agrave;u x&aacute;m đậm&nbsp;n&acirc;ng tầm thẩm mỹ v&agrave; kh&ocirc;ng gian nội thất ph&ograve;ng kh&aacute;ch của bạn;</p>\r\n\r\n<p><strong>Gỗ cao su tự nhi&ecirc;n:</strong> Nội thất Thi&ecirc;n &Acirc;n sử dụng chất liệu gỗ cao su gi&uacute;p ghế sofa gỗ HOBRO c&oacute; khả năng chịu lực tốt v&agrave; độ bền cao.</p>\r\n",
                     Dimension = "900 x 900 x 400 cm",
                     Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
-                    Color = "Màu nâu",
+                    Color = "Nâu",
                     Brand = "Sofaland",
                     WarrantyPeriod = "1 năm",
                     Description = "Dễ dàng vệ sinh: Nệm Sofa bằng vải polyester chống bụi, kháng ẩm mốc và có thể dễ dàng tháo bọc nệm để vệ sinh. Đệm ghế sofa có màu xám tạo nên vẻ hiện đại nhưng không kém phần sang trọng cho căn phòng của bạn.; Ghế Sofa đơn có kích thước tiêu chuẩn: Ghế Đôn có kích thước rộng rãi , với thiết kế tinh giản giúp chúng gọn nhẹ và tiết kiệm được diện tích căn phòng, bạn cũng có thể ngồi một cách thoải mái và bài trí trong nhiều không gian khác nhau.; Mút đệm cao cấp, dày dặn và chống cháy: Độ bền cao, chống xẹp lún và đạt tiêu chuẩn của Mỹ về khả năng chống cháy.; Độ cao chân ghế vừa phải: Chân ghế có chiều cao hợp lý nên Robot hút bụi có thể lau dọn phía dưới sàn một cách dễ dàng; Chân ghế cao su: Sử dụng chất liệu gỗ cao su tự nhiên với khả năng chịu lực cao.",
@@ -200,7 +205,7 @@ namespace ThienAnFuni.Models
                     Name = "Ghế Sofa HOBRO 301 (180)",
                     Price = 13990000,
                     Unit = "Cái",
-                    Material = "Vải Polyester: Ghế có màu xám đậm nâng tầm thẩm mỹ và không gian nội thất phòng khách nhà bạn.; Gỗ cao su tự nhiên: Nội thất Thiên Ân sử dụng chất liệu gỗ cao su giúp ghế sofa gỗ VLINE có khả năng chịu lực tốt và độ bền cao.",
+                    Material = "<p><strong>Vải Polyester:</strong> Ghế c&oacute; m&agrave;u x&aacute;m đậm n&acirc;ng tầm thẩm mỹ v&agrave; kh&ocirc;ng gian nội thất ph&ograve;ng kh&aacute;ch nh&agrave; bạn.</p>\r\n\r\n<p><strong>Gỗ cao su tự nhi&ecirc;n:</strong> Nội thất Thi&ecirc;n &Acirc;n sử dụng chất liệu gỗ cao su gi&uacute;p ghế sofa gỗ VLINE c&oacute; khả năng chịu lực tốt v&agrave; độ bền cao.</p>\r\n",
                     Dimension = "900 x 1800 x 700 cm",
                     Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
                     Color = "Nâu",
@@ -220,7 +225,7 @@ namespace ThienAnFuni.Models
                      Name = "Bàn Sofa HOBRO 301",
                      Price = 1990000,
                      Unit = "Cái",
-                     Material = "Sử dụng gỗ tràm tự nhiên đảm bảo về độ chắc chắn cao, chống chông vênh, mối mọt cho tủ đầu giường nhà bạn.; MDF veneer gỗ tràm/ PB: Sử dụng MDF veneer gỗ tràm giúp tăng giá trị của tủ đầu giường HOBRO đặc biệt đem tới hiệu ứng giác quang học và màu sắc vô cùng độc đáo. Đây cũng là đặc trưng của bộ sưu tập HOBRO. Hơn nữa, THIÊN ÂN sử dụng MDF và PB đạt chuẩn CARB-P2 an toàn tuyệt đối cho người sức khỏe người dùng an toàn cho cả gia đình bạn.",
+                     Material = "<p>Sử dụng gỗ tr&agrave;m tự nhi&ecirc;n đảm bảo về độ chắc chắn cao, chống ch&ocirc;ng v&ecirc;nh, mối mọt cho tủ đầu giường nh&agrave; bạn.</p>\r\n\r\n<p><strong>MDF veneer gỗ tr&agrave;m/ PB:</strong> Sử dụng MDF veneer gỗ tr&agrave;m gi&uacute;p tăng gi&aacute; trị của tủ đầu giường HOBRO đặc biệt đem tới hiệu ứng gi&aacute;c quang học v&agrave; m&agrave;u sắc v&ocirc; c&ugrave;ng độc đ&aacute;o.</p>\r\n\r\n<p>Đ&acirc;y cũng l&agrave; đặc trưng của bộ sưu tập HOBRO. Hơn nữa, THI&Ecirc;N &Acirc;N sử dụng MDF v&agrave; PB đạt chuẩn CARB-P2 an to&agrave;n tuyệt đối cho người sức khỏe người d&ugrave;ng an to&agrave;n cho cả gia đ&igrave;nh bạn.</p>\r\n",
                      Dimension = "400 x 900 400 cm",
                      Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
                      Color = "Nâu",
@@ -230,7 +235,7 @@ namespace ThienAnFuni.Models
                      IsActive = true,
                      IsImport = true,
                      MainImg = "banSofa_HOBRO301.jpg",
-                     CategoryId = 2
+                     CategoryId = 3
                  },
                 new Product
                 {
@@ -238,17 +243,17 @@ namespace ThienAnFuni.Models
                     Name = "Bàn Trà Gỗ THIÊN ÂN OSLO 901",
                     Price = 2190000,
                     Unit = "Cái",
-                    Material = "Gỗ cao su tự nhiên: Bàn trà chữ nhật OSLO làm từ gỗ cao su giúp sản phẩm có khả năng chịu lực tốt và độ bền cao.; Gỗ công nghiệp, Veneer gỗ sồi: Sử dụng chất liệu gỗ công nghiệp PB đạt chuẩn CARB-P2 và chứng nhận FSC thân thiện với môi trường.;",
+                    Material = "<p><strong>Gỗ cao su tự nhi&ecirc;n: </strong>B&agrave;n tr&agrave; chữ nhật OSLO l&agrave;m từ gỗ cao su gi&uacute;p sản phẩm c&oacute; khả năng chịu lực tốt v&agrave; độ bền cao.</p>\r\n\r\n<p><strong>Gỗ c&ocirc;ng nghiệp, Veneer gỗ sồi</strong>: Sử dụng chất liệu gỗ c&ocirc;ng nghiệp PB đạt chuẩn CARB-P2 v&agrave; chứng nhận FSC th&acirc;n thiện với m&ocirc;i trường.</p>\r\n",
                     Dimension = "Dài 95cm x Rộng 50cm x Cao 42cm",
                     Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
-                    Color = "Tự nhiên",
+                    Color = "Nâu",
                     Brand = "Woodland",
                     WarrantyPeriod = "2 năm",
                     Description = "Thiết kế tối ưu tiện ích: Bàn trà có thiết kế thêm kệ ngăn bên dưới gia tăng khả năng chứa đồ đầy tiện lợi.; Mặt bàn Veneer gỗ sồi: Bề mặt sản phẩm được xử lý nhẵn mịn, veneer thêm vân gỗ sồi mang màu sắc đẹp tự nhiên.; Các góc cạnh bàn được bo tròn: Từng đường nét góc cạnh được hoàn thiện một cách tỉ mỉ đem lại vẻ đẹp hoàn thiện cho sản phẩm.; Chân bàn gỗ cao su: Phần chân bàn trà sofa được làm hoàn toàn bằng gỗ cao su tự nhiên giúp khung bàn hoàn toàn chắc chắn, chịu tải trọng lớn từ nhiều món đồ trang trí như chậu cây, sách báo...; Độ rộng giữa kệ ngăn và mặt bàn rộng: Khoảng cách giữa ngăn kệ và mặt bàn khá lớn, thuận tiện cho việc vệ sinh, lau chùi.",
                     IsActive = true,
                     IsImport = true,
                     MainImg = "banSofa_OSLO901.jpg",
-                    CategoryId = 2
+                    CategoryId = 3
                 },
 
                 // Phòng ngủ: 
@@ -259,7 +264,7 @@ namespace ThienAnFuni.Models
                     Name = "Giường Ngủ Gỗ Tự Nhiên Mây Mắt Cáo THIÊN ÂN FIJI 401",
                     Price = 12490000,
                     Unit = "Cái",
-                    Material = "Gỗ tràm: Giường ngủ được chế tác từ chất liệu gỗ tràm giúp gia tăng khả năng chịu lực tốt và độ bền cao, đảm bảo sự vững chắc và chống cong vênh, mối mọt trong suốt thời gian sử dụng.; Mây tre đan: Đầu giường sử dụng bằng mây mắt cáo tự nhiên chất lượng cao, chống mối mọt, côn trùng được làm thủ công từ nghệ nhân và thợ lành nghề giúp tạo cảm giác thoải mái, gần gũi với thiên nhiên cho căn phòng của bạn.",
+                    Material = "<p><strong>Gỗ tr&agrave;m: </strong>Giường ngủ được chế t&aacute;c từ chất liệu gỗ tr&agrave;m gi&uacute;p gia tăng khả năng chịu lực tốt v&agrave; độ bền cao, đảm bảo sự vững chắc v&agrave; chống cong v&ecirc;nh, mối mọt trong suốt thời gian sử dụng.</p>\r\n\r\n<p><strong>M&acirc;y tre đan: </strong>Đầu giường sử dụng bằng m&acirc;y mắt c&aacute;o tự nhi&ecirc;n chất lượng cao, chống mối mọt, c&ocirc;n tr&ugrave;ng được l&agrave;m thủ c&ocirc;ng từ nghệ nh&acirc;n v&agrave; thợ l&agrave;nh nghề gi&uacute;p tạo cảm gi&aacute;c thoải m&aacute;i, gần gũi với thi&ecirc;n nhi&ecirc;n cho căn ph&ograve;ng của bạn.</p>\r\n",
                     Dimension = " Dài 210cm x Rộng 167/187cm x Cao 90cm (1m6)",
                     Standard = "(*) Tiêu chuẩn E1 Châu Âu, đảm bảo không phát thải khí độc hại, thân thiện với môi trường",
                     Color = "Nâu",
@@ -277,7 +282,7 @@ namespace ThienAnFuni.Models
                     Name = "Giường Ngủ Gỗ Cao Su THIÊN ÂN HOBRO 301",
                     Price = 11890000,
                     Unit = "Cái",
-                    Material = "Gỗ cao su tự nhiên: Sử dụng chất liệu gỗ cao su giúp giuờng ngủ có khả năng chịu lực tốt và độ bền cao.; Gỗ công nghiệp Plywood: Tấm phảm sử dụng chất liệu Plywood 12mm theo tiêu chuẩn CARBP2 vừa thân thiện với môi trường, đảm bảo sức khỏe và đặc biệt độ chịu lực tại 1 khu vực với diện tích 400 x 488mm lên tới 175kg khi dùng nệm trên 15cm.",
+                    Material = "<p><strong>Gỗ cao su tự nhi&ecirc;n: </strong>Sử dụng chất liệu gỗ cao su gi&uacute;p giuờng ngủ c&oacute; khả năng chịu lực tốt v&agrave; độ bền cao.</p>\r\n\r\n<p><strong>Gỗ c&ocirc;ng nghiệp Plywood:</strong> Tấm phảm sử dụng chất liệu Plywood 12mm theo ti&ecirc;u chuẩn CARBP2 vừa th&acirc;n thiện với m&ocirc;i trường, đảm bảo sức khỏe v&agrave; đặc biệt độ chịu lực tại 1 khu vực với diện t&iacute;ch 400 x 488mm l&ecirc;n tới 175kg khi d&ugrave;ng nệm tr&ecirc;n 15cm.</p>\r\n",
                     Dimension = "Dài 210cm x Rộng 171/ 191 cm; Cao đến đầu giường 90 cm; Gầm giường cao 16cm (1m8)",
                     Standard = "(*) Chứng nhận FSC từ tổ chức quốc tế, đảm bảo nguồn gốc gỗ bền vững",
                     Color = "Màu tự nhiên",
@@ -304,7 +309,7 @@ namespace ThienAnFuni.Models
                      WarrantyPeriod = "2 năm",
                      Description = "",
                      IsActive = true,
-                     IsImport = false,
+                     IsImport = true,
                      MainImg = "btd_GoDN_VIENNA202_nau.jpg",
                      CategoryId = 6
                  },
@@ -324,7 +329,7 @@ namespace ThienAnFuni.Models
                 WarrantyPeriod = "2 năm",
                 Description = "default.png",
                 IsActive = true,
-                IsImport = false,
+                IsImport = true,
                 MainImg = "banan_GoCaoSu_OSLO901_nau.jpg",
                 CategoryId = 11
             },
@@ -361,7 +366,7 @@ namespace ThienAnFuni.Models
                  WarrantyPeriod = "2 năm",
                  Description = "",
                  IsActive = true,
-                 IsImport = false,
+                 IsImport = true,
                  MainImg = "ghean_GoCaoSuTN_ODESSA_nau.jpg",
                  CategoryId = 12
              },
@@ -385,7 +390,7 @@ namespace ThienAnFuni.Models
               },
 
             // Phòng làm việc:
-            // Bàn làm việc 18 19
+            // Bàn làm việc id 18 19
              new Product
              {
                  Id = 18,
@@ -400,7 +405,7 @@ namespace ThienAnFuni.Models
                  WarrantyPeriod = "2 năm",
                  Description = "",
                  IsActive = true,
-                 IsImport = false,
+                 IsImport = true,
                  MainImg = "blv_FYN601_tn.jpg",
                  CategoryId = 8
              },
@@ -411,19 +416,55 @@ namespace ThienAnFuni.Models
                   Price = 13990000,
                   Unit = "Cái",
                   Material = "",
-                  Dimension = " Bàn và chân bài: Dài 120cm x Rộng 62cm x Cao 72cm; Giá đỡ ổ điện: Dài 33cm x Rộng 9.74cm x Sâu 12cm; Trọng lượng chịu tải: 50~70 kg, tối đa 100kg khi phân phối đều khối lượng trên mặt bàn (1m4)",
+                  Dimension = "Bàn và chân bài: Dài 120cm x Rộng 62cm x Cao 72cm; Giá đỡ ổ điện: Dài 33cm x Rộng 9.74cm x Sâu 12cm; Trọng lượng chịu tải: 50~70 kg, tối đa 100kg khi phân phối đều khối lượng trên mặt bàn (1m4)",
                   Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
                   Color = "Nâu",
                   Brand = "Woodland",
                   WarrantyPeriod = "2 năm",
-                  Description = "",
-                  IsActive = true,
-                  IsImport = false,
+                  Description = "", // này giữ nguyên
+                  IsActive = true, // này giữ nguyên
+                  IsImport = true, // này giữ nguyên
                   MainImg = "bmt_WORKS702_trang.jpg",
                   CategoryId = 8
-              }
-            // Ghế văn phòng 20 21
+              },
+            // Ghế văn phòng id 20 21
+             new Product
+             {
+                 Id = 20,
+                 Name = "Ghế Xoay Văn Phòng Ngả Lưng MOHO JEFE 701",
+                 Price = 2990000,
+                 Unit = "Cái",
+                 Material = "",
+                 Dimension = "Dài 47cm x Rộng 65cm x Cao 108-126cm",
+                 Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                 Color = "Đen",
+                 Brand = "Woodland",
+                 WarrantyPeriod = "2 năm",
+                 Description = "",
+                 IsActive = true,
+                 IsImport = true,
+                 MainImg = "ghexoayvp_JEFE701_den.2.jpg",
+                 CategoryId = 9
+             },
 
+             new Product
+             {
+                 Id = 21,
+                 Name = "Ghế Xoay Văn Phòng Tay Gập Thông Minh MOHO RIGA 701",
+                 Price = 1690000,
+                 Unit = "Cái",
+                 Material = "",
+                 Dimension = " Dài 52cm x Rộng 65cm x Cao 94-101cm",
+                 Standard = "(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe",
+                 Color = "Trắng",
+                 Brand = "Woodland",
+                 WarrantyPeriod = "2 năm",
+                 Description = "",
+                 IsActive = true,
+                 IsImport = true,
+                 MainImg = "ghexoayvp_RIGA701_trang.1.jpg",
+                 CategoryId = 9
+             }
             );
 
             // Seed ProductImage
@@ -476,13 +517,13 @@ namespace ThienAnFuni.Models
                     TotalPrice = 17980000,
                     TotalQuantity = 5,
                     Note = "Khách yêu cầu giao hàng nhanh.",
-                    Address = "123 Đường ABC, Quận XYZ, TP.HCM",
-                    OrderDate = DateTime.Now.AddDays(-2),
+                    Address = "123 Đường Nguyễn Bỉnh Khiêm, Quận Bình Tân, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-1).AddDays(-2),
                     OrderStatus = (int)ConstHelper.OrderStatus.Success,
                     PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
                     PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
                     InvoiceNumber = "HD0001",
-                    InvoiceDate = DateTime.Now.AddDays(-1),
+                    InvoiceDate = DateTime.Now.AddMonths(-1).AddDays(-1),
                     CustomerId = "6",
                     SaleStaffId = "3",
                     ManagerId = "1"
@@ -495,12 +536,12 @@ namespace ThienAnFuni.Models
                     TotalQuantity = 7,
                     Note = "Khách yêu cầu giao hàng vào buổi tối.",
                     Address = "456 Đường XYZ, Quận ABC, TP.HCM",
-                    OrderDate = DateTime.Now.AddDays(-1),
+                    OrderDate = DateTime.Now.AddMonths(-2).AddDays(-2),
                     OrderStatus = (int)ConstHelper.OrderStatus.Success,
                     PaymentMethod = (int)ConstHelper.PaymentMethod.Bank_transfer,
                     PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
                     InvoiceNumber = "HD0002",
-                    InvoiceDate = DateTime.Now,
+                    InvoiceDate = DateTime.Now.AddMonths(-2).AddDays(-1),
                     CustomerId = "6",
                     SaleStaffId = "3",
                     ManagerId = "1"
@@ -513,16 +554,182 @@ namespace ThienAnFuni.Models
                     TotalQuantity = 9,
                     Note = "Khách yêu cầu giao hàng vào cuối tuần.",
                     Address = "789 Đường DEF, Quận LMN, TP.HCM",
-                    OrderDate = DateTime.Now.AddDays(-3),
-                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    OrderDate = DateTime.Now.AddMonths(-3).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
                     PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
                     PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
                     InvoiceNumber = "HD0003",
-                    InvoiceDate = DateTime.Now.AddDays(1),
+                    InvoiceDate = DateTime.Now.AddMonths(-3).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 4,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 79440000,
+                    TotalQuantity = 6,
+                    Note = "Yêu cầu giao hàng tận nhà.",
+                    Address = "123 Đường Nguyễn Bỉnh Khiêm, Quận Bình Tân, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-4).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Pending,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Unpaid,
+                    InvoiceNumber = "HD0004",
+                    InvoiceDate = DateTime.Now.AddMonths(-4).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 5,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 111920000,
+                    TotalQuantity = 8,
+                    Note = "Khách yêu cầu giao hàng vào buổi sáng.",
+                    Address = "456 Đường XYZ, Quận ABC, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-5).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0005",
+                    InvoiceDate = DateTime.Now.AddMonths(-5).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 6,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 59910000,
+                    TotalQuantity = 9,
+                    Note = "Khách yêu cầu giao hàng vào cuối tuần.",
+                    Address = "789 Đường DEF, Quận LMN, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-6).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0006",
+                    InvoiceDate = DateTime.Now.AddMonths(-6).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 7,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 50420000,
+                    TotalQuantity = 8,
+                    Note = "Khách yêu cầu giao hàng nhanh.",
+                    Address = "456 Đường XYZ, Quận ABC, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-7).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0007",
+                    InvoiceDate = DateTime.Now.AddMonths(-7).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 8,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 29910000,
+                    TotalQuantity = 9,
+                    Note = "Khách yêu cầu giao hàng vào tận nhà.",
+                    Address = "789 Đường DEF, Quận LMN, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-8).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0008",
+                    InvoiceDate = DateTime.Now.AddMonths(-8).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 9,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 18540000,
+                    TotalQuantity = 6,
+                    Note = "Khách yêu cầu giao hàng nhanh.",
+                    Address = "123 Đường Nguyễn Bỉnh Khiêm, Quận Bình Tân, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-9).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0009",
+                    InvoiceDate = DateTime.Now.AddMonths(-9).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 10,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 48760000,
+                    TotalQuantity = 4,
+                    Note = "Khách yêu cầu giao hàng vào cuối tuần.",
+                    Address = "123 Đường Nguyễn Bỉnh Khiêm, Quận Bình Tân, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-10).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0010",
+                    InvoiceDate = DateTime.Now.AddMonths(-10).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 11,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 83940000,
+                    TotalQuantity = 6,
+                    Note = "Khách yêu cầu giao hàng nhanh.",
+                    Address = "789 Đường DEF, Quận LMN, TP.HCM",
+                    OrderDate = DateTime.Now.AddMonths(-11).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0011",
+                    InvoiceDate = DateTime.Now.AddMonths(-11).AddDays(-1),
+                    CustomerId = "6",
+                    SaleStaffId = "3",
+                    ManagerId = "1"
+                },
+                new Order
+                {
+                    Id = 12,
+                    CustomerPhoneNumber = "0912345678",
+                    TotalPrice = 97110000,
+                    TotalQuantity = 9,
+                    Note = "Khách yêu cầu giao hàng vào chiều thứ 7.",
+                    Address = "108/45A/1 Trần Quang Diệu, P.An Thới, Q. Bình Thủy, TP. Cần Thơ",
+                    OrderDate = DateTime.Now.AddMonths(-12).AddDays(-2),
+                    OrderStatus = (int)ConstHelper.OrderStatus.Success,
+                    PaymentMethod = (int)ConstHelper.PaymentMethod.Cash,
+                    PaymentStatus = (int)ConstHelper.PaymentStatus.Paid,
+                    InvoiceNumber = "HD0012",
+                    InvoiceDate = DateTime.Now.AddMonths(-12).AddDays(-1),
                     CustomerId = "6",
                     SaleStaffId = "3",
                     ManagerId = "1"
                 }
+
+
+
+
             );
             // Seed Order Detail
             modelBuilder.Entity<OrderDetail>().HasData(
@@ -543,7 +750,7 @@ namespace ThienAnFuni.Models
                     PriceAtOrder = 13990000
                 },
 
-                // Seed OrderDetail for Order 2
+            // Seed OrderDetail for Order 2
                 new OrderDetail
                 {
                     Id = 3,
@@ -561,7 +768,7 @@ namespace ThienAnFuni.Models
                     PriceAtOrder = 11890000
                 },
 
-                // Seed OrderDetail for Order 3
+            // Seed OrderDetail for Order 3
                 new OrderDetail
                 {
                     Id = 5,
@@ -577,6 +784,185 @@ namespace ThienAnFuni.Models
                     ProductId = 4,
                     Quantity = 3,
                     PriceAtOrder = 2190000
+                },
+
+            // Seed OrderDetail for Order 4
+                new OrderDetail
+                {
+                    Id = 7,
+                    OrderId = 4,
+                    ProductId = 11,
+                    Quantity = 3,
+                    PriceAtOrder = 12490000
+                },
+                new OrderDetail
+                {
+                    Id = 8,
+                    OrderId = 4,
+                    ProductId = 13,
+                    Quantity = 3,
+                    PriceAtOrder = 13990000
+                },
+
+            // Seed OrderDetail for Order 5
+                new OrderDetail
+                {
+                    Id = 9,
+                    OrderId = 5,
+                    ProductId = 14,
+                    Quantity = 4,
+                    PriceAtOrder = 13990000
+                },
+                new OrderDetail
+                {
+                    Id = 10,
+                    OrderId = 5,
+                    ProductId = 16,
+                    Quantity = 4,
+                    PriceAtOrder = 13990000
+                },
+
+            // Seed OrderDetail for Order 6
+                new OrderDetail
+                {
+                    Id = 11,
+                    OrderId = 6,
+                    ProductId = 18,
+                    Quantity = 3,
+                    PriceAtOrder = 13990000 //41970000
+                },
+                new OrderDetail
+                {
+                    Id = 12,
+                    OrderId = 6,
+                    ProductId = 20,
+                    Quantity = 6,
+                    PriceAtOrder = 2990000 //17940000
+                },
+
+            // Seed OrderDetail for Order 7
+                new OrderDetail
+                {
+                    Id = 13,
+                    OrderId = 7,
+                    ProductId = 21,
+                    Quantity = 5,
+                    PriceAtOrder = 1690000 //8450000
+                },
+                new OrderDetail
+                {
+                    Id = 14,
+                    OrderId = 7,
+                    ProductId = 19,
+                    Quantity = 3,
+                    PriceAtOrder = 13990000 //41970000
+                },
+
+
+            // Seed OrderDetail for Order 8
+                new OrderDetail
+                {
+                    Id = 15,
+                    OrderId = 8,
+                    ProductId = 1,
+                    Quantity = 6,
+                    PriceAtOrder = 3990000
+                },
+                new OrderDetail
+                {
+                    Id = 16,
+                    OrderId = 8,
+                    ProductId = 3,
+                    Quantity = 1,
+                    PriceAtOrder = 1990000
+                },
+
+            // Seed OrderDetail for Order 9
+                new OrderDetail
+                {
+                    Id = 17,
+                    OrderId = 9,
+                    ProductId = 4,
+                    Quantity = 3,
+                    PriceAtOrder = 2190000
+                },
+                new OrderDetail
+                {
+                    Id = 18,
+                    OrderId = 9,
+                    ProductId = 3,
+                    Quantity = 1,
+                    PriceAtOrder = 3990000
+                },
+
+            // Seed OrderDetail for Order 10
+                new OrderDetail
+                {
+                    Id = 19,
+                    OrderId = 10,
+                    ProductId = 11,
+                    Quantity = 2,
+                    PriceAtOrder = 12490000
+                },
+                new OrderDetail
+                {
+                    Id = 20,
+                    OrderId = 10,
+                    ProductId = 12,
+                    Quantity = 2,
+                    PriceAtOrder = 11890000
+                },
+
+            // Seed OrderDetail for Order 11
+                new OrderDetail
+                {
+                    Id = 21,
+                    OrderId = 11,
+                    ProductId = 14,
+                    Quantity = 2,
+                    PriceAtOrder = 13990000
+                },
+                new OrderDetail
+                {
+                    Id = 22,
+                    OrderId = 11,
+                    ProductId = 16,
+                    Quantity = 4,
+                    PriceAtOrder = 13990000
+                },
+
+            // Seed OrderDetail for Order 12
+                new OrderDetail
+                {
+                    Id = 23,
+                    OrderId = 12,
+                    ProductId = 21,
+                    Quantity = 2,
+                    PriceAtOrder = 1690000 //3380000
+                },
+                new OrderDetail
+                {
+                    Id = 24,
+                    OrderId = 12,
+                    ProductId = 19,
+                    Quantity = 2,
+                    PriceAtOrder = 13990000 //27980000
+                },
+                new OrderDetail
+                {
+                    Id = 25,
+                    OrderId = 12,
+                    ProductId = 13,
+                    Quantity = 3,
+                    PriceAtOrder = 13990000 //41970000
+                },
+                new OrderDetail
+                {
+                    Id = 26,
+                    OrderId = 12,
+                    ProductId = 12,
+                    Quantity = 2,
+                    PriceAtOrder = 11890000 
                 }
             );
 
@@ -602,8 +988,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 1000000,
                     TotalPrice = 10000000,
-                    ProductId = 3, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 1
+                    ProductId = 3,
+                    ShipmentId = 1
                 },
                 new Goods
                 {
@@ -611,8 +997,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 10000000,
                     TotalPrice = 100000000,
-                    ProductId = 11, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 1
+                    ProductId = 11,
+                    ShipmentId = 1 
                 },
                 new Goods
                 {
@@ -620,8 +1006,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 10000000,
                     TotalPrice = 100000000,
-                    ProductId = 2, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                    ProductId = 2,
+                    ShipmentId = 1
                 },
                 new Goods
                 {
@@ -629,8 +1015,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 1000000,
                     TotalPrice = 10000000,
-                    ProductId = 4, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                    ProductId = 4,
+                    ShipmentId = 1
                 },
                 new Goods
                 {
@@ -638,8 +1024,8 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 10000000,
                     TotalPrice = 100000000,
-                    ProductId = 12, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                    ProductId = 12,
+                    ShipmentId = 1 
                 },
                 new Goods
                 {
@@ -647,9 +1033,81 @@ namespace ThienAnFuni.Models
                     Quantity = 10,
                     ImportPrice = 2000000,
                     TotalPrice = 20000000,
-                    ProductId = 1, // Mã sản phẩm
-                    ShipmentId = 1 // Liên kết tới lô hàng 2
+                    ProductId = 1,
+                    ShipmentId = 1
+                },
+                new Goods
+                {
+                    Id = 7,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 13,
+                    ShipmentId = 1
+                }, 
+                new Goods
+                {
+                    Id = 8,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 14,
+                    ShipmentId = 1
+                },
+                new Goods
+                {
+                    Id = 9,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 16,
+                    ShipmentId = 1
+                },       
+                new Goods
+                {
+                    Id = 10,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 17,
+                    ShipmentId = 1
+                },       
+                new Goods
+                {
+                    Id = 11,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 18,
+                    ShipmentId = 1
+                },
+                new Goods
+                {
+                    Id = 12,
+                    Quantity = 10,
+                    ImportPrice = 10000000,
+                    TotalPrice = 100000000,
+                    ProductId = 19,
+                    ShipmentId = 1
+                },   
+                new Goods
+                {
+                    Id = 13,
+                    Quantity = 10,
+                    ImportPrice = 1200000,
+                    TotalPrice = 12000000,
+                    ProductId = 20,
+                    ShipmentId = 1
+                },   new Goods
+                {
+                    Id = 14,
+                    Quantity = 10,
+                    ImportPrice = 1200000,
+                    TotalPrice = 12000000,
+                    ProductId = 21,
+                    ShipmentId = 1
                 }
+
             );
 
         }

@@ -20,21 +20,81 @@ namespace ThienAnFuni.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        #region old Index
+
+        //public async Task<IActionResult> Index()
+        //{
+        //    ViewData["ActiveMenu"] = "Product";
+
+        //    var products = await _context.Products
+        //        .Where(p => p.IsActive)
+        //        .Include(p => p.Category)
+        //        .Select(p => new
+        //        {
+        //            p.Id, 
+        //            p.Name, 
+        //            p.MainImg,
+        //            p.IsActive,
+        //            p.Price,
+        //            CategoryName = p.Category.Name,
+        //            QuantityInStock = (_context.Goods
+        //                .Where(g => g.ProductId == p.Id)
+        //                .Sum(g => (int?)g.Quantity) ?? 0) -
+        //                (_context.OrderDetails
+        //                .Where(o => o.ProductId == p.Id)
+        //                .Sum(o => (int?)o.Quantity) ?? 0)
+        //        })
+        //        .ToListAsync();
+
+        //    return View(products);
+        //}
+        #endregion
+        public async Task<IActionResult> Index(string categorySlug)
         {
             ViewData["ActiveMenu"] = "Product";
 
-            var products = await _context.Products
+            // Lấy danh sách danh mục (bao gồm danh mục con)
+            var categories = await _context.Categories
+                .Where(c => c.IsActive && c.ParentId == null)
+                .Include(c => c.SubCategories)
+                .ToListAsync();
+
+            ViewData["Categories"] = categories;
+
+            // Xử lý duyệt theo danh mục cha lẫn con
+            var categorySlugs = new List<string>();
+            if (!string.IsNullOrEmpty(categorySlug))
+            {
+                var categoriesSl = await _context.Categories.Include(c => c.SubCategories).ToListAsync();
+
+                var selectedCategory = categoriesSl.FirstOrDefault(c => c.Slug == categorySlug);
+                if (selectedCategory != null)
+                {
+                    // Thêm category chính vào danh sách
+                    categorySlugs.Add(selectedCategory.Slug);
+
+                    // Thêm các subcategory vào danh sách
+                    categorySlugs.AddRange(selectedCategory.SubCategories.Select(c => c.Slug));
+                }
+            }
+
+            // Truy vấn sản phẩm theo các categorySlug
+            var productsQuery = _context.Products
                 .Where(p => p.IsActive)
-                .Include(p => p.Category)
+                .Include(p => p.Category)  
+                .ThenInclude(c => c.SubCategories)  
+                .Where(p => string.IsNullOrEmpty(categorySlug) || categorySlugs.Contains(p.Category.Slug));  // Lọc theo categorySlug hoặc subCategorySlug
+
+            var products = await productsQuery
                 .Select(p => new
                 {
-                    p.Id, // Lưu ID của sản phẩm
-                    p.Name, // Lưu tên sản phẩm
+                    p.Id,
+                    p.Name,
                     p.MainImg,
                     p.IsActive,
                     p.Price,
-                    CategoryName = p.Category.Name, // Lưu tên danh mục
+                    CategoryName = p.Category.Name,
+                    CategorySlug = p.Category.Slug,
                     QuantityInStock = (_context.Goods
                         .Where(g => g.ProductId == p.Id)
                         .Sum(g => (int?)g.Quantity) ?? 0) -
@@ -44,8 +104,13 @@ namespace ThienAnFuni.Controllers
                 })
                 .ToListAsync();
 
+            ViewBag.ActiveSlug = categorySlug;
+
             return View(products);
         }
+
+
+
 
         public async Task<IActionResult> ListDeleted()
         {
@@ -211,7 +276,7 @@ namespace ThienAnFuni.Controllers
             product.Color = updatedProduct.Color;
             product.Brand = updatedProduct.Brand;
             product.WarrantyPeriod = updatedProduct.WarrantyPeriod;
-            product.IsActive = updatedProduct.IsActive;
+            //product.IsActive = updatedProduct.IsActive;
             product.Description = updatedProduct.Description;
             product.CategoryId = updatedProduct.CategoryId;
 

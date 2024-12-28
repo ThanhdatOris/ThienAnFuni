@@ -20,7 +20,7 @@
                 <table class="table table-hover table-bordered" id="sampleTable">
                     <thead>
                         <tr>
-                            <th>Mã KH@* @Html.DisplayNameFor(model => model.Id) *@</th>
+                            @* <th>Mã KH@Html.DisplayNameFor(model => model.Id)</th> *@
                             <th>@Html.DisplayNameFor(model => model.FullName)</th>
                             <th>@Html.DisplayNameFor(model => model.Address)</th>
                             <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
@@ -34,7 +34,7 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                @* <td>@Html.DisplayFor(modelItem => item.Id)</td> *@
                                 <td>@Html.DisplayFor(modelItem => item.FullName)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Address)</td>
                                 <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>

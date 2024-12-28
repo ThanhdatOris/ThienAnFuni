@@ -39,9 +39,10 @@
                 </div>
 
                 <form class="row" asp-action="SaveShipmentToDatabase" method="post" enctype="multipart/form-data">
+                    @* Ngày nhập *@
                     <div class="form-group col-md-4">
                         <label class="control-label">Ngày nhập</label>
-                        <input type="date" class="form-control" name="receiptDate" required />
+                        <input type="date" class="form-control" name="receiptDate" id="receiptDate" readonly required />
                     </div>
 
                     <div class="form-group col-md-3">
@@ -78,7 +79,9 @@
                                 <th class="text-center">Danh mục</th>
                                 <th class="text-center">Giá bán</th>
                                 <th class="text-center" width="30">SL</th>
+
                                 <th class="text-center">Giá nhập</th>
+
                                 <th class="text-center"></th>
                             </tr>
                         </thead>
@@ -206,18 +209,29 @@
 
             // Xử lý thêm sản phẩm vào lô hàng
             $(document).on('click', '.add-to-shipment', function () {
-                var productId = $(this).data('id');
-                var quantity = $(`#quantity-${productId}`).val();
-                var importPrice = $(`#importPrice-${productId}`).val();
+                var productId = $(this).data('id');  // Lấy productId từ data attribute của nút nhấn
+                var quantity = $(`#quantity-${productId}`).val();   // Lấy giá trị quantity từ input tương ứng
+                var importPrice = $(`#importPrice-${productId}`).val();    // Lấy giá trị importPrice từ input tương ứng
 
+                // Kiểm tra nếu quantity <= 0 hoặc importPrice < 0 thì thông báo lỗi
+                if (quantity <= 0) {
+                    alert("Số lượng phải lớn hơn 0.");  // Thông báo lỗi nếu số lượng <= 0
+                    return;  // Dừng lại không gửi AJAX
+                }
+                if (importPrice < 0) {
+                    alert("Giá nhập không được là số âm.");  // Thông báo lỗi nếu giá nhập âm
+                    return;  // Dừng lại không gửi AJAX
+                }
+
+                // Nếu qua kiểm tra không có lỗi, thực hiện AJAX để thêm sản phẩm vào đơn hàng
                 $.post('/Shipments/AddToShipment', { productId: productId, quantity: quantity, importPrice: importPrice }, function (goodsItems) {
                     var productListResult = $('#productListResult');
-                    productListResult.empty();
+                    productListResult.empty();  // Xóa sạch danh sách sản phẩm trước khi cập nhật
 
-                    if (goodsItems && goodsItems.length > 0) {
+                    if (goodsItems && goodsItems.length > 0) {  // Nếu danh sách hàng hóa trả về không rỗng
                         let totalPriceMain = 0;
                         goodsItems.forEach(function (item) {
-                            totalPriceMain += item.quantity * item.importPrice;
+                            totalPriceMain += item.quantity * item.importPrice;   // Tính tổng giá tiền
 
                             productListResult.append(`
                                                              <tr>
@@ -231,13 +245,14 @@
                                                        <button type="button" class="btn btn-sm btn-danger remove-from-shipment" data-id="${item.productId}">Xóa</button></td>
                                                           </tr>`);
                         });
-                        $('#totalPriceMain').text(totalPriceMain.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+                        $('#totalPriceMain').text(totalPriceMain.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));  // Cập nhật tổng tiền
 
                     } else {
                         productListResult.append('<tr><td colspan="7" class="text-center">Không có sản phẩm nào trong lô hàng.</td></tr>');
                     }
                 });
             });
+             
 
             // Xử lý xóa sản phẩm khỏi lô hàng
             $(document).on('click', '.remove-from-shipment', function () {
@@ -285,5 +300,91 @@
     </script>
 
 
+@*     <script>
+        document.getElementById('receiptDate').addEventListener('input', function () {
+            var inputDate = this.value; // Lấy ngày người dùng nhập dưới dạng YYYY-MM-DD
+            var currentDate = new Date().toISOString().split('T')[0]; // Lấy ngày hiện tại dưới dạng YYYY-MM-DD
+
+            // So sánh ngày nhập với ngày hiện tại
+            if (inputDate !== currentDate) {
+                document.getElementById('error-message').style.display = 'block';  // Hiển thị thông báo lỗi nếu ngày nhập không phải ngày hiện tại
+            } else {
+                document.getElementById('error-message').style.display = 'none';   // Ẩn thông báo lỗi nếu ngày nhập là ngày hiện tại
+            }
+        });
+    </script> *@
+
+    <script>
+        // Hàm tự động điền ngày hiện tại vào trường 'receiptDate'
+        function setCurrentDate() {
+            var today = new Date();
+            var day = String(today.getDate()).padStart(2, '0');
+            var month = String(today.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+            var year = today.getFullYear();
+            var currentDate = year + '-' + month + '-' + day;
+            document.getElementById('receiptDate').value = currentDate;
+        }
+
+        // Tự động điền ngày hiện tại khi trang được tải
+        window.onload = function () {
+            setCurrentDate();
+        };
+
+        // Kiểm tra khi nhấn nút "Nhập hàng"
+        document.getElementById('nhapHangButton').addEventListener('click', function () {
+            var inputDate = document.getElementById('receiptDate').value;
+            var currentDate = new Date().toISOString().split('T')[0];
+
+            if (inputDate === currentDate) {
+                alert("Nhập hàng thành công!");
+                // Thực hiện các tác vụ tiếp theo ở đây (ví dụ gửi form)
+            } else {
+                alert("Ngày nhập đã được thay đổi.");
+                // Xử lý nếu cần thêm logic cho ngày thay đổi
+            }
+        });
+    </script>
+
+
+@*     <script>
+    // Lấy tất cả các trường nhập "Giá nhập"
+    document.querySelectorAll('input[name="price"]').forEach(function (priceInput) {
+        // Thêm sự kiện 'input' để kiểm tra giá trị ngay khi nhập
+        priceInput.addEventListener('input', function () {
+            var price = parseFloat(this.value); // Lấy giá trị nhập vào và chuyển đổi thành số thực
+
+            // Kiểm tra nếu giá nhập nhỏ hơn hoặc bằng 0
+            if (price <= 0 || isNaN(price)) {
+                this.setCustomValidity('Giá nhập phải lớn hơn 0.'); // Thiết lập thông báo lỗi
+                this.reportValidity(); // Hiển thị thông báo lỗi
+            } else {
+                this.setCustomValidity(''); // Loại bỏ thông báo lỗi nếu giá hợp lệ
+            }
+        });
+    });
+</script> *@
+
+    <script>
+        function kiemTraGia() {
+            const gia = document.getElementById('gia').value;
+
+            // Kiểm tra xem giá có hợp lệ không (ví dụ: phải là số dương)
+            if (isNaN(gia) || gia <= 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi nhập giá',
+                    text: 'Vui lòng nhập một giá trị hợp lệ (lớn hơn 0)!',
+                });
+            } else {
+                // Thực hiện hành động thêm sản phẩm khi giá hợp lệ
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Sản phẩm đã được thêm thành công.',
+                });
+                // Thêm sản phẩm vào hệ thống (bạn cần thêm phần logic này)
+            }
+        }
+    </script>
 
 }

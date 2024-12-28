@@ -110,7 +110,6 @@ namespace ThienAnFuni.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("Id,FullName,Address,PhoneNumber,Email,DateOfBirth,Gender")] Customer customer)
         {
             ViewData["ActiveMenu"] = "Customer";
-
             // Kiểm tra xem ID khách hàng trong URL có khớp với ID của model không
             if (id != customer.Id)
             {
@@ -152,12 +151,11 @@ namespace ThienAnFuni.Controllers
                     }
                 }
 
-                TempData["Success"] = "Cập nhật thành công!"; // Hiển thị thông báo thành công
-                return RedirectToAction(nameof(Index)); // Chuyển hướng về trang danh sách
+                TempData["Success"] = "Thông tin đã được cập nhật!"; // Hiển thị thông báo thành công
+                return RedirectToAction(nameof(Edit), new { id = existingCustomer.Id }); // Quay lại trang Edit sau khi cập nhật
             }
 
             return View(customer); // Nếu không hợp lệ, quay lại form với lỗi
         }
-
     }
 }
