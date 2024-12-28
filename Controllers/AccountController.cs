@@ -380,7 +380,7 @@ namespace ThienAnFuni.Controllers
             }
         }
 
-        TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+        TempData["SuccessMessage"] = "Thông tin đã được cập nhật!";
         return RedirectToAction("Profile");
     }
 
