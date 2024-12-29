@@ -36,14 +36,14 @@ namespace ThienAnFuni.Controllers
                     .ThenInclude(d => d.Product)
                 .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending ||
                             o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
-                .OrderByDescending(o => o.OrderDate)
+                .OrderBy(o => o.OrderDate)
                 .ToListAsync();
 
             // Phân loại đơn hàng
             var viewModel = new AdOrdersViewModel
             {
-                PendingOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending),
-                SuccessOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
+                PendingOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending).OrderBy(o => o.OrderDate),
+                SuccessOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Success).OrderBy(o => o.OrderDate)
             };
 
             return View(viewModel);

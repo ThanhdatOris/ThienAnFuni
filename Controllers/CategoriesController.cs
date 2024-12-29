@@ -55,6 +55,14 @@ namespace ThienAnFuni.Controllers
         {
             ViewData["ActiveMenu"] = "Category";
 
+            ViewData["ParentCategories"] = _context.Categories
+               .Select(c => new SelectListItem
+               {
+                   Value = c.Id.ToString(),
+                   Text = c.Name
+               })
+               .ToList();
+
             return View();
         }
 
@@ -63,18 +71,44 @@ namespace ThienAnFuni.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,ParentId,Name,IsActive")] Category category)
+        //{
+        //    ViewData["ActiveMenu"] = "Category";
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(category);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(category);
+        //}
+
         public async Task<IActionResult> Create([Bind("Id,ParentId,Name,IsActive")] Category category)
         {
             ViewData["ActiveMenu"] = "Category";
 
-            if (ModelState.IsValid)
+            // Tạo slug từ Name
+            category.Slug = category.Name.ToSlug();
+
+            // Kiểm tra trùng slug
+            bool isSlugDuplicate = await _context.Categories.AnyAsync(c => c.Slug == category.Slug);
+            if (isSlugDuplicate)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["ErrorMessage"] = "Tên danh mục đã tồn tại. Vui lòng chọn tên khác.";
+
+                // Hiển thị lại form với thông báo lỗi
+                return RedirectToAction(nameof(Create));
             }
-            return View(category);
+
+            // Nếu không trùng thì thêm vào cơ sở dữ liệu
+            _context.Add(category);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Tạo danh mục thành công!";
+            return RedirectToAction(nameof(Index));
         }
+
 
         // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -94,7 +128,7 @@ namespace ThienAnFuni.Controllers
 
             // Load danh sách danh mục cha để hiển thị trong dropdown
             ViewData["ParentCategories"] = _context.Categories
-                .Where(c => c.Id != id) // Exclude current category to prevent self-reference
+                .Where(c => c.Id != id)
                 .Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
@@ -107,7 +141,7 @@ namespace ThienAnFuni.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ParentId,Name,IsActive")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ParentId,Name,IsActive,Slug")] Category category)
         {
             ViewData["ActiveMenu"] = "Category";
 
@@ -116,25 +150,23 @@ namespace ThienAnFuni.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            try
             {
-                try
+                category.Slug = category.Name.ToSlug();
+                _context.Update(category);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CategoryExists(category.Id))
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
 
             ViewData["ParentCategories"] = _context.Categories
@@ -145,8 +177,9 @@ namespace ThienAnFuni.Controllers
                     Text = c.Name
                 })
                 .ToList();
+            return RedirectToAction(nameof(Index));
 
-            return View(category);
+            //return View(category);
         }
 
 
@@ -180,17 +213,25 @@ namespace ThienAnFuni.Controllers
             var category = await _context.Categories
                                   .Include(c => c.Products)
                                   .FirstOrDefaultAsync(c => c.Id == id);
+
+            bool isParentCate = _context.Categories.Any(c => c.ParentId == id);
+
             if (category == null)
             {
                 return NotFound();
             }
 
-            // Kiểm tra xem có sản phẩm nào liên kết với danh mục này
-            if (category.Products.Any())  // Nếu có sản phẩm liên quan
+            if (isParentCate)
             {
-                // Thông báo lỗi cho người dùng
+                TempData["ErrorMessage"] = "Phải hủy liên kết với các danh mục con trước!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Kiểm tra xem có sản phẩm nào liên kết với danh mục này
+            if (category.Products.Any())
+            {
                 TempData["ErrorMessage"] = "Không thể xóa danh mục này vì vẫn còn sản phẩm liên kết!";
-                return RedirectToAction(nameof(Index));  // Quay lại trang danh sách
+                return RedirectToAction(nameof(Index));
             }
 
             if (category != null)
@@ -201,7 +242,7 @@ namespace ThienAnFuni.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
+
         private bool CategoryExists(int id)
         {
             ViewData["ActiveMenu"] = "Category";

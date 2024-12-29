@@ -20,7 +20,7 @@ namespace ThienAnFuni.Models
 
         public string Slug { get; set; }
 
-        [Display(Name = "Trạng thái")]
+        [Display(Name = "Trạng thái hoạt động")]
         public bool IsActive { get; set; }
 
         // "Navigation" ParentId của cate và product 

@@ -60,6 +60,7 @@ namespace ThienAnFuni.Controllers
             var order = await _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.SaleStaff)
+                .Include(o => o.Manager)
                 .Include(o => o.OrderDetails)
                     .ThenInclude(o => o.Product)
                         .ThenInclude(p => p.ProductImages)
