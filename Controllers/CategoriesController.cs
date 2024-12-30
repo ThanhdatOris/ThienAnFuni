@@ -99,7 +99,7 @@ namespace ThienAnFuni.Controllers
             if (Image != null && Image.Length > 0)
             {
                 var fileName = Path.GetFileName(Image.FileName);
-                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/images/categories");
+                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/img/categories");
 
                 // Kiểm tra và tạo thư mục nếu chưa tồn tại
                 if (!Directory.Exists(uploadFolder))
@@ -114,7 +114,7 @@ namespace ThienAnFuni.Controllers
                     await Image.CopyToAsync(stream);
                 }
 
-                category.Image = "/customerThienAn/images/categories/" + fileName;
+                category.Image = fileName;
             }
 
 
