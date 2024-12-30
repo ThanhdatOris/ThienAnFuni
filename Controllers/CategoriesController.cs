@@ -51,6 +51,7 @@ namespace ThienAnFuni.Controllers
         }
 
         // GET: Categories/Create
+        [HttpGet]
         public IActionResult Create()
         {
             ViewData["ActiveMenu"] = "Category";
@@ -71,20 +72,7 @@ namespace ThienAnFuni.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,ParentId,Name,IsActive")] Category category)
-        //{
-        //    ViewData["ActiveMenu"] = "Category";
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(category);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(category);
-        //}
-
-        public async Task<IActionResult> Create([Bind("Id,ParentId,Name,IsActive")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,ParentId,Image,Name,IsActive")] Category category, IFormFile Image)
         {
             ViewData["ActiveMenu"] = "Category";
 
@@ -98,7 +86,27 @@ namespace ThienAnFuni.Controllers
                 TempData["ErrorMessage"] = "Tên danh mục đã tồn tại. Vui lòng chọn tên khác.";
 
                 // Hiển thị lại form với thông báo lỗi
-                return RedirectToAction(nameof(Create));
+                ViewData["ParentCategories"] = _context.Categories
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    })
+                    .ToList();
+                return View(category);
+            }
+
+            if (Image != null && Image.Length > 0)
+            {
+                var fileName = Path.GetFileName(Image.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/images/categories", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await Image.CopyToAsync(stream);
+                }
+
+                category.Image = "/customerThienAn/images/categories/" + fileName;
             }
 
             // Nếu không trùng thì thêm vào cơ sở dữ liệu

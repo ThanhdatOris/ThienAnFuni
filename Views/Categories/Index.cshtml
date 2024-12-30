@@ -36,8 +36,9 @@
                         <tr>
                             <th class="d-none">@Html.DisplayNameFor(model => model.ParentId)</th>
                             <th>@Html.DisplayNameFor(model => model.Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.Image)</th>
                             <th>@Html.DisplayNameFor(model => model.IsActive)</th>
-                            <th></th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,12 @@
                                 <tr>
                                     @* <td></td> <!-- Không có ParentId cho danh mục cha --> *@
                                     <td><strong>@Html.DisplayFor(modelItem => item.Name)</strong></td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Image))
+                                        {
+                                            <img src="/customerThienAn/img/categories/@item.Image" alt="@item.Name" style="width: 50px; height: 50px;" />
+                                        }
+                                    </td>
                                     <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
                                     <td>
                                         <a class="btn btn-primary btn-sm edit" title="Sửa" asp-action="Edit" asp-route-id="@item.Id">
@@ -69,9 +76,14 @@
                                     <tr>
                                         @* <td></td> <!-- Không có ParentId hiển thị cho danh mục con --> *@
                                         <td style="padding-left: 20px;">&mdash; @Html.DisplayFor(modelItem => subItem.Name)</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(subItem.Image))
+                                            {
+                                                <img src="/customerThienAn/img/categories/@subItem.Image" alt="@subItem.Name" style="width: 50px; height: 50px;" />
+                                            }
+                                        </td>
                                         <td>@Html.DisplayFor(modelItem => subItem.IsActive)</td>
                                         <td>
-
                                             <a class="btn btn-primary btn-sm edit" title="Sửa" asp-action="Edit" asp-route-id="@subItem.Id">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -81,18 +93,13 @@
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
                                             </form>
-
-
                                         </td>
                                     </tr>
                                 }
                             }
                         }
                     </tbody>
-
                 </table>
-
-
             </div>
         </div>
     </div>
