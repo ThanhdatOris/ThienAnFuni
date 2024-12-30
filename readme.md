@@ -38,7 +38,7 @@
 - Xây dựng module Admin: Khách hàng
 - Xây dựng module Customer: Profile
 - Nhập dữ liệu mẫu: Sản phẩm, Đơn hàng
-- Chỉnh sửa logic code: Nhân viên, Chi tiết sản phẩm
+- Chỉnh sửa logic code: Nhân viên, Chi tiết sản phẩm, Chi tiết đơn hàng
 - Lấy dữ liệu hình ảnh, Mô tả sản phẩm
 
 

@@ -99,7 +99,15 @@ namespace ThienAnFuni.Controllers
             if (Image != null && Image.Length > 0)
             {
                 var fileName = Path.GetFileName(Image.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/images/categories", fileName);
+                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/images/categories");
+
+                // Kiểm tra và tạo thư mục nếu chưa tồn tại
+                if (!Directory.Exists(uploadFolder))
+                {
+                    Directory.CreateDirectory(uploadFolder);
+                }
+
+                var filePath = Path.Combine(uploadFolder, fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -108,6 +116,7 @@ namespace ThienAnFuni.Controllers
 
                 category.Image = "/customerThienAn/images/categories/" + fileName;
             }
+
 
             // Nếu không trùng thì thêm vào cơ sở dữ liệu
             _context.Add(category);
