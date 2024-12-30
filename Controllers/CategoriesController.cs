@@ -158,7 +158,7 @@ namespace ThienAnFuni.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ParentId,Name,Image,IsActive,Slug")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ParentId,Name,IsActive,Slug,Image")] Category category, IFormFile Image)
         {
             ViewData["ActiveMenu"] = "Category";
 
@@ -167,22 +167,31 @@ namespace ThienAnFuni.Controllers
                 return NotFound();
             }
 
-
             try
             {
                 category.Slug = category.Name.ToSlug();
+
                 if (Image != null && Image.Length > 0)
                 {
                     var fileName = Path.GetFileName(Image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/images/categories", fileName);
+                    var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/img/categories");
+
+                    // Kiểm tra và tạo thư mục nếu chưa tồn tại
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+
+                    var filePath = Path.Combine(uploadFolder, fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await Image.CopyToAsync(stream);
                     }
 
-                    category.Image = "/customerThienAn/images/categories/" + fileName;
+                    category.Image = fileName;
                 }
+
                 _context.Update(category);
                 await _context.SaveChangesAsync();
             }
@@ -207,8 +216,6 @@ namespace ThienAnFuni.Controllers
                 })
                 .ToList();
             return RedirectToAction(nameof(Index));
-
-            //return View(category);
         }
 
 
