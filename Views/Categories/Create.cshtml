@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
 <div class="app-title">
     <ul class="app-breadcrumb breadcrumb side">
         <li class="breadcrumb-item active"><a href="#"><b>Danh sách danh mục</b></a></li>
@@ -34,15 +33,9 @@
                     }
                 }
 
-                <form asp-action="Create">
+                <form asp-action="Create" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
-
-                     @*    <div class="form-group col-md-4">
-                            <label asp-for="ParentId" class="control-label"></label>
-                            <input asp-for="ParentId" class="form-control" />
-                            <span asp-validation-for="ParentId" class="text-danger"></span>
-                        </div> *@
 
                         <div class="form-group col-md-4">
                             <label asp-for="ParentId" class="control-label">Danh mục cha</label>
@@ -56,6 +49,12 @@
                             <label asp-for="Name" class="control-label"></label>
                             <input asp-for="Name" class="form-control" />
                             <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="Image" class="control-label">Hình ảnh</label>
+                            <input asp-for="Image" class="form-control-file" type="file" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
                         </div>
 
                         <div class="form-group form-check col-12 ml-3">
@@ -86,6 +85,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
-
-
