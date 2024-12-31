@@ -18,7 +18,6 @@
                 <div class="row element-button">
                     <div class="col-sm-2">
                         <a class="btn btn-warning btn-sm" asp-controller="Categories" asp-action="Index" title="Trở về">
-                            <<
                             Trở về
                         </a>
                     </div>
@@ -53,8 +52,9 @@
 
                         <div class="form-group col-md-4">
                             <label asp-for="Image" class="control-label">Hình ảnh</label>
-                            <input asp-for="Image" class="form-control-file" type="file" />
+                            <input asp-for="Image" class="form-control-file" type="file" id="imageUpload" />
                             <span asp-validation-for="Image" class="text-danger"></span>
+                            <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 100px; height: 100px; margin-top: 10px;" />
                         </div>
 
                         <div class="form-group form-check col-12 ml-3">
@@ -67,9 +67,6 @@
                             <div class="form-group ">
                                 <input type="submit" value="Tạo mới" class="btn btn-success" />
                             </div>
-                      @*       <div class="form-group ml-2">
-                                <a class="btn btn-dark" asp-action="Index"> Trở về</a>
-                            </div> *@
                         </div>
                     </div>
                 </form>
@@ -81,6 +78,17 @@
 
 @section Scripts {
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

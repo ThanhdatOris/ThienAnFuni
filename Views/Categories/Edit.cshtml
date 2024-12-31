@@ -46,11 +46,15 @@
 
                         <div class="form-group col-md-3">
                             <label asp-for="Image" class="control-label">Hình ảnh</label>
-                            <input asp-for="Image" class="form-control-file" type="file" />
+                            <input asp-for="Image" class="form-control-file" type="file" id="imageUpload" />
                             <span asp-validation-for="Image" class="text-danger"></span>
                             @if (!string.IsNullOrEmpty(Model.Image))
                             {
-                                <img src="/customerThienAn/img/categories/@Model.Image" alt="@Model.Name" style="width: 100px; height: 100px; margin-top: 10px;" />
+                                <img id="imagePreview" src="/customerThienAn/img/categories/@Model.Image" alt="@Model.Name" style="width: 100px; height: 100px; margin-top: 10px;" />
+                            }
+                            else
+                            {
+                                <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 100px; height: 100px; margin-top: 10px;" />
                             }
                         </div>
 
@@ -78,6 +82,17 @@
 
 @section Scripts {
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
