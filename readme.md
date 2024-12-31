@@ -188,7 +188,7 @@ Tạo `AccountController` để quản lý các `Action` đăng ký, đăng nh�
 
 ### **Gửi Email Sau Khi Đặt Hàng Thành Công**  
 
-Dưới đây là cách **tích hợp gửi email miễn phí bằng SMTP** sử dụng dịch vụ Gmail.  
+**Tích hợp gửi email miễn phí bằng SMTP** sử dụng dịch vụ Gmail.  
 
 ---
 

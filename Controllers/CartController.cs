@@ -521,6 +521,7 @@ namespace ThienAnFuni.Controllers
                 <h2>💌Cảm ơn bạn đã đặt hàng tại Thiên Ân Store!💌</h2>
                 <p>🎁 Đơn hàng #{order.Id} đã được tạo thành công.</p>
                 <p>🎁 Địa chỉ giao hàng: {order.Address}</p>
+                <p>🎁 Ghi chú đơn hàng: {order.Note}</p>
                 <p>🎁 Tổng số lượng: {order.TotalQuantity}</p>
                 <p>🎁 Tổng giá: {order.TotalPrice:n0}đ</p>
                 <p>Chúng tôi sẽ liên hệ với bạn sớm nhất để giao hàng ❤️.</p>";
