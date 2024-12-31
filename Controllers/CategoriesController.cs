@@ -199,13 +199,21 @@ namespace ThienAnFuni.Controllers
                         filePath = Path.Combine(uploadFolder, fileName);
                     }
 
-                    // Xóa hình ảnh cũ nếu có
+                    // Xóa hình ảnh cũ nếu có và chỉ khi người dùng tải lên hình ảnh mới
                     if (!string.IsNullOrEmpty(category.Image))
                     {
                         var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/img/categories", category.Image);
                         if (System.IO.File.Exists(oldImagePath))
                         {
-                            System.IO.File.Delete(oldImagePath);
+                            try
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log lỗi nếu cần thiết
+                                Console.WriteLine($"Error deleting file: {ex.Message}");
+                            }
                         }
                     }
 
@@ -215,6 +223,11 @@ namespace ThienAnFuni.Controllers
                     }
 
                     category.Image = fileName;
+                }
+                else
+                {
+                    // Giữ lại đường dẫn hình ảnh cũ nếu không có hình ảnh mới được tải lên
+                    _context.Entry(category).Property(x => x.Image).IsModified = false;
                 }
 
                 _context.Update(category);
@@ -303,7 +316,15 @@ namespace ThienAnFuni.Controllers
                     var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/customerThienAn/img/categories", category.Image);
                     if (System.IO.File.Exists(imagePath))
                     {
-                        System.IO.File.Delete(imagePath);
+                        try
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log lỗi nếu cần thiết
+                            Console.WriteLine($"Error deleting file: {ex.Message}");
+                        }
                     }
                 }
 

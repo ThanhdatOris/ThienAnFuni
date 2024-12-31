@@ -28,6 +28,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
                         <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Image" />
 
                         <div class="form-group col-md-4">
                             <label asp-for="ParentId" class="control-label">Danh mục cha</label>
@@ -49,7 +50,7 @@
                             <span asp-validation-for="Image" class="text-danger"></span>
                             @if (!string.IsNullOrEmpty(Model.Image))
                             {
-                                <img src="@Model.Image" alt="@Model.Name" style="width: 100px; height: 100px; margin-top: 10px;" />
+                                <img src="/customerThienAn/img/categories/@Model.Image" alt="@Model.Name" style="width: 100px; height: 100px; margin-top: 10px;" />
                             }
                         </div>
 
