@@ -22,6 +22,7 @@ namespace ThienAnFuni.ViewComponents
 
             return View(categories);
         }
+
         //public IViewComponentResult Invoke()
         //{
         //    var categories = _context.Categories

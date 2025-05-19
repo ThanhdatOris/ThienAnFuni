@@ -11,6 +11,37 @@
   - `Username`: `teoemcus`
   - `Password`: `123456`
   
+# `Work Assignment`
+### Anh Khoa
+- Viết báo cáo
+- Chọn template Customer + Admin
+- Thiết kế Database
+- Cắt template: Admin, Shop
+- Account: Đăng nhập
+- Xây dựng module Admin: POS bán hàng, Nhân viên, Sản phẩm, Nhập hàng, Nhà cung cấp
+- Xây dựng module Customer: Shop, Giỏ hàng(Session), Đặt hàng(Send Email)
+
+
+### Thành Đạt
+- Viết báo cáo
+- Thiết kế Database
+- Cắt template: Trang chủ
+- Xây dựng module Admin: Dashboad quản trị, Danh mục sản phẩm
+- Xây dựng module Customer: Trang chủ, Đơn hàng(Chi tiết đơn hàng), Liên hệ
+- Style UI: Pagination
+- Thiết kế UI/UX: Bông tuyết, Panel, Logo 
+
+
+### Như Ý
+- Sửa báo cáo
+- Account: Đăng ký, Đổi mật khẩu
+- Xây dựng module Admin: Khách hàng
+- Xây dựng module Customer: Profile
+- Nhập dữ liệu mẫu: Sản phẩm, Đơn hàng
+- Chỉnh sửa logic code: Nhân viên, Chi tiết sản phẩm, Chi tiết đơn hàng
+- Lấy dữ liệu hình ảnh, Mô tả sản phẩm
+
+
 # Lần pull đầu tiên
 ```
 - Tạo database thienanFuni
@@ -157,7 +188,7 @@ Tạo `AccountController` để quản lý các `Action` đăng ký, đăng nh�
 
 ### **Gửi Email Sau Khi Đặt Hàng Thành Công**  
 
-Dưới đây là cách **tích hợp gửi email miễn phí bằng SMTP** sử dụng dịch vụ Gmail.  
+**Tích hợp gửi email miễn phí bằng SMTP** sử dụng dịch vụ Gmail.  
 
 ---
 

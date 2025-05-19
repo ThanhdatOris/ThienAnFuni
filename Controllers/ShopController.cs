@@ -118,7 +118,7 @@ namespace ThienAnFuni.Controllers
          decimal? maxPrice = null,
          string color = null)
         {
-            int pageSize = 6;
+            int pageSize = 9;
 
             // Lấy danh mục nếu có slug
             Category category = null;

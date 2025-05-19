@@ -18,11 +18,11 @@
             <div class="tile-body">
                 <div class="row element-button">
                     <div class="col-sm-2">
-                   @*      <div class="col-sm-2">
-                            <a class="btn btn-dark btn-sm" asp-action="Index" title="Trở về">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                Trở về
-                            </a>
+                        @*      <div class="col-sm-2">
+                        <a class="btn btn-dark btn-sm" asp-action="Index" title="Trở về">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        Trở về
+                        </a>
                         </div> *@
                         <a class="btn btn-add btn-sm" asp-controller="Suppliers" asp-action="Index" title="Thêm NCC">
                             <i class="fas fa-plus"></i>
@@ -39,21 +39,27 @@
                             <input asp-for="DisplayName" class="form-control" />
                             <span asp-validation-for="DisplayName" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label asp-for="Address" class="control-label"></label>
-                            <input asp-for="Address" class="form-control" />
-                            <span asp-validation-for="Address" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label asp-for="Email" class="control-label"></label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
+
                         <div class="form-group col-md-4">
                             <label asp-for="PhoneNumber" class="control-label"></label>
                             <input asp-for="PhoneNumber" class="form-control" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="Address" class="control-label"></label>
+                            <textarea asp-for="Address" class="form-control" rows="3" placeholder="Nhập địa chỉ của bạn..." maxlength="255"></textarea>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+
+
                         @* <div class="form-group">
                         <label asp-for="Image" class="control-label"></label>
                         <input asp-for="Image" class="form-control" />
@@ -66,12 +72,12 @@
                         </div>
                         <div class=" form-group row col-12 d-flex ml-2">
 
-                                <div class="form-group mr-2">
-                                    <input type="submit" value="Tạo" class="btn btn-success" />
-                                </div>
-                                <div>
-                                    <a class="btn btn-dark" asp-action="Index"> Trở về</a>
-                                </div>
+                            <div class="form-group mr-2">
+                                <input type="submit" value="Tạo" class="btn btn-success" />
+                            </div>
+                            <div>
+                                <a class="btn btn-dark" asp-action="Index"> Trở về</a>
+                            </div>
                         </div>
                     </div>
                 </form>

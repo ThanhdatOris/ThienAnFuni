@@ -24,7 +24,7 @@
                         </a>
                     </div>
                 </div>
-
+                <h3 class="p-2 text-center bg-success">Chi tiết đơn hàng</h3>
                 <div class="row">
                     <!-- admin -->
                     <div class="form-group col-md-3">
@@ -53,7 +53,7 @@
                                value="@(Model?.OrderStatus != null
                                    ? ConstHelper.GetOrderStatus((ConstHelper.OrderStatus)Model.OrderStatus.Value)
                                    : "Trạng thái không xác định")"
-                                                       disabled>
+                               disabled>
                     </div>
 
                     <!-- Ngày tạo -->
@@ -111,6 +111,20 @@
                         <label class="control-label">Trạng thái thanh toán</label>
                         <input class="form-control" type="text" value="@ConstHelper.GetPaymentMethod((ConstHelper.PaymentMethod)Model?.PaymentMethod)" disabled>
                     </div>
+
+                    <!-- Ghi chú -->
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Ghi chú</label>
+                        <textarea class="form-control" disabled>@(Model?.Note ?? "(Trống)")</textarea>
+                    </div>
+
+
+                    <!-- Địa chỉ giao hàng -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Địa chỉ giao hàng</label>
+                        <textarea class="form-control" disabled>@(Model?.Address ?? "(Trống)")</textarea>
+                    </div>
+
                 </div>
 
                 <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
@@ -138,9 +152,9 @@
                 </table>
             </div>
         </div>
-    <div class="form-group">
-        <a class="btn btn-dark" asp-action="Index"> Trở về</a>
-    </div>
+        <div class="form-group">
+            <a class="btn btn-dark" asp-action="Index"> Trở về</a>
+        </div>
     </div>
 </div>
 

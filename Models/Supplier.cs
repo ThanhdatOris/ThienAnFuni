@@ -27,7 +27,7 @@ namespace ThienAnFuni.Models
         public string? Image { get; set; }
 
         [Required]
-        [Display(Name = "Trạng thái")]
+        [Display(Name = "Trạng thái hoạt động")]
         public bool IsActive { get; set; }
 
         // Quan hệ với Shipment

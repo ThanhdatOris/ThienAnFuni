@@ -70,7 +70,7 @@ namespace ThienAnFuni.Controllers
         // POST: SaleStaffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,EndDate,Degree,Id,FullName,UserName,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
+        public async Task<IActionResult> Create([Bind("CitizenId,IssuingDate,IssuingPlace,StartDate,Degree,Id,FullName,UserName,PhoneNumber,Address,Gender,DateOfBirth,Password")] SaleStaff saleStaff)
         {
             ViewData["ActiveMenu"] = "SaleStaff";
 

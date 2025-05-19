@@ -23,32 +23,62 @@ namespace ThienAnFuni.Controllers
         {
             _context = context;
         }
+        #region old Index
+        //public async Task<IActionResult> Index()
+        //{
+        //    ViewData["ActiveMenu"] = "Order";
+        //    ViewBag.Title = "Danh sách đơn hàng";
 
+        //    // Lấy tất cả các đơn hàng với trạng thái liên quan
+        //    var orders = await _context.Orders
+        //        .Include(o => o.Customer)
+        //        .Include(o => o.OrderDetails)
+        //            .ThenInclude(d => d.Product)
+        //        .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending ||
+        //                    o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
+        //        //.OrderBy(o => o.OrderDate)
+        //        .ToListAsync();
+
+        //    // Phân loại đơn hàng
+        //    var viewModel = new AdOrdersViewModel
+        //    {
+        //        PendingOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending).OrderByDescending(o => o.Id),
+        //        SuccessOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Success).OrderByDescending(o => o.OrderDate)
+        //    };
+
+        //    return View(viewModel);
+        //}
+        #endregion
         public async Task<IActionResult> Index()
         {
             ViewData["ActiveMenu"] = "Order";
             ViewBag.Title = "Danh sách đơn hàng";
 
-            // Lấy tất cả các đơn hàng với trạng thái liên quan
-            var orders = await _context.Orders
+            // Truy vấn và sắp xếp trực tiếp từ cơ sở dữ liệu
+            var pendingOrders = await _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.OrderDetails)
                     .ThenInclude(d => d.Product)
-                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending ||
-                            o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
-                .OrderByDescending(o => o.OrderDate)
+                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending)
+                .OrderByDescending(o => o.Id) // Sắp xếp đơn hàng chờ
                 .ToListAsync();
 
-            // Phân loại đơn hàng
+            var successOrders = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(d => d.Product)
+                .Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
+                .OrderByDescending(o => o.Id) // Sắp xếp đơn hàng thành công
+                .ToListAsync();
+
             var viewModel = new AdOrdersViewModel
             {
-                PendingOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Pending),
-                SuccessOrders = orders.Where(o => o.OrderStatus == (int)ConstHelper.OrderStatus.Success)
+                PendingOrders = pendingOrders,
+                SuccessOrders = successOrders
             };
 
             return View(viewModel);
         }
-
 
         public async Task<IActionResult> ListDeleted()
         {
@@ -88,6 +118,7 @@ namespace ThienAnFuni.Controllers
 
             return View(order);
         }
+
         // Action with ajax
         [HttpGet]
         public IActionResult GetInfoEdit(int id)

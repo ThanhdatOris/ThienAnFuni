@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
 <div class="app-title">
     <ul class="app-breadcrumb breadcrumb side">
         <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhà cung cấp</b></a></li>
@@ -25,10 +24,11 @@
                     </div>
                 </div>
 
-                <form asp-action="Edit">
+                <form asp-action="Edit" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
                         <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Image" />
 
                         <div class="form-group col-md-4">
                             <label asp-for="ParentId" class="control-label">Danh mục cha</label>
@@ -42,6 +42,20 @@
                             <label asp-for="Name" class="control-label"></label>
                             <input asp-for="Name" class="form-control" />
                             <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label asp-for="Image" class="control-label">Hình ảnh</label>
+                            <input asp-for="Image" class="form-control-file" type="file" id="imageUpload" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                            @if (!string.IsNullOrEmpty(Model.Image))
+                            {
+                                <img id="imagePreview" src="/customerThienAn/img/categories/@Model.Image" alt="@Model.Name" style="width: 100px; height: 100px; margin-top: 10px;" />
+                            }
+                            else
+                            {
+                                <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 100px; height: 100px; margin-top: 10px;" />
+                            }
                         </div>
 
                         <div class="form-group form-check col-md-2">
@@ -68,9 +82,18 @@
 
 @section Scripts {
     <script src="/adminThienAn/js/heper-upImg_Time.js"></script>
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
 }
-

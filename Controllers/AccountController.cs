@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using Microsoft.AspNetCore.Authentication;
 
 namespace ThienAnFuni.Controllers
-
-
 {
     public class AccountController : Controller
     {
@@ -264,6 +262,7 @@ namespace ThienAnFuni.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(string email)
         {
