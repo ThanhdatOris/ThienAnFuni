@@ -55,6 +55,12 @@ dotnet ef migrations remove
 
 dotnet ef migrations add InitialCreate
 
+--
+
+dotnet ef migrations add InitialCreate
+
+dotnet ef database update
+
 ```
 
 ### 1. Tạo Dự Án ASP.NET Core 8.0 MVC

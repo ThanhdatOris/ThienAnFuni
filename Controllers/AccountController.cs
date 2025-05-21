@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
 using ThienAnFuni.ViewModels;
 using ThienAnFuni.Helpers;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-using Microsoft.AspNetCore.Authentication;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace ThienAnFuni.Controllers
 {
@@ -34,6 +33,146 @@ namespace ThienAnFuni.Controllers
             }
             return View();
         }
+
+        // Action: GG login
+        [HttpGet]
+        public IActionResult LoginWithGoogle(string returnUrl = null)
+        {
+            // Lưu lại URL người dùng muốn truy cập sau khi đăng nhập
+            ViewData["ReturnUrl"] = returnUrl;
+
+            // Create and ark the authentication
+            var redirectUrl = Url.Action("GoogleResponse", "Account", new { ReturnUrl = returnUrl });
+
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.AuthenticationScheme, redirectUrl);
+
+            return new ChallengeResult(GoogleDefaults.AuthenticationScheme, properties);
+        }
+
+        // Action: GG login response (Call back from GG)
+        [HttpGet]
+        public async Task<IActionResult> GoogleResponse(string returnUrl = null)
+        {
+            // Lấy thông tin từ Google
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                // Nếu không lấy được thông tin, chuyển về trang đăng nhập
+                return RedirectToAction("Login");
+            }
+
+
+            // Lấy access token
+            string accessToken = info.AuthenticationTokens
+                .FirstOrDefault(x => x.Name == "access_token")?.Value;
+
+            string pictureUrl = null;
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                // Gọi API Google để lấy thông tin profile
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                    var response = await client.GetAsync("https://www.googleapis.com/userinfo/v2/me");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        using var document = JsonDocument.Parse(json);
+                        var root = document.RootElement;
+                        pictureUrl = root.GetProperty("picture").GetString();
+                    }
+                }
+            }
+
+
+            // Debug: Kiểm tra các claim
+            var claims = info.Principal.Claims.Select(c => $"{c.Type}: {c.Value}").ToList();
+
+            // Kiểm tra xem người dùng đã có liên kết với Google chưa
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (result.Succeeded)
+            {
+                // Đăng nhập thành công, điều hướng theo returnUrl hoặc trang mặc định
+                return Redirect(returnUrl ?? "/Home/Index");
+            }
+
+            // Nếu chưa có tài khoản liên kết, tạo tài khoản mới
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var givenName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+            var familyName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+            var fullName = !string.IsNullOrEmpty(givenName) && !string.IsNullOrEmpty(familyName)
+                ? $"{givenName} {familyName}"
+                : info.Principal.FindFirstValue(ClaimTypes.Name);
+
+            if (user == null)
+            {
+                // Tạo người dùng mới
+                user = new Customer
+                {
+                    UserName = email,
+                    Email = email,
+                    //FullName = info.Principal.FindFirstValue(ClaimTypes.Name),
+                    FullName = fullName,
+                    PhoneNumber = "",
+                    IsActive = true
+                };
+
+                var createResult = await _userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                {
+                    // Xử lý lỗi tạo tài khoản
+                    foreach (var error in createResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return RedirectToAction("Login");
+                }
+
+                // Thêm claim picture nếu có
+                if (!string.IsNullOrEmpty(pictureUrl))
+                {
+                    await _userManager.AddClaimAsync(user, new Claim("picture", pictureUrl));
+                }
+
+                // Gán vai trò "Customer" cho người dùng
+                await _userManager.AddToRoleAsync(user, ConstHelper.RoleCustomer);
+
+                // Liên kết tài khoản Google với tài khoản vừa tạo
+                var addLoginResult = await _userManager.AddLoginAsync(user, info);
+                if (!addLoginResult.Succeeded)
+                {
+                    // Xử lý lỗi liên kết
+                    foreach (var error in addLoginResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return RedirectToAction("Login");
+                }
+            }
+
+            // Đăng nhập người dùng
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            // Điều hướng theo vai trò
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Contains(ConstHelper.RoleManager))
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            if (roles.Contains(ConstHelper.RoleSaleStaff))
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            if (roles.Contains(ConstHelper.RoleCustomer))
+            {
+                return Redirect(returnUrl ?? "/Home/Index");
+            }
+
+            return RedirectToAction("Login");
+        }
+
 
         [HttpGet]
         public IActionResult AccessDenied()
@@ -92,7 +231,7 @@ namespace ThienAnFuni.Controllers
                 if (result.Succeeded)
                 {
                     // Gán vai trò "Customer" cho người dùng
-                    await _userManager.AddToRoleAsync(customer, "Customer");
+                    await _userManager.AddToRoleAsync(customer, ConstHelper.RoleCustomer);
 
                     // Đăng nhập ngay sau khi tạo tài khoản
                     await _signInManager.SignInAsync(customer, isPersistent: false);
@@ -123,79 +262,6 @@ namespace ThienAnFuni.Controllers
         }
 
         [HttpPost]
-        #region Old Login
-        //public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
-        //        if (result.Succeeded)
-        //        {
-        //            var user = await _userManager.FindByNameAsync(model.Username);
-
-        //            // Kiểm tra nếu user không null và đảm bảo không có giá trị null cho các claim
-        //            if (user == null)
-        //            {
-        //                ModelState.AddModelError("", "Người dùng không tồn tại.");
-        //                return View(model);
-        //            }
-
-        //            // Kiểm tra nếu người dùng bị khóa
-        //            if (user is SaleStaff && !((SaleStaff)user).IsActive) // Kiểm tra SaleStaff có IsActive là false không
-        //            {
-        //                ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa.");
-        //                return View(model);
-        //            }
-
-        //            var roles = await _userManager.GetRolesAsync(user); // Lấy tất cả vai trò của người dùng
-
-        //            // Tạo các claims cho người dùng
-        //            var claims = new List<Claim>
-        //            {
-        //                // Kiểm tra nếu các giá trị không null
-        //                new Claim(ClaimTypes.NameIdentifier, user.Id?.ToString() ?? "UnknownId"),
-
-        //                new Claim(ClaimTypes.Name, user.UserName ?? "UnknownName"),
-
-        //                new Claim(ClaimTypes.Email, user.Email ?? "UnknownEmail")
-
-        //            };
-
-        //            // Thêm thông tin về role vào claims
-        //            foreach (var role in roles)
-        //            {
-        //                claims.Add(new Claim(ClaimTypes.Role, role)); // Thêm mỗi role vào claims
-        //            }
-
-        //            // Tạo ClaimsIdentity với các claims
-        //            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        //            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-        //            // Đăng nhập người dùng với các claims này
-        //            await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
-
-        //            // Điều hướng người dùng theo vai trò
-        //            if (roles.Contains(ConstHelper.RoleManager))
-        //            {
-        //                return RedirectToAction("Index", "Dashboard");
-        //            }
-        //            else if (roles.Contains(ConstHelper.RoleSaleStaff))
-        //            {
-        //                return RedirectToAction("Index", "Dashboard");
-        //            }
-        //            else if (roles.Contains(ConstHelper.RoleCustomer))
-        //            {
-        //                // Nếu có returnUrl, điều hướng đến URL đó
-        //                return Redirect(returnUrl ?? "/Home/Index");
-        //            }
-
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
-        //    }
-        //    return View(model);
-        //}
-        #endregion
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)

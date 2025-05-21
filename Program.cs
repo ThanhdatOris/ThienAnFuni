@@ -7,6 +7,25 @@ using ThienAnFuni.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+// Google Authentication
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("GoogleLogin");
+        options.ClientId = googleAuthNSection["GOOGLE_CLIENT_ID"];
+        options.ClientSecret = googleAuthNSection["GOOGLE_CLIENT_SECRET"];
+        options.CallbackPath = googleAuthNSection["CallbackPath"];
+        //options.CallbackPath = "/connect/google/check"; 
+        options.Scope.Add("profile"); // Cần scope này để lấy ảnh
+        options.Scope.Add("email");
+        options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+        options.SaveTokens = true;
+    });
+
+
 // SendMail
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<ThienAnFuni.Services.IEmailSender, EmailSender>();
@@ -15,9 +34,6 @@ builder.Services.AddTransient<ThienAnFuni.Services.IEmailSender, EmailSender>();
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -58,6 +74,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+
+// ----------------------------- BUILD APP --------------------------------
 var app = builder.Build();
 
 // Cấu hình middleware

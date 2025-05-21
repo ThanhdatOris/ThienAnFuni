@@ -1,4 +1,5 @@
-﻿@using ThienAnFuni.Extensions
+﻿@using Microsoft.AspNetCore.Identity
+@using ThienAnFuni.Extensions
 @using ThienAnFuni.Helpers
 <!DOCTYPE html>
 <html lang="vi">
@@ -194,11 +195,25 @@
                             </div>
 
                             <div class="header__top__right__auth d-flex justify-content-center align-items-center">
+                                @inject UserManager<User> UserManager
+
                                 @if (User.Identity.IsAuthenticated)
                                 {
+                                var user = await UserManager.GetUserAsync(User);
+                                    // Lấy tên và ảnh từ Claims
+                                    var fullName = user?.FullName ?? User.Identity.Name;
+                                    var profilePicture = User.FindFirst("picture")?.Value;
+
+                                        <p class="m-0 d-flex">
                                     <a asp-controller="Account" asp-action="Profile" class="d-inline-block text-truncate" style="max-width: 150px;">
-                                        <span>Hi, @User.Identity.Name</span>
+                                            @if (!string.IsNullOrEmpty(profilePicture))
+                                            {
+                                                <img src="@profilePicture" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;" />
+                                            }
+                                            @* @User.Identity.Name  *@
+                                            @fullName
                                     </a>
+                                        </p>
 
                                     <!-- Nút Admin sẽ chỉ hiển thị nếu người dùng là Manager hoặc SaleStaff -->
                                     @if (User.IsInRole(ConstHelper.RoleManager) || User.IsInRole(ConstHelper.RoleSaleStaff))
