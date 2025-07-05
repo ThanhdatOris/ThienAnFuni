@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Kết quả thanh toán";
+    var message = ViewBag.Message as string;
+    var isSuccess = ViewBag.IsSuccess as bool?;
+    var error = ViewBag.Error as string;
+}
+
+<h2>Kết quả thanh toán Momo</h2>
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger">
+        <strong>Lỗi:</strong> @error
+    </div>
+}
+else if (isSuccess.HasValue)
+{
+    if (isSuccess.Value)
+    {
+        <div class="alert alert-success">
+            @message
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            @message
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-warning">
+        Không có thông tin kết quả thanh toán.
+    </div>
+}
+
+<a asp-controller="Home" asp-action="Index" class="btn btn-info">Về trang chủ</a>

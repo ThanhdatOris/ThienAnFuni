@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Helpers;
+using ThienAnFuni.Models.Momo;
 
 namespace ThienAnFuni.Models
 {
@@ -11,6 +12,8 @@ namespace ThienAnFuni.Models
         : base(options)
         {
         }
+
+        public DbSet<MomoTransaction> MomoTransactions { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
 

@@ -1,0 +1,93 @@
+@{
+    ViewData["Title"] = "Kết Quả Thanh Toán VNPay";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header @(ViewBag.IsSuccess == true ? "bg-success" : "bg-danger") text-white">
+                    <h4 class="mb-0">
+                        @if (ViewBag.IsSuccess == true)
+                        {
+                            <text><i class="fas fa-check-circle"></i> Thanh Toán Thành Công</text>
+                        }
+                        else
+                        {
+                            <text><i class="fas fa-times-circle"></i> Thanh Toán Thất Bại</text>
+                        }
+                    </h4>
+                </div>
+                <div class="card-body text-center">
+                    @if (ViewBag.IsSuccess == true)
+                    {
+                        <div class="alert alert-success">
+                            <h5><i class="fas fa-check-circle"></i> Giao dịch đã được xử lý thành công!</h5>
+                            <p class="mb-0">@ViewBag.Message</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle"></i> Giao dịch không thành công!</h5>
+                            <p class="mb-0">@ViewBag.Message</p>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Error?.ToString()))
+                    {
+                        <div class="alert alert-warning">
+                            <strong>Lỗi:</strong> @ViewBag.Error
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <div class="btn-group" role="group">
+                            <a href="@Url.Action("CreatePayment", "VNPay")" class="btn btn-primary">
+                                <i class="fas fa-redo"></i> Thử lại
+                            </a>
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">
+                                <i class="fas fa-home"></i> Trang chủ
+                            </a>
+                            @if (ViewBag.IsSuccess == true)
+                            {
+                                <a href="@Url.Action("Index", "Orders")" class="btn btn-success">
+                                    <i class="fas fa-list"></i> Xem đơn hàng
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: none;
+        border-radius: 10px;
+    }
+
+    .btn {
+        margin: 5px;
+        padding: 10px 20px;
+    }
+
+    .alert {
+        border: none;
+        border-radius: 8px;
+    }
+
+    .fa-check-circle {
+        color: #28a745;
+    }
+
+    .fa-times-circle,
+    .fa-exclamation-triangle {
+        color: #dc3545;
+    }
+</style>
+
+   

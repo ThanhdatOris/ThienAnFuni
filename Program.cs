@@ -2,10 +2,39 @@
 using Microsoft.EntityFrameworkCore;
 using ThienAnFuni.Models;
 using ThienAnFuni.Helpers;
-using ThienAnFuni.Services; 
+using ThienAnFuni.Services;
 using ThienAnFuni.Configurations;
+using ThienAnFuni.Models.Momo;
+using ThienAnFuni.Services.Momo;
+using ThienAnFuni.Models.VNPay;
+using ThienAnFuni.Services.VNPay;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Cấu hình MomoSettings
+builder.Services.Configure<MomoSettings>(builder.Configuration.GetSection("MomoSettings"));
+
+// Cấu hình VNPaySettings
+builder.Services.Configure<VNPaySettings>(builder.Configuration.GetSection("VNPaySettings"));
+
+// Đăng ký HttpClientFactory và MomoService
+builder.Services.AddHttpClient("MomoClient", client =>
+{
+    // Cấu hình chung cho HttpClient nếu cần, ví dụ Timeout
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+builder.Services.AddScoped<IMomoService, MomoService>();
+builder.Services.AddScoped<IVNPayService, VNPayService>();
+
+// Cấu hình Session (nếu bạn dùng Session để lưu OrderId, RequestId)
+builder.Services.AddDistributedMemoryCache(); // Cần thiết cho session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // Thời gian timeout của session
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true; // Đánh dấu cookie session là cần thiết
+});
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -56,7 +85,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequiredUniqueChars = 1;  // Số ký tự duy nhất tối thiểu
     options.SignIn.RequireConfirmedEmail = false; // Không yêu cầu xác thực email
 })
-.AddEntityFrameworkStores<TAF_DbContext>()  
+.AddEntityFrameworkStores<TAF_DbContext>()
 .AddDefaultTokenProviders();
 
 // Không có quyền thì bị đá vào Controller Account - Action:AccessDenied

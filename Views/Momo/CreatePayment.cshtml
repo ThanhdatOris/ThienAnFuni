@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Tạo Thanh Toán Momo";
+}
+
+<h2>Tạo Thanh Toán Momo</h2>
+
+<div class="alert alert-info">
+    <h5>Hướng dẫn test Momo Sandbox:</h5>
+    <ul>
+        <li><strong>Tài khoản test 1:</strong> 0987654321 | OTP: 1234 | PIN: 123456</li>
+        <li><strong>Tài khoản test 2:</strong> 0123456789 | OTP: 5678 | PIN: 654321</li>
+        <li><strong>Tài khoản test 3:</strong> 0999888777 | OTP: 0000 | PIN: 111111</li>
+        <li><strong>Lưu ý:</strong> Đây là thông tin test phổ biến, có thể cần liên hệ Momo để xác nhận</li>
+        <li><strong>Khuyến nghị:</strong> Sử dụng <strong>"Thanh toán Mock"</strong> bên dưới để test không cần tài
+            khoản thật</li>
+    </ul>
+
+    <div class="alert alert-warning mt-2 mb-0">
+        <small><strong>Quan trọng:</strong> Nếu không có tài khoản test hợp lệ, hãy:</small>
+        <ul class="mb-0 mt-1">
+            <li><small>Liên hệ Momo Business Support: business@momo.vn</small></li>
+            <li><small>Hoặc đăng ký Momo Developer tại: business.momo.vn</small></li>
+            <li><small>Hoặc sử dụng chức năng <strong>Mock Payment</strong> để test</small></li>
+        </ul>
+    </div>
+</div>
+
+<form asp-action="CreatePayment" method="post">
+    <div class="form-group">
+        <label for="amount">Số tiền (VNĐ):</label>
+        <input type="number" id="amount" name="amount" class="form-control" value="10000" min="1000" required />
+        <small class="text-muted">Tối thiểu 1,000 VNĐ</small>
+    </div>
+    <div class="form-group">
+        <label for="orderInfo">Thông tin đơn hàng:</label>
+        <input type="text" id="orderInfo" name="orderInfo" class="form-control" value="Test thanh toan don hang"
+            required />
+    </div>
+    <div class="btn-group w-100 mt-2" role="group">
+        <button type="submit" class="btn btn-primary">Thanh toán với Momo Thật</button>
+        <button type="submit" formaction="@Url.Action("CreatePaymentMock")" class="btn btn-warning">Thanh toán Mock
+            (Test)</button>
+    </div>
+</form>
+
+<div class="mt-4">
+    <h5>Test simulation (Không cần Momo app):</h5>
+    <div class="btn-group" role="group">
+        <a href="@Url.Action("SimulateSuccess", "Momo")" class="btn btn-success">Simulate Thành Công</a>
+        <a href="@Url.Action("SimulateFailure", "Momo")" class="btn btn-danger">Simulate Thất Bại</a>
+    </div>
+    <p class="text-muted mt-2">Dùng để test luồng xử lý kết quả thanh toán mà không cần app Momo thật</p>
+</div>
+
+<hr>
+
+<div class="text-center">
+    <h6 class="text-muted">Hoặc thử phương thức thanh toán khác:</h6>
+    <div class="btn-group" role="group">
+        <a href="@Url.Action("CreatePayment", "VNPay")" class="btn btn-outline-primary">
+            <i class="fas fa-credit-card"></i> VNPay (Khuyến nghị)
+        </a>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
+            <i class="fas fa-home"></i> Trang chủ
+        </a>
+    </div>
+    <small class="text-muted d-block mt-2">VNPay có môi trường test dễ sử dụng hơn</small>
+</div>
+           
+           
