@@ -180,7 +180,7 @@ Views/VNPay/
     "TmnCode": "95MBFDIE",
     "HashSecret": "914BN8G87HFJTJIZL5207QB4RX8S19PU",
     "PaymentUrl": "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
-    "ReturnUrl": "https://localhost:7108/VNPay/PaymentReturn",
+    "ReturnUrl": "https://localhost:7065/VNPay/PaymentReturn",
     "Version": "2.1.0",
     "Command": "pay",
     "CurrCode": "VND",

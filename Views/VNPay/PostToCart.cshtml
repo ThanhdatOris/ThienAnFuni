@@ -1,0 +1,62 @@
+@model ThienAnFuni.Models.VNPay.PostToCartModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Đang xử lý thanh toán...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .loading-container {
+            text-align: center;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @@keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="spinner"></div>
+        <h2>Đang xử lý thanh toán thành công...</h2>
+        <p>Vui lòng đợi trong giây lát...</p>
+    </div>
+
+    <!-- Form ẩn tự động submit -->
+    <form id="postForm" method="post" action="@Url.Action("CheckOutSV", "Cart")" style="display: none;">
+        <input type="hidden" name="TxnRef" value="@Model.TxnRef" />
+        <input type="hidden" name="Amount" value="@Model.Amount" />
+        <input type="hidden" name="OrderInfo" value="@Model.OrderInfo" />
+        <input type="hidden" name="TransactionNo" value="@Model.TransactionNo" />
+        <input type="hidden" name="BankCode" value="@Model.BankCode" />
+        <input type="hidden" name="PayDate" value="@Model.PayDate" />
+    </form>
+
+    <script>
+        // Tự động submit form sau 1 giây
+        setTimeout(function() {
+            document.getElementById('postForm').submit();
+        }, 1000);
+    </script>
+</body>
+</html>

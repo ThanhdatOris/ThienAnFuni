@@ -9,8 +9,11 @@ using System.Security.Claims;
 using ThienAnFuni.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-
 using ThienAnFuni.Services;
+using ThienAnFuni.Services.VNPay;
+using ThienAnFuni.Models.VNPay;
+using Microsoft.Extensions.Options;
+
 namespace ThienAnFuni.Controllers
 {
     public class CartController : Controller
@@ -18,12 +21,16 @@ namespace ThienAnFuni.Controllers
         private readonly IEmailSender _emailSender;
         private readonly TAF_DbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly IVNPayService _vnPayService;
+        private readonly VNPaySettings _vnPaySettings;
 
-        public CartController(TAF_DbContext context, UserManager<User> userManager, IEmailSender emailSender)
+        public CartController(TAF_DbContext context, UserManager<User> userManager, IEmailSender emailSender, IVNPayService vnPayService, IOptions<VNPaySettings> vnPaySettings)
         {
             _context = context;
             _userManager = userManager;
             _emailSender = emailSender;
+            _vnPayService = vnPayService;
+            _vnPaySettings = vnPaySettings.Value;
         }
         public IActionResult Index()
         {
@@ -250,12 +257,53 @@ namespace ThienAnFuni.Controllers
 
             return View();
         }
-
-
-    // Đây là hàm thanh toán với người dùng: Chỉ thanh toán bằng vnpay
         [HttpPost]
-        public async Task<IActionResult> CheckOutSV(string address, int paymentMethod, string? note)
+        public IActionResult CheckOutVnPay(string address, int paymentMethod, string? note)
         {
+            // Lưu tham số vào session address, ,paymentMethod, note
+            HttpContext.Session.SetString("address", address);
+            HttpContext.Session.SetInt32("paymentMethod", paymentMethod);
+            HttpContext.Session.SetString("note", note ?? string.Empty);
+
+            // Get cart localstorage
+            var cart = HttpContext.Session.GetObjectFromJson<Dictionary<int, CartDetail>>("cart");
+            if (cart == null || cart.Count <= 0)
+            {
+                TempData["ErrorMessage"] = "Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước khi thanh toán.";
+                return RedirectToAction("Index", "Cart");
+            }
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                TempData["ErrorMessage"] = "Vui lòng nhập địa chỉ giao hàng.";
+                return RedirectToAction("CheckOutPro", "Cart");
+            }
+            if (!Enum.IsDefined(typeof(ConstHelper.PaymentMethod), paymentMethod))
+            {
+                TempData["ErrorMessage"] = "Phương thức thanh toán không hợp lệ.";
+                return RedirectToAction("CheckOutPro", "Cart");
+            }
+
+            long TotalPrice = cart.Sum(item => (long)(item.Value.Price * item.Value.Quantity));
+
+            string orderInfo = $"User:{User.Identity.Name}|Time:{DateTime.Now:yyyyMMddHHmmss}";
+
+
+            return RedirectToAction("CreatePayment", "VNPay", new { amount = TotalPrice, orderInfo = orderInfo });
+        }
+
+        // Đây là hàm thanh toán với người dùng: Chỉ thanh toán bằng vnpay
+        [HttpPost]
+        public async Task<IActionResult> CheckOutSV(string? TxnRef = null, string? Amount = null, string? OrderInfo = null, string? TransactionNo = null, string? BankCode = null, string? PayDate = null)
+        {
+            // Lấy danh sách localstoreage 
+            string address = HttpContext.Session.GetString("address") ?? string.Empty;
+            int paymentMethod = HttpContext.Session.GetInt32("paymentMethod") ?? (int)ConstHelper.PaymentMethod.Bank_transfer;
+            string note = HttpContext.Session.GetString("note") ?? string.Empty;
+
+            // Lấy thông tin VNPay từ session nếu có
+            string vnpayTxnRef = HttpContext.Session.GetString("VNPayTxnRef") ?? TxnRef ?? "";
+            string vnpayTransactionNo = HttpContext.Session.GetString("VNPayTransactionNo") ?? TransactionNo ?? "";
+
             var cart = HttpContext.Session.GetObjectFromJson<Dictionary<int, CartDetail>>("cart");
 
             if (cart == null || cart.Count <= 0)
@@ -276,7 +324,12 @@ namespace ThienAnFuni.Controllers
                 return RedirectToAction("CheckOutPro", "Cart");
             }
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("Không thể xác định người dùng hiện tại.");
+            }
+
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null) return Unauthorized("Không tìm thấy người dùng hiện tại.");
@@ -307,7 +360,7 @@ namespace ThienAnFuni.Controllers
                         OrderStatus = (int)ConstHelper.OrderStatus.Pending,
                         PaymentMethod = paymentMethod,
                         Note = note,
-                        CustomerPhoneNumber = user.PhoneNumber
+                        CustomerPhoneNumber = user.PhoneNumber ?? ""
                     };
 
                     _context.Orders.Add(order);
@@ -347,13 +400,21 @@ namespace ThienAnFuni.Controllers
                 }
             }
 
-            // Xóa giỏ hàng sau khi hoàn tất transaction
+            // Xóa giỏ hàng và các session sau khi hoàn tất transaction
             HttpContext.Session.Remove("cart");
             HttpContext.Session.Remove("total");
             HttpContext.Session.Remove("totalQuantity");
 
+            HttpContext.Session.Remove("adress");
+            HttpContext.Session.Remove("paymentMethod");
+            HttpContext.Session.Remove("note");
+
+            // Xóa session VNPay
+            HttpContext.Session.Remove("VNPayTxnRef");
+            HttpContext.Session.Remove("VNPayTransactionNo");
+
             // Gửi email sau khi transaction hoàn tất
-            if (order != null)
+            if (order != null && !string.IsNullOrEmpty(user.Email))
             {
                 string subject = "💕💕💕 Đặt Hàng Thành Công - Thiên Ân Store 💕💕💕";
                 string message = $@"
@@ -362,8 +423,17 @@ namespace ThienAnFuni.Controllers
                 <p>🎁 Địa chỉ giao hàng: {order.Address}</p>
                 <p>🎁 Ghi chú đơn hàng: {order.Note}</p>
                 <p>🎁 Tổng số lượng: {order.TotalQuantity}</p>
-                <p>🎁 Tổng giá: {order.TotalPrice:n0}đ</p>
-                <p>Chúng tôi sẽ liên hệ với bạn sớm nhất để giao hàng ❤️.</p>";
+                <p>🎁 Tổng giá: {order.TotalPrice:n0}đ</p>";
+
+                // Thêm thông tin VNPay nếu có
+                if (!string.IsNullOrEmpty(vnpayTransactionNo))
+                {
+                    message += $@"
+                    <p>💳 Mã giao dịch VNPay: {vnpayTransactionNo}</p>
+                    <p>💳 Mã tham chiếu: {vnpayTxnRef}</p>";
+                }
+
+                message += "<p>Chúng tôi sẽ liên hệ với bạn sớm nhất để giao hàng ❤️.</p>";
 
                 await _emailSender.SendEmailAsync(user.Email, subject, message);
             }

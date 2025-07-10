@@ -212,9 +212,9 @@
                                             @if (!string.IsNullOrEmpty(profilePicture))
                                             {
                                                 <img src="@profilePicture" alt="Avatar"
-                                                    style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; border: 2px solid red; background: yellow;" />
+                                                    style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;" />
                                             }
-                                            <span style="color: red; font-size: 10px;">@profilePicture</span>
+                                            @* <span style="color: red; font-size: 10px;">@profilePicture</span> *@
                                             <!-- debug: show link -->
                                             @fullName
                                         </a>
