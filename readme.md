@@ -44,6 +44,8 @@
 
 # Lần pull đầu tiên
 ```
+- dotnet run --launch-profile "https"
+
 - Tạo database thienanFuni
 - mở file appsettings.json đổi tên server
 ```
